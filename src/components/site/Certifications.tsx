@@ -46,12 +46,12 @@ export function Certifications({
                 className="card flex flex-col"
               >
                 {logoUrl ? (
-                  <div className="h-24 md:h-28 grid place-items-center mb-6">
+                  <div className="relative h-24 md:h-28 mb-6 overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={logoUrl}
                       alt={c.label}
-                      className="max-w-full max-h-full object-contain"
+                      className="absolute inset-0 w-full h-full object-contain object-left"
                     />
                   </div>
                 ) : (
