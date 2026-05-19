@@ -13,8 +13,9 @@ export function Hero({ site }: { site: Site }) {
         minHeight: hasImage ? "min(78vh, 720px)" : undefined,
       }}
     >
-      {hasImage && (
+      {hasImage ? (
         <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={site.hero_image_url!}
             alt=""
@@ -23,6 +24,14 @@ export function Hero({ site }: { site: Site }) {
           />
           <div className="absolute inset-0 -z-10 hero-overlay" />
         </>
+      ) : (
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{
+            background: `radial-gradient(60% 50% at 80% 10%, color-mix(in oklab, ${site.primary_color} 18%, transparent), transparent), linear-gradient(180deg, var(--warm), var(--background) 60%)`,
+          }}
+        />
       )}
 
       <div
