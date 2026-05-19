@@ -56,7 +56,8 @@ export async function createSiteAndOwner(formData: FormData) {
     })
     .select("id")
     .single();
-  if (siteErr || !siteRow) throw new Error(siteErr?.message ?? "Site-skapande misslyckades.");
+  if (siteErr || !siteRow)
+    throw new Error(siteErr?.message ?? "Site-skapande misslyckades.");
 
   const { data: existingUsers } = await admin.auth.admin.listUsers();
   let userId = existingUsers?.users?.find(
@@ -79,7 +80,61 @@ export async function createSiteAndOwner(formData: FormData) {
     .insert({ site_id: siteRow.id, user_id: userId, role: "owner" });
 
   revalidatePath("/admin/oversikt");
-  redirect(`/admin/sajt/${siteRow.id}`);
+  redirect("/admin/oversikt");
+}
+
+export async function uploadCertAsset(formData: FormData) {
+  await requirePlatformAdmin();
+  const key = ((formData.get("key") as string) ?? "").trim();
+  const kind = ((formData.get("kind") as string) ?? "").trim();
+  if (!key || !kind) throw new Error("Saknar key/kind.");
+
+  const admin = createAdminClient();
+  let logoUrl: string | null = null;
+
+  const pastedUrl = ((formData.get("logo_url") as string) ?? "").trim();
+  if (pastedUrl) {
+    if (!/^https?:\/\//.test(pastedUrl)) {
+      throw new Error("URL måste börja med https:// eller http://.");
+    }
+    logoUrl = pastedUrl;
+  } else {
+    const file = formData.get("logo") as File | null;
+    if (!file || file.size === 0) throw new Error("Välj fil eller klistra in URL.");
+    if (file.size > 4 * 1024 * 1024)
+      throw new Error("Bilden får max vara 4 MB.");
+    const ext = (file.name.split(".").pop() || "png").toLowerCase();
+    const path = `${kind}/${key}-${Date.now()}.${ext}`;
+    const { error: upErr } = await admin.storage
+      .from("cert-assets")
+      .upload(path, file, { upsert: true, contentType: file.type });
+    if (upErr) throw new Error(upErr.message);
+    const { data: pub } = admin.storage.from("cert-assets").getPublicUrl(path);
+    logoUrl = pub.publicUrl;
+  }
+
+  const { error: dbErr } = await admin
+    .from("cert_assets")
+    .upsert({
+      key,
+      kind,
+      logo_url: logoUrl,
+      updated_at: new Date().toISOString(),
+    });
+  if (dbErr) throw new Error(dbErr.message);
+
+  revalidatePath("/admin/oversikt");
+  revalidatePath("/", "layout");
+}
+
+export async function removeCertAsset(formData: FormData) {
+  await requirePlatformAdmin();
+  const key = ((formData.get("key") as string) ?? "").trim();
+  if (!key) return;
+  const admin = createAdminClient();
+  await admin.from("cert_assets").delete().eq("key", key);
+  revalidatePath("/admin/oversikt");
+  revalidatePath("/", "layout");
 }
 
 export async function signOutPlatform() {

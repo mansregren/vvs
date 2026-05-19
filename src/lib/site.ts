@@ -123,6 +123,19 @@ export async function isPlatformAdmin(userId: string): Promise<boolean> {
   return !!data;
 }
 
+export async function getCertAssets(): Promise<Record<string, string>> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("cert_assets")
+    .select("key, logo_url");
+  if (error) return {};
+  const out: Record<string, string> = {};
+  for (const row of (data ?? []) as { key: string; logo_url: string | null }[]) {
+    if (row.logo_url) out[row.key] = row.logo_url;
+  }
+  return out;
+}
+
 export async function listSiteStats(): Promise<SiteStats[]> {
   const admin = createAdminClient();
   const { data, error } = await admin

@@ -14,7 +14,7 @@ import { Socials } from "@/components/site/Socials";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 import { getMockSite } from "@/lib/mock-data";
-import { getSiteBySlug, getReviewsForSite } from "@/lib/site";
+import { getSiteBySlug, getReviewsForSite, getCertAssets } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -52,10 +52,12 @@ export default async function SitePage({
   const site = await loadSite(slug);
   if (!site) notFound();
 
-  const reviews =
+  const [reviews, certAssets] = await Promise.all([
     site.id && !site.id.startsWith("mock-")
-      ? await getReviewsForSite(site.id)
-      : [];
+      ? getReviewsForSite(site.id)
+      : Promise.resolve([]),
+    getCertAssets(),
+  ]);
 
   const sections = [
     { id: "om", label: "Om oss" },
@@ -76,11 +78,11 @@ export default async function SitePage({
       <main className="flex-1">
         <Hero site={site} />
         <About site={site} />
-        <Certifications site={site} />
+        <Certifications site={site} assets={certAssets} />
         <Services site={site} />
         <Gallery site={site} />
         <Reviews site={site} reviews={reviews} />
-        <BrandPartners site={site} />
+        <BrandPartners site={site} assets={certAssets} />
         <InstagramFeed site={site} />
         <FacebookFeed site={site} />
         <Socials site={site} />

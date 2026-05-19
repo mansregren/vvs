@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { getSiteByHost, getReviewsForSite, listSites } from "@/lib/site";
-import { getSiteBySlug } from "@/lib/site";
+import {
+  getSiteByHost,
+  getReviewsForSite,
+  listSites,
+  getSiteBySlug,
+  getCertAssets,
+} from "@/lib/site";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { About } from "@/components/site/About";
@@ -35,7 +40,10 @@ export default async function RootPage() {
   if (!isPlatform) {
     const site = await getSiteByHost(host);
     if (site) {
-      const reviews = await getReviewsForSite(site.id);
+      const [reviews, certAssets] = await Promise.all([
+        getReviewsForSite(site.id),
+        getCertAssets(),
+      ]);
       const sections = [
         { id: "om", label: "Om oss" },
         { id: "tjanster", label: "Tjänster" },
@@ -54,11 +62,11 @@ export default async function RootPage() {
           <main className="flex-1">
             <Hero site={site} />
             <About site={site} />
-            <Certifications site={site} />
+            <Certifications site={site} assets={certAssets} />
             <Services site={site} />
             <Gallery site={site} />
             <Reviews site={site} reviews={reviews} />
-            <BrandPartners site={site} />
+            <BrandPartners site={site} assets={certAssets} />
             <InstagramFeed site={site} />
             <FacebookFeed site={site} />
             <Socials site={site} />

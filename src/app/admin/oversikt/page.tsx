@@ -1,8 +1,14 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { isPlatformAdmin, listSiteStats } from "@/lib/site";
-import { createSiteAndOwner, signOutPlatform } from "./actions";
+import { isPlatformAdmin, listSiteStats, getCertAssets } from "@/lib/site";
+import { CERTIFICATIONS, BRAND_PARTNERS } from "@/lib/catalogs";
+import {
+  createSiteAndOwner,
+  uploadCertAsset,
+  removeCertAsset,
+  signOutPlatform,
+} from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +43,10 @@ export default async function PlatformOverview() {
     );
   }
 
-  const stats = await listSiteStats();
+  const [stats, certAssets] = await Promise.all([
+    listSiteStats(),
+    getCertAssets(),
+  ]);
 
   const totalSites = stats.length;
   const sitesWithDomain = stats.filter((s) => s.domain).length;
@@ -148,6 +157,57 @@ export default async function PlatformOverview() {
             </button>
           </div>
         </form>
+      </section>
+
+      {/* Cert + Brand asset upload */}
+      <section className="space-y-6">
+        <div>
+          <div className="eyebrow mb-1" style={{ color: "var(--accent)" }}>
+            Logo-bibliotek
+          </div>
+          <h2 className="text-xl font-semibold tracking-tight">
+            Certifikat- och märkesloggor
+          </h2>
+          <p className="text-sm text-[var(--muted)] mt-1 max-w-2xl">
+            Ladda upp officiella logo-filer som du har licens att använda (t.ex.
+            Säker Vatten-märket för auktoriserade firmor). Sajterna visar
+            uppladdad logo om den finns, annars en stiliserad badge.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="font-medium mb-3">Certifikat ({CERTIFICATIONS.length})</h3>
+          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {CERTIFICATIONS.map((c) => (
+              <CertAssetCard
+                key={c.key}
+                cardKey={c.key}
+                kind="certification"
+                label={c.short}
+                color={c.color}
+                initials={c.initials}
+                logoUrl={certAssets[c.key]}
+              />
+            ))}
+          </ul>
+        </div>
+
+        <div className="pt-4">
+          <h3 className="font-medium mb-3">Märken ({BRAND_PARTNERS.length})</h3>
+          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {BRAND_PARTNERS.map((b) => (
+              <CertAssetCard
+                key={b.key}
+                cardKey={b.key}
+                kind="brand"
+                label={b.label}
+                color={b.color}
+                initials={b.initials}
+                logoUrl={certAssets[b.key]}
+              />
+            ))}
+          </ul>
+        </div>
       </section>
 
       {/* Sajt-lista */}
@@ -263,5 +323,84 @@ function StatCard({ label, value }: { label: string; value: number }) {
       </div>
       <div className="text-sm text-[var(--muted)] mt-1">{label}</div>
     </div>
+  );
+}
+
+function CertAssetCard({
+  cardKey,
+  kind,
+  label,
+  color,
+  initials,
+  logoUrl,
+}: {
+  cardKey: string;
+  kind: "certification" | "brand";
+  label: string;
+  color: string;
+  initials: string;
+  logoUrl?: string;
+}) {
+  return (
+    <li className="card space-y-3">
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 rounded-lg bg-white border border-[var(--border)] overflow-hidden grid place-items-center p-1.5 shrink-0">
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={logoUrl}
+              alt={label}
+              className="max-w-full max-h-full object-contain"
+            />
+          ) : (
+            <div
+              className="w-full h-full rounded-md grid place-items-center text-white font-bold text-xs"
+              style={{
+                background: `linear-gradient(135deg, ${color}, color-mix(in oklab, ${color} 70%, black))`,
+              }}
+              aria-hidden
+            >
+              {initials}
+            </div>
+          )}
+        </div>
+        <div className="font-medium leading-tight truncate flex-1">{label}</div>
+      </div>
+
+      <form action={uploadCertAsset} className="space-y-2">
+        <input type="hidden" name="key" value={cardKey} />
+        <input type="hidden" name="kind" value={kind} />
+        <input
+          type="url"
+          name="logo_url"
+          placeholder="Klistra in URL till officiell logo"
+          defaultValue={logoUrl ?? ""}
+          className="input text-xs"
+        />
+        <div className="flex items-center gap-2">
+          <input
+            type="file"
+            name="logo"
+            accept="image/png,image/jpeg,image/webp,image/svg+xml"
+            className="text-xs flex-1 min-w-0"
+          />
+          <button type="submit" className="btn-ghost btn-sm shrink-0">
+            Spara
+          </button>
+        </div>
+      </form>
+
+      {logoUrl && (
+        <form action={removeCertAsset}>
+          <input type="hidden" name="key" value={cardKey} />
+          <button
+            type="submit"
+            className="text-xs text-red-600 hover:underline underline-offset-4"
+          >
+            Ta bort logo
+          </button>
+        </form>
+      )}
+    </li>
   );
 }
