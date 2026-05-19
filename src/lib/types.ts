@@ -1,0 +1,21 @@
+export type Site = {
+  id: string;
+  slug: string;
+  domain: string | null;
+  name: string;
+  primary_color: string;
+  logo_url: string | null;
+  phone: string;
+  address: string;
+  city: string;
+  email: string | null;
+  hero_tagline: string | null;
+  about_text: string | null;
+  services: string[];
+  opening_hours: string | null;
+  facebook_url: string | null;
+  facebook_enabled: boolean;
+  instagram_url: string | null;
+  instagram_enabled: boolean;
+  google_maps_embed: string | null;
+};
