@@ -28,6 +28,12 @@ export type Site = {
   gallery_images: string[];
   certifications: string[];
   brand_partners: string[];
+  has_jour: boolean;
+  jour_phone: string | null;
+  jour_text: string | null;
+  rot_avdrag: boolean;
+  guarantee_text: string | null;
+  offers_free_quote: boolean;
 };
 
 export type Review = {

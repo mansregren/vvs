@@ -153,3 +153,61 @@ export function getCertification(key: string): Certification | undefined {
 export function getBrandPartner(key: string): BrandPartner | undefined {
   return BRAND_PARTNERS.find((b) => b.key === key);
 }
+
+// ============================================
+// Canonical VVS-tjänster — typiska för en svensk VVS-firma.
+// Notera: ELINSTALLATIONER och RIVNING/SANERING ingår inte —
+// det görs av elektriker resp. saneringsfirmor.
+// ============================================
+export type ServiceOption = {
+  key: string;
+  /** Visning på sajt och i admin */
+  label: string;
+  /** Kort beskrivning, läggs efter "—" på sajtens kort */
+  description: string;
+  category: string;
+};
+
+export const SERVICES_CATALOG: ServiceOption[] = [
+  // Värme
+  { key: "varmepump-installation", category: "Värme", label: "Värmepumpar", description: "installation, driftsättning och service" },
+  { key: "luftvarmepump", category: "Värme", label: "Luftvärmepumpar", description: "luft-luft och luft-vatten" },
+  { key: "bergvarme", category: "Värme", label: "Bergvärme och jordvärme", description: "borrning via partner, installation av oss" },
+  { key: "panna-konvertering", category: "Värme", label: "Pannkonvertering", description: "byte från olja/el till värmepump" },
+  { key: "golvvarme", category: "Värme", label: "Golvvärme", description: "vattenburen, installation och service" },
+  { key: "radiatorer", category: "Värme", label: "Radiatorer", description: "byte, balansering och service" },
+
+  // Vatten & avlopp
+  { key: "rorarbeten", category: "Vatten & avlopp", label: "Rörarbeten", description: "tappvatten, värme och avlopp" },
+  { key: "stambyte", category: "Vatten & avlopp", label: "Stambyten", description: "för bostadsrätter och hyresvärdar" },
+  { key: "vattenskada", category: "Vatten & avlopp", label: "Vattenskador — VVS-åtgärd", description: "läcksökning och åtgärd (saneringen görs av certifierad partner)" },
+  { key: "lacksokning", category: "Vatten & avlopp", label: "Läcksökning", description: "akut och förebyggande" },
+  { key: "varmvattenberedare", category: "Vatten & avlopp", label: "Varmvattenberedare", description: "byte och installation" },
+  { key: "avloppsspolning", category: "Vatten & avlopp", label: "Avloppsspolning", description: "akut stopp och underhåll" },
+  { key: "vattenfilter", category: "Vatten & avlopp", label: "Vattenfilter", description: "installation och service" },
+
+  // Badrum & kök
+  { key: "badrumsrenovering", category: "Badrum & kök", label: "Badrumsrenovering", description: "totalentreprenad eller delar — vi samordnar kakel/el via partners" },
+  { key: "vatrum", category: "Badrum & kök", label: "Våtrum", description: "branschregler enligt Säker Vatten och GVK" },
+  { key: "blandare", category: "Badrum & kök", label: "Blandare och porslin", description: "byte och installation" },
+  { key: "diskmaskin-tvattmaskin", category: "Badrum & kök", label: "Diskmaskin & tvättmaskin", description: "anslutning av VVS-delar" },
+  { key: "kok-vvs", category: "Badrum & kök", label: "Köks-VVS", description: "vid renovering eller köksbyte" },
+
+  // Service
+  { key: "felsokning", category: "Service", label: "Felsökning", description: "akut respons och systematisk diagnos" },
+  { key: "akutservice", category: "Service", label: "Akutservice", description: "jour för läckage och stopp" },
+  { key: "underhall", category: "Service", label: "Underhåll och serviceavtal", description: "för fastigheter och företag" },
+  { key: "ovk", category: "Service", label: "OVK-besiktning", description: "obligatorisk ventilationskontroll via certifierad partner" },
+];
+
+export function getServiceOption(key: string): ServiceOption | undefined {
+  return SERVICES_CATALOG.find((s) => s.key === key);
+}
+
+export function renderService(s: string): { title: string; description: string } {
+  // Stöder både katalog-keys ("varmepump-installation") och fritext-rader ("Värmepumpar — installation")
+  const opt = getServiceOption(s);
+  if (opt) return { title: opt.label, description: opt.description };
+  const [title, ...rest] = s.split("—");
+  return { title: title.trim(), description: rest.join("—").trim() };
+}

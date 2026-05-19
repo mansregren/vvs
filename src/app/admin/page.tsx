@@ -2,7 +2,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getReviewsForSite, isPlatformAdmin } from "@/lib/site";
-import { CERTIFICATIONS, BRAND_PARTNERS } from "@/lib/catalogs";
+import {
+  CERTIFICATIONS,
+  BRAND_PARTNERS,
+  SERVICES_CATALOG,
+} from "@/lib/catalogs";
+import { ColorPicker } from "@/components/admin/ColorPicker";
 import {
   updateMySite,
   uploadLogo,
@@ -135,15 +140,7 @@ export default async function AdminPage() {
         <Section id="grund" title="Grundinfo" desc="Namn, ort och varumärkesfärg.">
           <Field label="Firmanamn" name="name" defaultValue={site.name} />
           <Field label="Ort" name="city" defaultValue={site.city} />
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field
-              label="Primärfärg (hex)"
-              name="primary_color"
-              defaultValue={site.primary_color}
-              placeholder="#0a4f8f"
-            />
-            <ColorPreview value={site.primary_color} />
-          </div>
+          <ColorPicker name="primary_color" initial={site.primary_color} />
         </Section>
 
         <Section id="hero" title="Hero & om" desc="Texterna högst upp + om-sektionen.">
@@ -191,14 +188,62 @@ export default async function AdminPage() {
         <Section
           id="tjanster"
           title="Tjänster"
-          desc="En tjänst per rad. Använd '—' för rubrik + beskrivning, t.ex. 'Värmepumpar — installation och service'."
+          desc="Bocka i de tjänster ni erbjuder. Lägg till egna längst ner om något saknas."
         >
+          <ServiceCheckboxes activeServices={site.services as string[]} />
           <Textarea
-            label=""
-            name="services"
-            defaultValue={servicesText}
-            rows={8}
+            label="Egna tjänster (en per rad, lägg till om något saknas i listan ovan)"
+            name="services_custom"
+            defaultValue={(site.services as string[])
+              .filter((s) => !SERVICES_CATALOG.find((o) => o.key === s))
+              .join("\n")}
+            rows={3}
+            placeholder="t.ex. Specialiserade installationer"
           />
+        </Section>
+
+        <Section
+          id="jour"
+          title="Jour & avtal"
+          desc="Akutservice, ROT-avdrag, garanti och offert."
+        >
+          <div className="card space-y-3 bg-[var(--warm)]">
+            <Toggle
+              name="has_jour"
+              checked={site.has_jour ?? false}
+              label="Vi har jour (akutservice)"
+            />
+            <Field
+              label="Jour-nummer (om annat än vanliga numret)"
+              name="jour_phone"
+              defaultValue={site.jour_phone ?? ""}
+              placeholder="t.ex. +46 70 000 00 00"
+            />
+            <Field
+              label="Jour-beskrivning"
+              name="jour_text"
+              defaultValue={site.jour_text ?? ""}
+              placeholder="t.ex. Akutservice dygnet runt vid läckor och stopp"
+            />
+          </div>
+          <div className="card space-y-3">
+            <Toggle
+              name="rot_avdrag"
+              checked={site.rot_avdrag ?? false}
+              label="Vi erbjuder ROT-avdrag"
+            />
+            <Toggle
+              name="offers_free_quote"
+              checked={site.offers_free_quote ?? true}
+              label="Vi ger kostnadsfri offert"
+            />
+            <Field
+              label="Garanti-text (visas i en egen ruta)"
+              name="guarantee_text"
+              defaultValue={site.guarantee_text ?? ""}
+              placeholder="t.ex. 5 års garanti på arbeten enligt branschstandard"
+            />
+          </div>
         </Section>
 
         <Section
@@ -666,15 +711,39 @@ function Toggle({
   );
 }
 
-function ColorPreview({ value }: { value: string }) {
+function ServiceCheckboxes({ activeServices }: { activeServices: string[] }) {
+  const categories = Array.from(new Set(SERVICES_CATALOG.map((s) => s.category)));
   return (
-    <div className="flex items-center gap-3 self-end">
-      <div
-        className="w-12 h-10 rounded-lg border border-[var(--border)]"
-        style={{ background: value }}
-        aria-hidden
-      />
-      <span className="text-sm font-mono text-[var(--muted)]">{value}</span>
+    <div className="space-y-6">
+      {categories.map((cat) => (
+        <div key={cat}>
+          <div className="eyebrow mb-3" style={{ color: "var(--accent)" }}>
+            {cat}
+          </div>
+          <div className="grid sm:grid-cols-2 gap-2">
+            {SERVICES_CATALOG.filter((s) => s.category === cat).map((s) => (
+              <label
+                key={s.key}
+                className="flex items-start gap-3 p-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--warm)] cursor-pointer transition-colors"
+              >
+                <input
+                  type="checkbox"
+                  name="service_keys"
+                  value={s.key}
+                  defaultChecked={activeServices.includes(s.key)}
+                  className="mt-1 w-4 h-4 shrink-0"
+                />
+                <div className="min-w-0">
+                  <div className="font-medium leading-tight">{s.label}</div>
+                  <div className="text-xs text-[var(--muted)] mt-0.5">
+                    {s.description}
+                  </div>
+                </div>
+              </label>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

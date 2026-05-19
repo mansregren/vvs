@@ -24,10 +24,14 @@ export async function updateMySite(formData: FormData) {
 
   const supabase = await createClient();
 
-  const services = (formData.get("services") as string | null)
-    ?.split("\n")
+  const servicesChecked = formData.getAll("service_keys").map(String);
+  const servicesCustom = (
+    (formData.get("services_custom") as string | null) ?? ""
+  )
+    .split("\n")
     .map((s) => s.trim())
-    .filter(Boolean) ?? [];
+    .filter(Boolean);
+  const services = [...servicesChecked, ...servicesCustom];
 
   const certifications = formData.getAll("certifications").map(String);
   const brand_partners = formData.getAll("brand_partners").map(String);
@@ -67,6 +71,13 @@ export async function updateMySite(formData: FormData) {
     google_maps_embed:
       ((formData.get("google_maps_embed") as string) ?? "").trim() || null,
     services,
+    has_jour: formData.get("has_jour") === "on",
+    jour_phone: ((formData.get("jour_phone") as string) ?? "").trim() || null,
+    jour_text: ((formData.get("jour_text") as string) ?? "").trim() || null,
+    rot_avdrag: formData.get("rot_avdrag") === "on",
+    guarantee_text:
+      ((formData.get("guarantee_text") as string) ?? "").trim() || null,
+    offers_free_quote: formData.get("offers_free_quote") === "on",
     facebook_url:
       ((formData.get("facebook_url") as string) ?? "").trim() || null,
     facebook_enabled: formData.get("facebook_enabled") === "on",

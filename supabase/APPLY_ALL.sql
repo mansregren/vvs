@@ -150,3 +150,14 @@ insert into public.cert_assets (key, kind, logo_url) values
   ('saker-vatten', 'certification', 'https://sakervatten.se/wp-content/uploads/2025/12/saeker-vatten-rgb-720x720-png.webp'),
   ('vvs-foretagen', 'certification', 'https://sakervatten.se/wp-content/uploads/2025/01/in-logotyp-for-mork-bakgrund-2024-720x189-png.webp')
 on conflict (key) do update set logo_url = excluded.logo_url, updated_at = now();
+
+-- =====================
+-- 0005: Jour, ROT-avdrag, garanti, offert
+-- =====================
+alter table public.sites
+  add column if not exists has_jour boolean not null default false,
+  add column if not exists jour_phone text,
+  add column if not exists jour_text text,
+  add column if not exists rot_avdrag boolean not null default false,
+  add column if not exists guarantee_text text,
+  add column if not exists offers_free_quote boolean not null default true;

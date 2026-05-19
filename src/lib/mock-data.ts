@@ -48,8 +48,14 @@ export const MOCK_SITES: Record<string, Site> = {
       "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800&auto=format&q=80",
       "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&auto=format&q=80",
     ],
-    certifications: ["saker-vatten", "gvk", "vvs-foretagen", "f-skatt", "behorig-el"],
+    certifications: ["saker-vatten", "gvk", "vvs-foretagen", "f-skatt"],
     brand_partners: ["ctc", "nibe", "ivt", "thermia", "geberit", "ifo"],
+    has_jour: true,
+    jour_phone: "+46 70 000 00 01",
+    jour_text: "Akutservice dygnet runt vid läckor och stopp",
+    rot_avdrag: true,
+    guarantee_text: "5 års garanti på arbeten enligt branschstandard",
+    offers_free_quote: true,
   },
 };
 

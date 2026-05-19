@@ -1,4 +1,5 @@
 import { type Site } from "@/lib/types";
+import { renderService } from "@/lib/catalogs";
 
 export function Services({ site }: { site: Site }) {
   if (!site.services || site.services.length === 0) return null;
@@ -26,8 +27,7 @@ export function Services({ site }: { site: Site }) {
 
         <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {site.services.map((s, i) => {
-            const [title, ...rest] = s.split("—");
-            const description = rest.join("—").trim();
+            const { title, description } = renderService(s);
             const num = String(i + 1).padStart(2, "0");
             return (
               <li
@@ -41,7 +41,7 @@ export function Services({ site }: { site: Site }) {
                   {num}
                 </div>
                 <h3 className="font-semibold text-lg leading-tight mb-2">
-                  {title.trim()}
+                  {title}
                 </h3>
                 {description && (
                   <p className="text-sm text-[var(--muted)] leading-relaxed">

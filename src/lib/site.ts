@@ -5,7 +5,7 @@ import { type Site, type Review, type SiteStats } from "./types";
 
 // Full kolumnsats (efter migration 0002+0003). Vid 42703/PGRST204 (okänd kolumn) faller vi tillbaka.
 const SITE_COLUMNS_FULL =
-  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, tagline_secondary, about_text, services, opening_hours, facebook_url, facebook_enabled, facebook_page_url, instagram_url, instagram_enabled, instagram_post_urls, google_maps_embed, hero_image_url, years_in_business, service_area, cta_text, gallery_images, certifications, brand_partners";
+  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, tagline_secondary, about_text, services, opening_hours, facebook_url, facebook_enabled, facebook_page_url, instagram_url, instagram_enabled, instagram_post_urls, google_maps_embed, hero_image_url, years_in_business, service_area, cta_text, gallery_images, certifications, brand_partners, has_jour, jour_phone, jour_text, rot_avdrag, guarantee_text, offers_free_quote";
 const SITE_COLUMNS_BASE =
   "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, about_text, services, opening_hours, facebook_url, facebook_enabled, instagram_url, instagram_enabled, google_maps_embed";
 
@@ -46,6 +46,12 @@ function normalizeSite(row: AnyRow): Site {
     gallery_images: jsonArr<string>(row.gallery_images),
     certifications: jsonArr<string>(row.certifications),
     brand_partners: jsonArr<string>(row.brand_partners),
+    has_jour: Boolean(row.has_jour),
+    jour_phone: (row.jour_phone as string | null) ?? null,
+    jour_text: (row.jour_text as string | null) ?? null,
+    rot_avdrag: Boolean(row.rot_avdrag),
+    guarantee_text: (row.guarantee_text as string | null) ?? null,
+    offers_free_quote: row.offers_free_quote === undefined ? true : Boolean(row.offers_free_quote),
   };
 }
 

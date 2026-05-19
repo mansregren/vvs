@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
+import { TrustStrip, JourBanner } from "@/components/site/TrustStrip";
 import { About } from "@/components/site/About";
 import { Certifications } from "@/components/site/Certifications";
 import { Services } from "@/components/site/Services";
@@ -77,6 +78,7 @@ export default async function SitePage({
       <Header site={site} sections={sections} />
       <main className="flex-1">
         <Hero site={site} />
+        <TrustStrip site={site} />
         <About site={site} />
         <Certifications site={site} assets={certAssets} />
         <Services site={site} />

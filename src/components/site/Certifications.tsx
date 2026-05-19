@@ -38,34 +38,26 @@ export function Certifications({
             return (
               <li
                 key={c.key}
-                className="card flex items-center gap-4 hover:shadow-md transition-shadow"
+                className="card flex items-center gap-4"
               >
-                <a
-                  href={c.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-4 w-full"
-                  aria-label={c.label}
-                >
-                  {logoUrl ? (
-                    <div className="shrink-0 w-14 h-14 rounded-xl bg-white border border-[var(--border)] grid place-items-center overflow-hidden p-2">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={logoUrl}
-                        alt={c.label}
-                        className="max-w-full max-h-full object-contain"
-                      />
-                    </div>
-                  ) : (
-                    <Badge initials={c.initials} color={c.color} />
-                  )}
-                  <div className="min-w-0">
-                    <div className="font-semibold leading-tight">{c.short}</div>
-                    <div className="text-xs text-[var(--muted)] mt-0.5 line-clamp-2">
-                      {c.description}
-                    </div>
+                {logoUrl ? (
+                  <div className="shrink-0 w-24 h-16 rounded-xl bg-white border border-[var(--border)] grid place-items-center overflow-hidden p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={logoUrl}
+                      alt={c.label}
+                      className="max-w-full max-h-full object-contain"
+                    />
                   </div>
-                </a>
+                ) : (
+                  <Badge initials={c.initials} color={c.color} />
+                )}
+                <div className="min-w-0">
+                  <div className="font-semibold leading-tight">{c.short}</div>
+                  <div className="text-xs text-[var(--muted)] mt-0.5 line-clamp-2">
+                    {c.description}
+                  </div>
+                </div>
               </li>
             );
           })}
