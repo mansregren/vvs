@@ -1,6 +1,6 @@
 import { type Site } from "./types";
 
-// Generisk demo-site för förhandsvisning utan DB. Byts ut av riktiga rader i Supabase.
+// Generisk demo-site för förhandsvisning utan DB.
 export const MOCK_SITES: Record<string, Site> = {
   "demo-vvs": {
     id: "mock-demo-vvs",
@@ -12,7 +12,7 @@ export const MOCK_SITES: Record<string, Site> = {
     phone: "+46 70 000 00 00",
     address: "Demogatan 1, 111 22 Demostad",
     city: "Demostad",
-    email: null,
+    email: "hej@demo-vvs.se",
     hero_tagline:
       "Lokal VVS-firma med 20 års erfarenhet — för privatpersoner och företag.",
     tagline_secondary:
@@ -30,8 +30,10 @@ export const MOCK_SITES: Record<string, Site> = {
     opening_hours: "Mån–fre 07:00–16:00\nAkutservice efter överenskommelse",
     facebook_url: null,
     facebook_enabled: false,
+    facebook_page_url: null,
     instagram_url: null,
     instagram_enabled: false,
+    instagram_post_urls: [],
     google_maps_embed: null,
     hero_image_url:
       "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1600&auto=format&q=80",
@@ -46,6 +48,8 @@ export const MOCK_SITES: Record<string, Site> = {
       "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800&auto=format&q=80",
       "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&auto=format&q=80",
     ],
+    certifications: ["saker-vatten", "gvk", "vvs-foretagen", "f-skatt", "behorig-el"],
+    brand_partners: ["ctc", "nibe", "ivt", "thermia", "geberit", "ifo"],
   },
 };
 

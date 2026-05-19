@@ -29,10 +29,21 @@ export async function updateMySite(formData: FormData) {
     .map((s) => s.trim())
     .filter(Boolean) ?? [];
 
+  const certifications = formData.getAll("certifications").map(String);
+  const brand_partners = formData.getAll("brand_partners").map(String);
+
+  const instagram_post_urls = (
+    (formData.get("instagram_post_urls") as string | null) ?? ""
+  )
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 12);
+
   const yearsRaw = (formData.get("years_in_business") as string | null) ?? "";
   const years = yearsRaw.trim() ? parseInt(yearsRaw, 10) : null;
 
-  const update = {
+  const update: Record<string, unknown> = {
     name: ((formData.get("name") as string) ?? "").trim(),
     city: ((formData.get("city") as string) ?? "").trim(),
     domain:
@@ -59,27 +70,64 @@ export async function updateMySite(formData: FormData) {
     facebook_url:
       ((formData.get("facebook_url") as string) ?? "").trim() || null,
     facebook_enabled: formData.get("facebook_enabled") === "on",
+    facebook_page_url:
+      ((formData.get("facebook_page_url") as string) ?? "").trim() || null,
     instagram_url:
       ((formData.get("instagram_url") as string) ?? "").trim() || null,
     instagram_enabled: formData.get("instagram_enabled") === "on",
+    instagram_post_urls,
+    certifications,
+    brand_partners,
   };
 
-  const { data: row, error } = await supabase
+  // Försök först med alla nya fält. Vid PGRST204/42703 ta bort dem och kör fallback.
+  let res = await supabase
     .from("sites")
     .update(update)
     .eq("id", ctx.siteId)
     .select("slug")
     .single();
-  if (error) throw new Error(error.message);
+  if (
+    res.error?.code === "42703" ||
+    res.error?.code === "PGRST204"
+  ) {
+    const baseFields = [
+      "name",
+      "city",
+      "domain",
+      "phone",
+      "address",
+      "email",
+      "primary_color",
+      "hero_tagline",
+      "about_text",
+      "opening_hours",
+      "google_maps_embed",
+      "services",
+      "facebook_url",
+      "facebook_enabled",
+      "instagram_url",
+      "instagram_enabled",
+    ];
+    const baseUpdate: Record<string, unknown> = {};
+    for (const k of baseFields) baseUpdate[k] = update[k];
+    res = await supabase
+      .from("sites")
+      .update(baseUpdate)
+      .eq("id", ctx.siteId)
+      .select("slug")
+      .single();
+  }
+  if (res.error) throw new Error(res.error.message);
 
   revalidatePath("/admin");
-  revalidatePath(`/${row.slug}`);
+  revalidatePath(`/${res.data!.slug}`);
   revalidatePath("/", "layout");
 }
 
-async function uploadImage(
+async function uploadImageToBucket(
   formData: FormData,
-  field: "logo" | "image",
+  field: string,
   bucket: "logos" | "media",
   sitePrefix: string,
 ): Promise<string> {
@@ -104,7 +152,7 @@ async function uploadImage(
 export async function uploadLogo(formData: FormData) {
   const ctx = await getCtx();
   if (!ctx?.siteId) redirect("/admin/login");
-  const url = await uploadImage(formData, "logo", "logos", "logo");
+  const url = await uploadImageToBucket(formData, "logo", "logos", "logo");
   const supabase = await createClient();
   const { error } = await supabase
     .from("sites")
@@ -117,7 +165,7 @@ export async function uploadLogo(formData: FormData) {
 export async function uploadHeroImage(formData: FormData) {
   const ctx = await getCtx();
   if (!ctx?.siteId) redirect("/admin/login");
-  const url = await uploadImage(formData, "image", "media", "hero");
+  const url = await uploadImageToBucket(formData, "image", "media", "hero");
   const supabase = await createClient();
   const { error } = await supabase
     .from("sites")
@@ -130,7 +178,7 @@ export async function uploadHeroImage(formData: FormData) {
 export async function uploadGalleryImage(formData: FormData) {
   const ctx = await getCtx();
   if (!ctx?.siteId) redirect("/admin/login");
-  const url = await uploadImage(formData, "image", "media", "gallery");
+  const url = await uploadImageToBucket(formData, "image", "media", "gallery");
   const supabase = await createClient();
   const { data: site } = await supabase
     .from("sites")
@@ -207,7 +255,6 @@ export async function removeReview(formData: FormData) {
 }
 
 export async function duplicateSite(formData: FormData) {
-  // Bara admin-rollade users får duplicera (eller helst en superadmin-flagga senare).
   const ctx = await getCtx();
   if (!ctx?.siteId) redirect("/admin/login");
 
@@ -219,10 +266,8 @@ export async function duplicateSite(formData: FormData) {
   const newName = ((formData.get("new_name") as string) ?? "").trim();
   if (!newSlug || !newName) throw new Error("Slug och namn krävs.");
 
-  const supabase = await createClient();
   const admin = createAdminClient();
 
-  // Hämta källan
   const { data: src, error: srcErr } = await admin
     .from("sites")
     .select("*")
@@ -230,28 +275,29 @@ export async function duplicateSite(formData: FormData) {
     .single();
   if (srcErr || !src) throw new Error("Kunde inte ladda källan.");
 
-  // Slug-konflikt-check
   const { data: clash } = await admin
     .from("sites")
     .select("id")
     .eq("slug", newSlug)
     .maybeSingle();
-  if (clash) throw new Error(`Slug "${newSlug}" är redan upptagen.`);
+  if (clash) throw new Error(`Slug "${newSlug}" är upptaget.`);
 
-  // Insert kopia
-  const { id: _omitId, created_at: _omitC, updated_at: _omitU, ...rest } =
-    src as { id: string; created_at: string; updated_at: string } & Record<
-      string,
-      unknown
-    >;
+  const rest = { ...src } as Record<string, unknown>;
+  delete rest.id;
+  delete rest.created_at;
+  delete rest.updated_at;
+  rest.slug = newSlug;
+  rest.name = newName;
+  rest.domain = null;
+
   const { data: copy, error: copyErr } = await admin
     .from("sites")
-    .insert({ ...rest, slug: newSlug, name: newName, domain: null })
+    .insert(rest)
     .select("id")
     .single();
-  if (copyErr || !copy) throw new Error(copyErr?.message ?? "Kopiering misslyckades.");
+  if (copyErr || !copy)
+    throw new Error(copyErr?.message ?? "Kopiering misslyckades.");
 
-  // Koppla nuvarande user som ägare även av kopian
   await admin
     .from("site_users")
     .insert({ site_id: copy.id, user_id: ctx.user.id, role: "owner" });

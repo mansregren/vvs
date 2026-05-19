@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
@@ -32,58 +32,70 @@ function LoginForm() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="max-w-sm mx-auto px-6 py-20 space-y-6"
-    >
-      <div>
-        <div className="text-sm uppercase tracking-widest text-[var(--muted)] mb-2">
-          VVS-sidor
+    <main className="min-h-screen flex items-center justify-center bg-[var(--warm)] px-4">
+      <div className="w-full max-w-md">
+        <Link
+          href="/"
+          className="block text-center text-sm text-[var(--muted)] hover:text-[var(--foreground)] mb-6"
+        >
+          ← Tillbaka till start
+        </Link>
+        <div className="card space-y-6 shadow-md">
+          <div className="text-center">
+            <div className="eyebrow mb-2">VVS-sidor · Admin</div>
+            <h1 className="text-3xl font-semibold tracking-tight">
+              Logga in
+            </h1>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              Logga in på din firmas adminpanel.
+            </p>
+          </div>
+
+          <form onSubmit={onSubmit} className="space-y-4">
+            <label className="block">
+              <span className="text-sm font-medium block mb-1">E-post</span>
+              <input
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input"
+              />
+            </label>
+
+            <label className="block">
+              <span className="text-sm font-medium block mb-1">Lösenord</span>
+              <input
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input"
+              />
+            </label>
+
+            {error && (
+              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary w-full justify-center disabled:opacity-60"
+            >
+              {loading ? "Loggar in..." : "Logga in"}
+            </button>
+          </form>
         </div>
-        <h1 className="text-3xl font-semibold tracking-tight">Logga in</h1>
-        <p className="mt-2 text-[var(--muted)]">
-          Logga in på din firmas adminpanel.
+        <p className="mt-6 text-center text-xs text-[var(--muted-2)]">
+          Behöver du ett konto? Kontakta plattform-admin.
         </p>
       </div>
-
-      <label className="block">
-        <span className="text-sm font-medium block mb-1">E-post</span>
-        <input
-          type="email"
-          autoComplete="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-[var(--border)] px-4 py-3 outline-none focus:border-[var(--accent)]"
-        />
-      </label>
-
-      <label className="block">
-        <span className="text-sm font-medium block mb-1">Lösenord</span>
-        <input
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-lg border border-[var(--border)] px-4 py-3 outline-none focus:border-[var(--accent)]"
-        />
-      </label>
-
-      {error && (
-        <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-          {error}
-        </div>
-      )}
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="btn-primary w-full justify-center disabled:opacity-60"
-      >
-        {loading ? "Loggar in..." : "Logga in"}
-      </button>
-    </form>
+    </main>
   );
 }
 

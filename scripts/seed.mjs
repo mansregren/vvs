@@ -1,6 +1,6 @@
-// Seed: skapar en demo-VVS-firma med komplett innehåll + omdömen + login-konto.
+// Seed: skapar en demo-VVS-firma + ett admin-konto + omdömen + gör admin till platform-admin.
 // Kör med:  node scripts/seed.mjs
-// Förutsätter att 0001_init.sql + 0002_extensions.sql är applicerade i Supabase.
+// Förutsätter att 0001/0002/0003-migrationerna är applicerade.
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -56,12 +56,14 @@ const DEMO_SITE = {
   opening_hours: "Mån–fre 07:00–16:00\nAkutservice efter överenskommelse",
   facebook_url: null,
   facebook_enabled: false,
+  facebook_page_url: null,
   instagram_url: null,
   instagram_enabled: false,
-  google_maps_embed: null,
+  instagram_post_urls: [],
+  google_maps_embed:
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.5!2d14.040555!3d57.186944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTfCsDExJzEzLjAiTiAxNMKwMDInMjYuMCJF!5e0!3m2!1ssv!2sse!4v1700000000000',
   hero_image_url:
     "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1600&auto=format&q=80",
-  tagline_secondary_set: true,
   years_in_business: 20,
   service_area: "Demostad med omnejd",
   cta_text: null,
@@ -72,6 +74,24 @@ const DEMO_SITE = {
     "https://images.unsplash.com/photo-1517414204284-fb7e35f969eb?w=800&auto=format&q=80",
     "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800&auto=format&q=80",
     "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&auto=format&q=80",
+  ],
+  certifications: [
+    "saker-vatten",
+    "gvk",
+    "vvs-foretagen",
+    "f-skatt",
+    "behorig-el",
+    "auktoriserad",
+  ],
+  brand_partners: [
+    "ctc",
+    "nibe",
+    "ivt",
+    "thermia",
+    "geberit",
+    "ifo",
+    "fm-mattsson",
+    "uponor",
   ],
 };
 
@@ -91,6 +111,11 @@ const REVIEWS = [
     rating: 4,
     text: "Hjälpte oss med en akut vattenläcka en lördag. Tack för att ni svarade när andra inte gjorde det.",
   },
+  {
+    customer_name: "Karl-Erik Sjöstrand",
+    rating: 5,
+    text: "Installerade vår CTC-värmepump och förklarade allt tydligt. Vi sänkte uppvärmningskostnaden direkt och pumpen har gått problemfritt sen dag ett.",
+  },
 ];
 
 const ADMIN_EMAIL = "demo@vvs-sidor.local";
@@ -98,25 +123,21 @@ const ADMIN_PASSWORD = "vvs-demo-2026";
 
 async function main() {
   console.log("Skapar/uppdaterar demo-site...");
-  // tagline_secondary_set var en miss — ta bort det helt
-  const { tagline_secondary_set: _drop, ...siteData } = DEMO_SITE;
-  void _drop;
-
   const { data: existing } = await sb
     .from("sites")
     .select("id")
-    .eq("slug", siteData.slug)
+    .eq("slug", DEMO_SITE.slug)
     .maybeSingle();
 
   let siteId = existing?.id;
   if (siteId) {
-    const { error } = await sb.from("sites").update(siteData).eq("id", siteId);
+    const { error } = await sb.from("sites").update(DEMO_SITE).eq("id", siteId);
     if (error) throw error;
     console.log("  uppdaterad:", siteId);
   } else {
     const { data, error } = await sb
       .from("sites")
-      .insert(siteData)
+      .insert(DEMO_SITE)
       .select("id")
       .single();
     if (error) throw error;
@@ -147,8 +168,13 @@ async function main() {
     .upsert({ site_id: siteId, user_id: userId, role: "owner" });
   if (linkErr) throw linkErr;
 
+  console.log("Markerar admin-user som platform-admin...");
+  const { error: paErr } = await sb
+    .from("platform_admins")
+    .upsert({ user_id: userId });
+  if (paErr) console.warn("  (platform_admins ej skapad än — kör migration 0003)");
+
   console.log("Seedar omdömen...");
-  // Replace: ta bort alla för site_id, lägg in nya
   await sb.from("site_reviews").delete().eq("site_id", siteId);
   const { error: revErr } = await sb.from("site_reviews").insert(
     REVIEWS.map((r, i) => ({
@@ -160,9 +186,10 @@ async function main() {
   if (revErr) throw revErr;
 
   console.log("\n✓ Klart!");
-  console.log(`  Site: ${siteData.name}`);
-  console.log(`  Slug: /${siteData.slug}`);
+  console.log(`  Site: ${DEMO_SITE.name}`);
+  console.log(`  Slug: /${DEMO_SITE.slug}`);
   console.log(`  Login: ${ADMIN_EMAIL} / ${ADMIN_PASSWORD}`);
+  console.log(`  Platform-admin: ${ADMIN_EMAIL}`);
 }
 
 main().catch((e) => {

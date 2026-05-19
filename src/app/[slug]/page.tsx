@@ -2,10 +2,14 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { About } from "@/components/site/About";
+import { Certifications } from "@/components/site/Certifications";
 import { Services } from "@/components/site/Services";
 import { Gallery } from "@/components/site/Gallery";
 import { Reviews } from "@/components/site/Reviews";
+import { BrandPartners } from "@/components/site/BrandPartners";
 import { MapSection } from "@/components/site/MapSection";
+import { InstagramFeed } from "@/components/site/InstagramFeed";
+import { FacebookFeed } from "@/components/site/FacebookFeed";
 import { Socials } from "@/components/site/Socials";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
@@ -49,7 +53,9 @@ export default async function SitePage({
   if (!site) notFound();
 
   const reviews =
-    site.id && !site.id.startsWith("mock-") ? await getReviewsForSite(site.id) : [];
+    site.id && !site.id.startsWith("mock-")
+      ? await getReviewsForSite(site.id)
+      : [];
 
   const sections = [
     { id: "om", label: "Om oss" },
@@ -57,8 +63,9 @@ export default async function SitePage({
     ...(site.gallery_images.length > 0
       ? [{ id: "galleri", label: "Galleri" }]
       : []),
-    ...(reviews.length > 0
-      ? [{ id: "omdomen", label: "Omdömen" }]
+    ...(reviews.length > 0 ? [{ id: "omdomen", label: "Omdömen" }] : []),
+    ...(site.certifications.length > 0
+      ? [{ id: "certifikat", label: "Certifikat" }]
       : []),
     { id: "kontakt", label: "Kontakt" },
   ];
@@ -69,11 +76,15 @@ export default async function SitePage({
       <main className="flex-1">
         <Hero site={site} />
         <About site={site} />
+        <Certifications site={site} />
         <Services site={site} />
         <Gallery site={site} />
         <Reviews site={site} reviews={reviews} />
-        <MapSection site={site} />
+        <BrandPartners site={site} />
+        <InstagramFeed site={site} />
+        <FacebookFeed site={site} />
         <Socials site={site} />
+        <MapSection site={site} />
         <Contact site={site} />
       </main>
       <Footer site={site} />

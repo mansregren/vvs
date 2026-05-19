@@ -16,14 +16,18 @@ export type Site = {
   opening_hours: string | null;
   facebook_url: string | null;
   facebook_enabled: boolean;
+  facebook_page_url: string | null;
   instagram_url: string | null;
   instagram_enabled: boolean;
+  instagram_post_urls: string[];
   google_maps_embed: string | null;
   hero_image_url: string | null;
   years_in_business: number | null;
   service_area: string | null;
   cta_text: string | null;
   gallery_images: string[];
+  certifications: string[];
+  brand_partners: string[];
 };
 
 export type Review = {
@@ -34,4 +38,20 @@ export type Review = {
   text: string;
   display_order: number;
   created_at: string;
+};
+
+export type SiteStats = {
+  id: string;
+  slug: string;
+  name: string;
+  city: string;
+  domain: string | null;
+  created_at: string;
+  updated_at: string;
+  hero_image_url: string | null;
+  logo_url: string | null;
+  review_count: number;
+  gallery_count: number;
+  service_count: number;
+  cert_count: number;
 };

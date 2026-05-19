@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { getReviewsForSite } from "@/lib/site";
+import { getReviewsForSite, isPlatformAdmin } from "@/lib/site";
+import { CERTIFICATIONS, BRAND_PARTNERS } from "@/lib/catalogs";
 import {
   updateMySite,
   uploadLogo,
@@ -29,6 +30,8 @@ export default async function AdminPage() {
     .eq("user_id", user.id)
     .maybeSingle();
 
+  const platformAdmin = await isPlatformAdmin(user.id);
+
   if (!link) {
     return (
       <main className="container-x py-20 space-y-4 max-w-xl">
@@ -38,6 +41,11 @@ export default async function AdminPage() {
         <p className="text-[var(--muted)]">
           Din användare är inloggad men inte kopplad till någon firma.
         </p>
+        {platformAdmin && (
+          <Link href="/admin/oversikt" className="btn-primary">
+            Gå till plattform-admin
+          </Link>
+        )}
         <form action={signOut}>
           <button type="submit" className="btn-ghost">
             Logga ut
@@ -61,10 +69,18 @@ export default async function AdminPage() {
   const gallery: string[] = Array.isArray(site.gallery_images)
     ? (site.gallery_images as string[])
     : [];
+  const activeCerts: string[] = Array.isArray(site.certifications)
+    ? (site.certifications as string[])
+    : [];
+  const activeBrands: string[] = Array.isArray(site.brand_partners)
+    ? (site.brand_partners as string[])
+    : [];
+  const igPosts: string[] = Array.isArray(site.instagram_post_urls)
+    ? (site.instagram_post_urls as string[])
+    : [];
 
   return (
     <main className="container-x py-10 space-y-10 max-w-5xl">
-      {/* Header */}
       <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-[var(--border)] pb-6">
         <div>
           <div className="eyebrow mb-1">Admin · VVS-sidor</div>
@@ -78,8 +94,19 @@ export default async function AdminPage() {
               className="underline underline-offset-4"
               target="_blank"
             >
-              Förhandsgranska sajten ↗
+              Förhandsgranska ↗
             </Link>
+            {platformAdmin && (
+              <>
+                {" · "}
+                <Link
+                  href="/admin/oversikt"
+                  className="underline underline-offset-4"
+                >
+                  Plattform-admin →
+                </Link>
+              </>
+            )}
           </p>
         </div>
         <form action={signOut}>
@@ -89,63 +116,69 @@ export default async function AdminPage() {
         </form>
       </header>
 
-      {/* Tab-nav */}
       <nav className="flex gap-1 overflow-x-auto -mx-2 px-2 text-sm font-medium border-b border-[var(--border)] sticky top-0 bg-[var(--background)]/95 backdrop-blur z-10">
-        <TabLink id="grund">Grundinfo</TabLink>
+        <TabLink id="grund">Grund</TabLink>
         <TabLink id="hero">Hero & om</TabLink>
         <TabLink id="tjanster">Tjänster</TabLink>
+        <TabLink id="certifikat">Certifikat</TabLink>
+        <TabLink id="partners">Märken</TabLink>
+        <TabLink id="bilder">Bilder</TabLink>
         <TabLink id="galleri">Galleri</TabLink>
         <TabLink id="omdomen">Omdömen</TabLink>
-        <TabLink id="kontakt">Kontakt & karta</TabLink>
-        <TabLink id="sociala">Sociala medier</TabLink>
+        <TabLink id="kontakt">Kontakt</TabLink>
+        <TabLink id="sociala">Sociala</TabLink>
         <TabLink id="domain">Domän</TabLink>
         <TabLink id="duplicera">Duplicera</TabLink>
       </nav>
 
       <form action={updateMySite} className="space-y-12">
-        {/* Grundinfo */}
         <Section id="grund" title="Grundinfo" desc="Namn, ort och varumärkesfärg.">
           <Field label="Firmanamn" name="name" defaultValue={site.name} />
           <Field label="Ort" name="city" defaultValue={site.city} />
-          <Field
-            label="Primärfärg (hex, t.ex. #0a4f8f)"
-            name="primary_color"
-            defaultValue={site.primary_color}
-          />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              label="Primärfärg (hex)"
+              name="primary_color"
+              defaultValue={site.primary_color}
+              placeholder="#0a4f8f"
+            />
+            <ColorPreview value={site.primary_color} />
+          </div>
         </Section>
 
-        {/* Hero & om */}
-        <Section id="hero" title="Hero & om oss" desc="Texterna högst upp på sajten + om-sektionen.">
+        <Section id="hero" title="Hero & om" desc="Texterna högst upp + om-sektionen.">
           <Textarea
-            label="Hero-rubrik (huvudtexten överst)"
+            label="Hero-rubrik"
             name="hero_tagline"
             defaultValue={site.hero_tagline ?? ""}
             rows={2}
           />
           <Textarea
-            label="Underrubrik (en mening under)"
+            label="Underrubrik"
             name="tagline_secondary"
             defaultValue={site.tagline_secondary ?? ""}
             rows={2}
           />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              label="Knapp-text"
+              name="cta_text"
+              defaultValue={site.cta_text ?? ""}
+              placeholder="t.ex. Ring för fri offert"
+            />
+            <Field
+              label="År i branschen"
+              name="years_in_business"
+              type="number"
+              defaultValue={site.years_in_business ?? ""}
+              placeholder="t.ex. 20"
+            />
+          </div>
           <Field
-            label="Knapp-text (default: 'Ring {nummer}')"
-            name="cta_text"
-            defaultValue={site.cta_text ?? ""}
-            placeholder="t.ex. Ring för fri offert"
-          />
-          <Field
-            label="Område vi servar (kort)"
+            label="Område vi servar"
             name="service_area"
             defaultValue={site.service_area ?? ""}
             placeholder="t.ex. Värnamo med omnejd"
-          />
-          <Field
-            label="År i branschen"
-            name="years_in_business"
-            type="number"
-            defaultValue={site.years_in_business ?? ""}
-            placeholder="t.ex. 20"
           />
           <Textarea
             label="Om oss"
@@ -155,11 +188,10 @@ export default async function AdminPage() {
           />
         </Section>
 
-        {/* Tjänster */}
         <Section
           id="tjanster"
           title="Tjänster"
-          desc="En tjänst per rad. Använd '—' för att lägga till beskrivning, t.ex. 'Värmepumpar — installation och service'."
+          desc="En tjänst per rad. Använd '—' för rubrik + beskrivning, t.ex. 'Värmepumpar — installation och service'."
         >
           <Textarea
             label=""
@@ -169,7 +201,66 @@ export default async function AdminPage() {
           />
         </Section>
 
-        {/* Kontakt + map */}
+        <Section
+          id="certifikat"
+          title="Certifikat & branschmedlemskap"
+          desc="Bocka i de som gäller för er firma. Visas i en egen sektion på sajten."
+        >
+          <fieldset className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {CERTIFICATIONS.map((c) => (
+              <label
+                key={c.key}
+                className="card flex items-start gap-3 cursor-pointer hover:shadow-sm transition-shadow"
+              >
+                <input
+                  type="checkbox"
+                  name="certifications"
+                  value={c.key}
+                  defaultChecked={activeCerts.includes(c.key)}
+                  className="mt-1 w-4 h-4"
+                />
+                <div className="min-w-0">
+                  <div className="font-medium">{c.short}</div>
+                  <div className="text-xs text-[var(--muted)] mt-1 line-clamp-2">
+                    {c.description}
+                  </div>
+                </div>
+              </label>
+            ))}
+          </fieldset>
+        </Section>
+
+        <Section
+          id="partners"
+          title="Märken vi installerar"
+          desc="Vilka produkter ni jobbar med — visas som en logo-vägg på sajten."
+        >
+          <fieldset className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {BRAND_PARTNERS.map((b) => (
+              <label
+                key={b.key}
+                className="card flex items-center gap-3 cursor-pointer hover:shadow-sm transition-shadow"
+              >
+                <input
+                  type="checkbox"
+                  name="brand_partners"
+                  value={b.key}
+                  defaultChecked={activeBrands.includes(b.key)}
+                  className="w-4 h-4"
+                />
+                <div>
+                  <div className="font-semibold" style={{ color: b.color }}>
+                    {b.label}
+                  </div>
+                  <div className="text-xs text-[var(--muted)]">
+                    {b.category}
+                  </div>
+                </div>
+              </label>
+            ))}
+          </fieldset>
+        </Section>
+
         <Section
           id="kontakt"
           title="Kontakt & karta"
@@ -190,7 +281,7 @@ export default async function AdminPage() {
             rows={2}
           />
           <Textarea
-            label="Google Maps embed (klistra in hela <iframe>-koden ELLER bara src-URL)"
+            label="Google Maps embed (hela <iframe>-snippet ELLER bara src-URL)"
             name="google_maps_embed"
             defaultValue={site.google_maps_embed ?? ""}
             rows={3}
@@ -198,52 +289,73 @@ export default async function AdminPage() {
           />
         </Section>
 
-        {/* Sociala medier */}
         <Section
           id="sociala"
           title="Sociala medier"
-          desc="Visas i footer + dedikerad sektion på sajten."
+          desc="Facebook-Page-Plugin och Instagram-posts visas som riktiga inbäddningar."
         >
-          <Toggle
-            name="facebook_enabled"
-            checked={site.facebook_enabled}
-            label="Visa Facebook-länk"
-          />
-          <Field
-            label=""
-            name="facebook_url"
-            defaultValue={site.facebook_url ?? ""}
-            placeholder="https://www.facebook.com/dittforetag"
-          />
-          <Toggle
-            name="instagram_enabled"
-            checked={site.instagram_enabled}
-            label="Visa Instagram-länk"
-          />
-          <Field
-            label=""
-            name="instagram_url"
-            defaultValue={site.instagram_url ?? ""}
-            placeholder="https://www.instagram.com/dittforetag"
-          />
+          <div className="space-y-3">
+            <div className="font-medium">Facebook</div>
+            <Toggle
+              name="facebook_enabled"
+              checked={site.facebook_enabled}
+              label="Visa Facebook-länk i header/footer"
+            />
+            <Field
+              label="Facebook-profil-URL (för länk)"
+              name="facebook_url"
+              defaultValue={site.facebook_url ?? ""}
+              placeholder="https://www.facebook.com/dittforetag"
+            />
+            <Field
+              label="Facebook-Page-URL (för inbäddat flöde)"
+              name="facebook_page_url"
+              defaultValue={site.facebook_page_url ?? ""}
+              placeholder="https://www.facebook.com/DinFacebookPage"
+            />
+          </div>
+
+          <div className="space-y-3 pt-6 border-t border-[var(--border)]">
+            <div className="font-medium">Instagram</div>
+            <Toggle
+              name="instagram_enabled"
+              checked={site.instagram_enabled}
+              label="Visa Instagram-länk i header/footer"
+            />
+            <Field
+              label="Instagram-profil-URL"
+              name="instagram_url"
+              defaultValue={site.instagram_url ?? ""}
+              placeholder="https://www.instagram.com/dittforetag"
+            />
+            <Textarea
+              label="URL:er till enskilda Instagram-posts (en per rad, max 12)"
+              name="instagram_post_urls"
+              defaultValue={igPosts.join("\n")}
+              rows={4}
+              placeholder="https://www.instagram.com/p/POST_ID/"
+            />
+            <p className="text-xs text-[var(--muted)]">
+              Klistra in länkar till specifika inlägg från Instagram så bäddas
+              de in som riktiga inläggsförhandsvisningar på sajten.
+            </p>
+          </div>
         </Section>
 
-        {/* Domain */}
         <Section
           id="domain"
           title="Egen domän"
-          desc="När du har pekat din domäns DNS mot Vercel — skriv in domänen här så servar plattformen din sajt på den. Lämna tomt för bara slug-route."
+          desc="När din domäns DNS pekar mot Vercel — skriv in domänen så servar plattformen sajten på den. Lämna tomt för bara slug-route."
         >
           <Field
-            label="Domän"
+            label="Domän (utan https://)"
             name="domain"
             defaultValue={site.domain ?? ""}
             placeholder="t.ex. mittforetag.se"
           />
         </Section>
 
-        {/* Sticky save */}
-        <div className="sticky bottom-4 bg-[var(--surface)]/95 backdrop-blur border border-[var(--border)] rounded-2xl p-4 flex items-center justify-between gap-3 shadow-sm">
+        <div className="sticky bottom-4 bg-[var(--surface)]/95 backdrop-blur border border-[var(--border)] rounded-2xl p-4 flex items-center justify-between gap-3 shadow-md">
           <div className="text-sm text-[var(--muted)]">
             Sparar alla fält ovan.
           </div>
@@ -253,11 +365,10 @@ export default async function AdminPage() {
         </div>
       </form>
 
-      {/* Logo + hero image — egna formulär */}
       <Section
         id="bilder"
         title="Logga & hero-bild"
-        desc="Loggan visas i header och footer. Hero-bilden är bakgrunden på den första sektionen."
+        desc="Loggan visas i header/footer. Hero-bilden är bakgrunden på sajtens första sektion."
       >
         <div className="grid md:grid-cols-2 gap-6">
           <ImageUploader
@@ -270,7 +381,7 @@ export default async function AdminPage() {
             objectFit="object-contain"
           />
           <ImageUploader
-            label="Hero-bild"
+            label="Hero-bild (1600×900 rekommenderas)"
             currentUrl={site.hero_image_url}
             action={uploadHeroImage}
             fieldName="image"
@@ -281,13 +392,15 @@ export default async function AdminPage() {
         </div>
       </Section>
 
-      {/* Galleri */}
       <Section
         id="galleri"
         title="Galleri"
-        desc="Bilder från tidigare jobb. Klicka en bild för att ta bort den."
+        desc="Bilder från tidigare jobb. Hover över en bild för att ta bort."
       >
-        <form action={uploadGalleryImage} className="flex items-center gap-3 mb-6">
+        <form
+          action={uploadGalleryImage}
+          className="flex items-center gap-3 mb-6"
+        >
           <input
             type="file"
             name="image"
@@ -324,11 +437,10 @@ export default async function AdminPage() {
         )}
       </Section>
 
-      {/* Omdömen */}
       <Section
         id="omdomen"
         title="Omdömen"
-        desc="Lägg till kundomdömen som visas i en egen sektion på sajten."
+        desc="Visas i en egen sektion på sajten med ★-rating."
       >
         <form
           action={addReview}
@@ -378,7 +490,9 @@ export default async function AdminPage() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <span className="font-medium">{r.customer_name}</span>
-                    <span className="star-on text-sm">{"★".repeat(r.rating)}</span>
+                    <span className="star-on text-sm">
+                      {"★".repeat(r.rating)}
+                    </span>
                   </div>
                   <p className="text-sm text-[var(--foreground)]/90">
                     {r.text}
@@ -399,11 +513,10 @@ export default async function AdminPage() {
         )}
       </Section>
 
-      {/* Duplicera */}
       <Section
         id="duplicera"
         title="Duplicera sajten"
-        desc="Skapa en kopia av denna firma (samma innehåll, ny slug och nytt namn). Du blir ägare av kopian också. Kan användas som mall för en ny kund."
+        desc="Kopia med ny slug och nytt namn. Bra som mall för en ny kund."
       >
         <form
           action={duplicateSite}
@@ -415,7 +528,7 @@ export default async function AdminPage() {
             placeholder="t.ex. Norra VVS AB"
           />
           <Field
-            label="Ny slug (bara a-z, 0-9, bindestreck)"
+            label="Ny slug (a-z, 0-9, bindestreck)"
             name="new_slug"
             placeholder="t.ex. norra-vvs"
           />
@@ -553,6 +666,19 @@ function Toggle({
   );
 }
 
+function ColorPreview({ value }: { value: string }) {
+  return (
+    <div className="flex items-center gap-3 self-end">
+      <div
+        className="w-12 h-10 rounded-lg border border-[var(--border)]"
+        style={{ background: value }}
+        aria-hidden
+      />
+      <span className="text-sm font-mono text-[var(--muted)]">{value}</span>
+    </div>
+  );
+}
+
 function ImageUploader({
   label,
   currentUrl,
@@ -573,7 +699,9 @@ function ImageUploader({
   return (
     <div className="space-y-3">
       <div className="text-sm font-medium">{label}</div>
-      <div className={`${aspect} rounded-xl border border-[var(--border)] overflow-hidden bg-[var(--warm)]`}>
+      <div
+        className={`${aspect} rounded-xl border border-[var(--border)] overflow-hidden bg-[var(--warm)]`}
+      >
         {currentUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
