@@ -3,7 +3,6 @@ import { BRAND_PARTNERS } from "@/lib/catalogs";
 
 export function BrandPartners({
   site,
-  assets,
 }: {
   site: Site;
   assets?: Record<string, string>;
@@ -22,44 +21,32 @@ export function BrandPartners({
       className="section border-t border-[var(--border)] bg-[var(--warm)]"
     >
       <div className="container-x">
-        <div className="max-w-2xl mb-10">
-          <div className="eyebrow mb-3">Vi arbetar med</div>
-          <h2 className="h-display text-3xl md:text-4xl">
-            Märken vi installerar och servar
-          </h2>
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-12">
+          <div className="lg:col-span-5">
+            <div className="eyebrow mb-3">Vi arbetar med</div>
+            <h2 className="h-display text-3xl md:text-4xl lg:text-5xl">
+              Märken vi installerar och servar
+            </h2>
+          </div>
+          <div className="lg:col-span-7 lg:pt-3">
+            <p className="text-lg leading-relaxed text-[var(--muted)]">
+              Auktoriserade på de märken vi rekommenderar — och kan serva
+              det mesta som redan finns installerat hos dig.
+            </p>
+          </div>
         </div>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {items.map((b) => {
-            const logoUrl = assets?.[b.key];
-            return (
-              <li
-                key={b.key}
-                className="aspect-[5/3] rounded-xl bg-white border border-[var(--border)] grid place-items-center p-4"
-                aria-label={b.label}
-              >
-                {logoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={logoUrl}
-                    alt={b.label}
-                    className="max-w-full max-h-full object-contain"
-                  />
-                ) : (
-                  <div className="text-center">
-                    <div
-                      className="font-bold tracking-tight text-lg md:text-xl"
-                      style={{ color: b.color }}
-                    >
-                      {b.label}
-                    </div>
-                    <div className="text-[10px] uppercase tracking-widest text-[var(--muted)] mt-1">
-                      {b.category}
-                    </div>
-                  </div>
-                )}
-              </li>
-            );
-          })}
+
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-6">
+          {items.map((b) => (
+            <li key={b.key}>
+              <div className="font-semibold text-lg tracking-tight">
+                {b.label}
+              </div>
+              <div className="text-xs text-[var(--muted)] mt-1">
+                {b.category}
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
