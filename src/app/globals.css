@@ -91,9 +91,9 @@ body {
   .container-x { padding-inline: 3rem; }
 }
 
-.section { padding-block: 4rem; }
-@media (min-width: 768px) { .section { padding-block: 6.5rem; } }
-@media (min-width: 1280px) { .section { padding-block: 8rem; } }
+.section { padding-block: 3rem; }
+@media (min-width: 768px) { .section { padding-block: 4.5rem; } }
+@media (min-width: 1280px) { .section { padding-block: 5.5rem; } }
 
 /* ===================
    Buttons

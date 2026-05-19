@@ -9,7 +9,7 @@ export function Hero({ site }: { site: Site }) {
     <section
       id="top"
       className="relative isolate overflow-hidden"
-      style={{ minHeight: hasImage ? "min(82vh, 760px)" : undefined }}
+      style={{ minHeight: hasImage ? "min(70vh, 640px)" : undefined }}
     >
       {hasImage ? (
         <>
@@ -35,8 +35,8 @@ export function Hero({ site }: { site: Site }) {
       <div
         className={`container-x ${
           hasImage
-            ? "pt-32 pb-24 md:pt-44 md:pb-32 lg:pt-52 lg:pb-40 text-white"
-            : "pt-24 pb-20 md:pt-32 md:pb-28"
+            ? "pt-24 pb-16 md:pt-32 md:pb-20 lg:pt-40 lg:pb-24 text-white"
+            : "pt-20 pb-14 md:pt-28 md:pb-20"
         } flex flex-col h-full`}
       >
         <div className="max-w-4xl">
@@ -96,7 +96,7 @@ export function Hero({ site }: { site: Site }) {
         </div>
 
         {(site.years_in_business || site.service_area) && (
-          <div className="mt-16 md:mt-24 lg:mt-32">
+          <div className="mt-10 md:mt-14 lg:mt-20">
             <dl
               className={`grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-t ${
                 hasImage ? "border-white/20" : "border-[var(--border)]"
