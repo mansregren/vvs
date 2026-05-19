@@ -9,7 +9,7 @@ export function Services({ site }: { site: Site }) {
       className="section border-t border-[var(--border)] bg-[var(--warm)]"
     >
       <div className="container-x">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-12">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-10">
           <div className="lg:col-span-5">
             <div className="eyebrow mb-3">Tjänster</div>
             <h2 className="h-display text-3xl md:text-4xl lg:text-5xl">
@@ -18,41 +18,53 @@ export function Services({ site }: { site: Site }) {
           </div>
           <div className="lg:col-span-7 lg:pt-3">
             <p className="text-lg leading-relaxed text-[var(--muted)]">
-              Vi tar uppdrag både för privatpersoner och företag — från
-              servicebesök och felsökning till totalrenovering. Är du osäker
-              på vad du behöver? Ring oss så reder vi ut det.
+              Klicka på en tjänst för att läsa mer.
             </p>
           </div>
         </div>
 
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
           {site.services.map((s, i) => {
             const { title, description } = renderService(s);
-            const num = String(i + 1).padStart(2, "0");
             return (
-              <li
-                key={i}
-                className="card group relative transition-all hover:shadow-md hover:-translate-y-0.5"
-              >
-                <div
-                  className="text-sm font-mono font-medium mb-4"
-                  style={{ color: site.primary_color }}
-                >
-                  {num}
-                </div>
-                <h3 className="font-semibold text-lg leading-tight mb-2">
-                  {title}
-                </h3>
-                {description && (
-                  <p className="text-sm text-[var(--muted)] leading-relaxed">
-                    {description}
-                  </p>
-                )}
+              <li key={i}>
+                <details className="group bg-[var(--surface)] border border-[var(--border)] rounded-xl open:shadow-md transition-shadow">
+                  <summary className="cursor-pointer list-none p-4 flex items-center justify-between gap-3">
+                    <span className="font-medium leading-tight">
+                      {title}
+                    </span>
+                    <Chevron color={site.primary_color} />
+                  </summary>
+                  {description && (
+                    <p className="px-4 pb-4 text-sm text-[var(--muted)] leading-relaxed">
+                      {description}
+                    </p>
+                  )}
+                </details>
               </li>
             );
           })}
         </ul>
       </div>
     </section>
+  );
+}
+
+function Chevron({ color }: { color: string }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className="transition-transform shrink-0 group-open:rotate-180"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
   );
 }
