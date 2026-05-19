@@ -2,6 +2,7 @@ import { type Site } from "@/lib/types";
 
 export function Contact({ site }: { site: Site }) {
   const telHref = `tel:${site.phone.replace(/\s/g, "")}`;
+  const extraContacts = (site.contacts ?? []).filter((c) => c.name && c.phone);
   return (
     <section
       id="kontakt"
@@ -75,6 +76,34 @@ export function Contact({ site }: { site: Site }) {
             </div>
           </div>
         </div>
+
+        {extraContacts.length > 0 && (
+          <div className="mt-12">
+            <div className="eyebrow mb-6">Personal</div>
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {extraContacts.map((c, i) => {
+                const tel = `tel:${c.phone.replace(/\s/g, "")}`;
+                return (
+                  <li key={i} className="card">
+                    <div className="font-semibold tracking-tight">{c.name}</div>
+                    {c.role && (
+                      <div className="text-xs uppercase tracking-widest text-[var(--muted)] mt-1">
+                        {c.role}
+                      </div>
+                    )}
+                    <a
+                      href={tel}
+                      className="text-lg font-medium mt-3 inline-block"
+                      style={{ color: site.primary_color }}
+                    >
+                      {c.phone}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
     </section>
   );

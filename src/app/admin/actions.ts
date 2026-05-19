@@ -33,6 +33,24 @@ export async function updateMySite(formData: FormData) {
     .filter(Boolean);
   const services = [...servicesChecked, ...servicesCustom];
 
+  let contacts: { name: string; phone: string; role?: string }[] = [];
+  try {
+    const raw = (formData.get("contacts_json") as string) ?? "[]";
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      contacts = parsed
+        .filter((c) => c && typeof c === "object")
+        .map((c) => ({
+          name: String(c.name ?? "").trim(),
+          phone: String(c.phone ?? "").trim(),
+          role: c.role ? String(c.role).trim() : undefined,
+        }))
+        .filter((c) => c.name && c.phone);
+    }
+  } catch {
+    contacts = [];
+  }
+
   const certifications = formData.getAll("certifications").map(String);
   const brand_partners = formData.getAll("brand_partners").map(String);
 
@@ -78,6 +96,7 @@ export async function updateMySite(formData: FormData) {
     guarantee_text:
       ((formData.get("guarantee_text") as string) ?? "").trim() || null,
     offers_free_quote: formData.get("offers_free_quote") === "on",
+    contacts,
     facebook_url:
       ((formData.get("facebook_url") as string) ?? "").trim() || null,
     facebook_enabled: formData.get("facebook_enabled") === "on",

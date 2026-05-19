@@ -56,6 +56,7 @@ export const MOCK_SITES: Record<string, Site> = {
     rot_avdrag: true,
     guarantee_text: "5 års garanti på arbeten enligt branschstandard",
     offers_free_quote: true,
+    contacts: [],
   },
 };
 

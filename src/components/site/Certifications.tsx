@@ -31,9 +31,8 @@ export function Certifications({
           </div>
           <div className="lg:col-span-7 lg:pt-3">
             <p className="text-lg leading-relaxed text-[var(--muted)]">
-              Vi följer branschstandarderna som krävs för att försäkringar
-              och garantier ska gälla. Be om intygen vid uppdragsstart om du
-              vill verifiera.
+              Vi följer branschstandarderna som krävs för att försäkringar och
+              garantier ska gälla.
             </p>
           </div>
         </div>
@@ -42,46 +41,45 @@ export function Certifications({
           {items.map((c) => {
             const logoUrl = assets?.[c.key];
             return (
-              <li key={c.key} className="card flex flex-col gap-5">
-                <div className="aspect-[5/3] rounded-xl bg-white border border-[var(--border)] grid place-items-center p-4 overflow-hidden">
-                  {logoUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
+              <li
+                key={c.key}
+                className="card flex flex-col"
+              >
+                {logoUrl ? (
+                  <div className="h-24 md:h-28 grid place-items-center mb-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={logoUrl}
                       alt={c.label}
                       className="max-w-full max-h-full object-contain"
                     />
-                  ) : (
-                    <Badge initials={c.initials} color={c.color} />
-                  )}
-                </div>
-                <div>
-                  <div className="font-semibold leading-tight">{c.short}</div>
-                  <div className="text-sm text-[var(--muted)] mt-2 leading-relaxed line-clamp-3">
-                    {c.description}
                   </div>
-                </div>
+                ) : (
+                  <div className="mb-6">
+                    <div
+                      className="text-2xl font-semibold tracking-tight leading-tight"
+                      style={{ color: c.color }}
+                    >
+                      {c.short}
+                    </div>
+                    <div
+                      className="h-0.5 w-10 mt-3 rounded-full"
+                      style={{ background: c.color, opacity: 0.4 }}
+                      aria-hidden
+                    />
+                  </div>
+                )}
+                {logoUrl && (
+                  <div className="font-semibold leading-tight">{c.short}</div>
+                )}
+                <p className="text-sm text-[var(--muted)] mt-2 leading-relaxed">
+                  {c.description}
+                </p>
               </li>
             );
           })}
         </ul>
       </div>
     </section>
-  );
-}
-
-function Badge({ initials, color }: { initials: string; color: string }) {
-  return (
-    <div
-      className="w-20 h-20 rounded-2xl grid place-items-center font-bold tracking-tight text-white"
-      style={{
-        background: `linear-gradient(135deg, ${color}, color-mix(in oklab, ${color} 70%, black))`,
-        fontSize: initials.length >= 3 ? "1.15rem" : "1.4rem",
-        letterSpacing: initials.length >= 3 ? "0" : "-0.02em",
-      }}
-      aria-hidden
-    >
-      {initials}
-    </div>
   );
 }

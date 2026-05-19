@@ -8,6 +8,7 @@ import {
   SERVICES_CATALOG,
 } from "@/lib/catalogs";
 import { ColorPicker } from "@/components/admin/ColorPicker";
+import { ContactsEditor } from "@/components/admin/ContactsEditor";
 import {
   updateMySite,
   uploadLogo,
@@ -309,9 +310,22 @@ export default async function AdminPage() {
         <Section
           id="kontakt"
           title="Kontakt & karta"
-          desc="Visas i kontakt-sektionen och i Hero-knappen."
+          desc="Huvudnumret visas i Hero-knappen. Lägg till fler kontakter om ni vill visa olika personer."
         >
-          <Field label="Telefon" name="phone" defaultValue={site.phone} />
+          <Field label="Huvudtelefon" name="phone" defaultValue={site.phone} />
+          <div className="pt-2">
+            <span className="text-sm font-medium block mb-3">
+              Fler kontaktpersoner
+            </span>
+            <ContactsEditor
+              name="contacts_json"
+              initial={
+                Array.isArray(site.contacts)
+                  ? (site.contacts as { name: string; phone: string; role?: string }[])
+                  : []
+              }
+            />
+          </div>
           <Field label="Adress" name="address" defaultValue={site.address} />
           <Field
             label="E-post (valfritt)"

@@ -34,6 +34,13 @@ export type Site = {
   rot_avdrag: boolean;
   guarantee_text: string | null;
   offers_free_quote: boolean;
+  contacts: Contact[];
+};
+
+export type Contact = {
+  name: string;
+  phone: string;
+  role?: string;
 };
 
 export type Review = {

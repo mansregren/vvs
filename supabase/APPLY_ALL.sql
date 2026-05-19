@@ -161,3 +161,9 @@ alter table public.sites
   add column if not exists rot_avdrag boolean not null default false,
   add column if not exists guarantee_text text,
   add column if not exists offers_free_quote boolean not null default true;
+
+-- =====================
+-- 0006: Flera kontaktpersoner per site
+-- =====================
+alter table public.sites
+  add column if not exists contacts jsonb not null default '[]'::jsonb;
