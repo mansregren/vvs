@@ -13,7 +13,6 @@ export function Header({
 }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const telHref = `tel:${site.phone.replace(/\s/g, "")}`;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -39,15 +38,15 @@ export function Header({
         }`}
       >
         <div className="container-x flex items-center justify-between gap-4 py-3">
-          <a href="#top" className="flex items-center gap-3 min-w-0">
+          <a href="#top" className="flex items-center min-w-0 flex-1">
             {site.logo_url ? (
               <img
                 src={site.logo_url}
                 alt={site.name}
-                className="h-10 md:h-12 w-auto max-w-[180px] md:max-w-[240px] object-contain object-left"
+                className="h-12 md:h-14 w-auto max-w-[240px] md:max-w-[320px] object-contain object-left"
               />
             ) : (
-              <span className="font-semibold tracking-tight text-lg truncate">
+              <span className="font-semibold tracking-tight text-xl md:text-2xl truncate">
                 {site.name}
               </span>
             )}
@@ -65,34 +64,15 @@ export function Header({
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <a
-              href={telHref}
-              className="btn-primary btn-sm hidden sm:inline-flex"
-              style={{ background: site.primary_color }}
-            >
-              <PhoneIcon />
-              <span className="hidden md:inline">Ring</span>
-              <span>{site.phone}</span>
-            </a>
-            <a
-              href={telHref}
-              className="btn-primary btn-sm sm:hidden"
-              style={{ background: site.primary_color }}
-              aria-label="Ring"
-            >
-              <PhoneIcon />
-            </a>
-            <button
-              type="button"
-              className="md:hidden p-2 rounded-lg hover:bg-[var(--warm)]"
-              onClick={() => setOpen((o) => !o)}
-              aria-label={open ? "Stäng meny" : "Öppna meny"}
-              aria-expanded={open}
-            >
-              {open ? <CloseIcon /> : <MenuIcon />}
-            </button>
-          </div>
+          <button
+            type="button"
+            className="md:hidden p-2 rounded-lg hover:bg-[var(--warm)] shrink-0"
+            onClick={() => setOpen((o) => !o)}
+            aria-label={open ? "Stäng meny" : "Öppna meny"}
+            aria-expanded={open}
+          >
+            {open ? <CloseIcon /> : <MenuIcon />}
+          </button>
         </div>
       </header>
 
