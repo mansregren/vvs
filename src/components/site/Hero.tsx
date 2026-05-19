@@ -9,9 +9,7 @@ export function Hero({ site }: { site: Site }) {
     <section
       id="top"
       className="relative isolate overflow-hidden"
-      style={{
-        minHeight: hasImage ? "min(78vh, 720px)" : undefined,
-      }}
+      style={{ minHeight: hasImage ? "min(82vh, 760px)" : undefined }}
     >
       {hasImage ? (
         <>
@@ -29,7 +27,7 @@ export function Hero({ site }: { site: Site }) {
           aria-hidden
           className="absolute inset-0 -z-10"
           style={{
-            background: `radial-gradient(60% 50% at 80% 10%, color-mix(in oklab, ${site.primary_color} 18%, transparent), transparent), linear-gradient(180deg, var(--warm), var(--background) 60%)`,
+            background: `radial-gradient(80% 60% at 90% 0%, color-mix(in oklab, ${site.primary_color} 22%, transparent), transparent 60%), linear-gradient(180deg, var(--warm), var(--background) 70%)`,
           }}
         />
       )}
@@ -37,29 +35,37 @@ export function Hero({ site }: { site: Site }) {
       <div
         className={`container-x ${
           hasImage
-            ? "pt-28 pb-20 md:pt-36 md:pb-32 text-white"
-            : "pt-20 pb-16 md:pt-28 md:pb-24"
-        }`}
+            ? "pt-32 pb-24 md:pt-44 md:pb-32 lg:pt-52 lg:pb-40 text-white"
+            : "pt-24 pb-20 md:pt-32 md:pb-28"
+        } flex flex-col h-full`}
       >
-        <div className="max-w-3xl">
-          <div
-            className={`eyebrow mb-5 ${hasImage ? "text-white/80" : ""}`}
-            style={hasImage ? undefined : { color: site.primary_color }}
-          >
-            VVS · El · Service · {site.city}
+        <div className="max-w-4xl">
+          <div className={`flex items-center gap-3 mb-6 ${hasImage ? "text-white/85" : ""}`}>
+            <span
+              aria-hidden
+              className="block w-8 h-px"
+              style={{
+                background: hasImage ? "currentColor" : site.primary_color,
+                opacity: 0.6,
+              }}
+            />
+            <span className="eyebrow" style={hasImage ? { color: "inherit" } : undefined}>
+              {site.city}
+            </span>
           </div>
 
           <h1
-            className={`h-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl ${
+            className={`h-display text-[2.6rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl ${
               hasImage ? "text-white" : ""
             }`}
+            style={{ letterSpacing: "-0.03em" }}
           >
             {site.hero_tagline ?? `${site.name} — VVS i ${site.city}`}
           </h1>
 
           {site.tagline_secondary && (
             <p
-              className={`mt-6 text-lg md:text-xl max-w-2xl leading-relaxed ${
+              className={`mt-6 md:mt-8 text-lg md:text-xl max-w-2xl leading-relaxed ${
                 hasImage ? "text-white/85" : "text-[var(--muted)]"
               }`}
             >
@@ -80,34 +86,45 @@ export function Hero({ site }: { site: Site }) {
               href="#kontakt"
               className={`btn-ghost text-base ${
                 hasImage
-                  ? "!bg-white/10 !border-white/40 !text-white hover:!bg-white/20"
+                  ? "!bg-white/[0.08] !border-white/35 !text-white hover:!bg-white/[0.16]"
                   : ""
               }`}
             >
               Kontakta oss
             </a>
           </div>
+        </div>
 
-          {(site.years_in_business || site.service_area) && (
-            <div className="mt-10 flex flex-wrap gap-x-8 gap-y-4 text-sm">
+        {(site.years_in_business || site.service_area) && (
+          <div className="mt-16 md:mt-24 lg:mt-32">
+            <dl
+              className={`grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-t ${
+                hasImage ? "border-white/20" : "border-[var(--border)]"
+              } pt-8`}
+            >
               {site.years_in_business && site.years_in_business > 0 && (
                 <Stat
                   on={hasImage}
-                  value={`${site.years_in_business}+ år`}
-                  label="i branschen"
+                  value={`${site.years_in_business}+`}
+                  label="år i branschen"
                 />
               )}
               {site.service_area && (
-                <Stat
-                  on={hasImage}
-                  value={site.service_area}
-                  label="vårt område"
-                />
+                <Stat on={hasImage} value="Lokala" label={site.service_area} />
               )}
-              <Stat on={hasImage} value="Snabb service" label="oftast samma dag" />
-            </div>
-          )}
-        </div>
+              <Stat
+                on={hasImage}
+                value="Snabbt"
+                label="oftast samma dag"
+              />
+              <Stat
+                on={hasImage}
+                value="F-skatt"
+                label="auktoriserad firma"
+              />
+            </dl>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -123,15 +140,17 @@ function Stat({
   on: boolean;
 }) {
   return (
-    <div className="flex items-baseline gap-2">
-      <span className={`font-semibold text-lg ${on ? "text-white" : ""}`}>
+    <div>
+      <div
+        className={`text-2xl md:text-3xl font-semibold tracking-tight ${on ? "text-white" : ""}`}
+      >
         {value}
-      </span>
-      <span
-        className={`text-sm ${on ? "text-white/75" : "text-[var(--muted)]"}`}
+      </div>
+      <div
+        className={`text-sm mt-1.5 ${on ? "text-white/75" : "text-[var(--muted)]"}`}
       >
         {label}
-      </span>
+      </div>
     </div>
   );
 }
@@ -144,7 +163,7 @@ function PhoneIcon() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.2"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden

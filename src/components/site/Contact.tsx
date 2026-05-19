@@ -5,73 +5,97 @@ export function Contact({ site }: { site: Site }) {
   return (
     <section
       id="kontakt"
-      className="section border-t border-[var(--border)]"
+      className="section border-t border-[var(--border)] bg-[var(--warm)]"
     >
       <div className="container-x">
-        <div className="max-w-2xl mb-12">
-          <div className="eyebrow mb-3">Kontakt</div>
-          <h2 className="h-display text-3xl md:text-4xl">Hör av dig</h2>
-          <p className="mt-4 text-lg text-[var(--muted)]">
-            Vi svarar oftast inom ett par timmar på kontorstid.
-          </p>
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-12">
+          <div className="lg:col-span-5">
+            <div className="eyebrow mb-3">Kontakt</div>
+            <h2 className="h-display text-3xl md:text-4xl lg:text-5xl">
+              Hör av dig
+            </h2>
+          </div>
+          <div className="lg:col-span-7 lg:pt-3">
+            <p className="text-lg leading-relaxed text-[var(--muted)]">
+              Snabbaste vägen till oss är att ringa. Behöver du skicka bilder
+              eller en lite längre beskrivning — mejla, så återkommer vi.
+            </p>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid lg:grid-cols-3 gap-3">
           <a
             href={telHref}
-            className="card flex flex-col gap-3 hover:shadow-md transition-shadow"
-            style={{ borderLeft: `4px solid ${site.primary_color}` }}
+            className="card group flex flex-col gap-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
+            style={{ borderTop: `3px solid ${site.primary_color}` }}
           >
-            <div className="eyebrow">Ring</div>
+            <div className="flex items-center justify-between">
+              <div className="eyebrow">Ring</div>
+              <Arrow color={site.primary_color} />
+            </div>
             <div className="text-2xl md:text-3xl font-semibold tracking-tight">
               {site.phone}
             </div>
             {site.opening_hours && (
-              <div className="text-sm text-[var(--muted)] whitespace-pre-line">
+              <div className="text-sm text-[var(--muted)] whitespace-pre-line mt-auto pt-3">
                 {site.opening_hours}
               </div>
             )}
           </a>
 
-          {site.email ? (
+          {site.email && (
             <a
               href={`mailto:${site.email}`}
-              className="card flex flex-col gap-3 hover:shadow-md transition-shadow"
-              style={{ borderLeft: `4px solid ${site.primary_color}` }}
+              className="card group flex flex-col gap-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
+              style={{ borderTop: `3px solid ${site.primary_color}` }}
             >
-              <div className="eyebrow">E-post</div>
-              <div className="text-2xl md:text-3xl font-semibold tracking-tight break-all">
+              <div className="flex items-center justify-between">
+                <div className="eyebrow">E-post</div>
+                <Arrow color={site.primary_color} />
+              </div>
+              <div className="text-xl md:text-2xl font-semibold tracking-tight break-all">
                 {site.email}
               </div>
-              <div className="text-sm text-[var(--muted)]">
-                Skicka en offertförfrågan eller fråga
+              <div className="text-sm text-[var(--muted)] mt-auto pt-3">
+                Skicka offertförfrågan eller fråga
               </div>
             </a>
-          ) : (
-            <div
-              className="card flex flex-col gap-3"
-              style={{ borderLeft: `4px solid ${site.primary_color}` }}
-            >
-              <div className="eyebrow">Besöksadress</div>
-              <div className="text-2xl md:text-3xl font-semibold tracking-tight">
-                {site.address}
-              </div>
-              <div className="text-sm text-[var(--muted)]">{site.city}</div>
-            </div>
           )}
 
-          {site.email && (
-            <div
-              className="card flex flex-col gap-3 md:col-span-2"
-              style={{ borderLeft: `4px solid ${site.primary_color}` }}
-            >
-              <div className="eyebrow">Adress</div>
-              <div className="text-lg font-medium">{site.address}</div>
-              <div className="text-sm text-[var(--muted)]">{site.city}</div>
+          <div
+            className="card flex flex-col gap-4"
+            style={{ borderTop: `3px solid ${site.primary_color}` }}
+          >
+            <div className="eyebrow">Besöksadress</div>
+            <div className="text-xl md:text-2xl font-semibold tracking-tight leading-snug">
+              {site.address}
             </div>
-          )}
+            <div className="text-sm text-[var(--muted)] mt-auto pt-3">
+              {site.city}
+            </div>
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function Arrow({ color }: { color: string }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className="transition-transform group-hover:translate-x-1"
+    >
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="13 6 19 12 13 18" />
+    </svg>
   );
 }
