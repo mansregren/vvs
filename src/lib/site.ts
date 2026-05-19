@@ -4,10 +4,20 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { type Site, type Review, type SiteStats } from "./types";
 
 // Full kolumnsats (efter migration 0002+0003). Vid 42703/PGRST204 (okänd kolumn) faller vi tillbaka.
-const SITE_COLUMNS_FULL =
-  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, tagline_secondary, about_text, services, opening_hours, facebook_url, facebook_enabled, facebook_page_url, instagram_url, instagram_enabled, instagram_post_urls, google_maps_embed, hero_image_url, years_in_business, service_area, cta_text, gallery_images, certifications, brand_partners, has_jour, jour_phone, jour_text, rot_avdrag, guarantee_text, offers_free_quote, contacts";
-const SITE_COLUMNS_BASE =
-  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, about_text, services, opening_hours, facebook_url, facebook_enabled, instagram_url, instagram_enabled, google_maps_embed";
+// Kolumn-set ordnade efter migration-version. Vid 42703 (okänd kolumn) backas det steg-vis tills något funkar.
+// Detta gör att sajten funkar även när senare migrationer inte har applicerats än.
+const SITE_COLUMN_SETS = [
+  // 0006 + alla tidigare
+  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, tagline_secondary, about_text, services, opening_hours, facebook_url, facebook_enabled, facebook_page_url, instagram_url, instagram_enabled, instagram_post_urls, google_maps_embed, hero_image_url, years_in_business, service_area, cta_text, gallery_images, certifications, brand_partners, has_jour, jour_phone, jour_text, rot_avdrag, guarantee_text, offers_free_quote, contacts",
+  // 0005 + tidigare (utan contacts)
+  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, tagline_secondary, about_text, services, opening_hours, facebook_url, facebook_enabled, facebook_page_url, instagram_url, instagram_enabled, instagram_post_urls, google_maps_embed, hero_image_url, years_in_business, service_area, cta_text, gallery_images, certifications, brand_partners, has_jour, jour_phone, jour_text, rot_avdrag, guarantee_text, offers_free_quote",
+  // 0003 + tidigare (utan jour/rot/garanti/quote)
+  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, tagline_secondary, about_text, services, opening_hours, facebook_url, facebook_enabled, facebook_page_url, instagram_url, instagram_enabled, instagram_post_urls, google_maps_embed, hero_image_url, years_in_business, service_area, cta_text, gallery_images, certifications, brand_partners",
+  // 0002 + tidigare (utan certifikat/märken)
+  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, tagline_secondary, about_text, services, opening_hours, facebook_url, facebook_enabled, instagram_url, instagram_enabled, google_maps_embed, hero_image_url, years_in_business, service_area, cta_text, gallery_images",
+  // 0001-bas
+  "id, slug, domain, name, city, primary_color, logo_url, phone, address, email, hero_tagline, about_text, services, opening_hours, facebook_url, facebook_enabled, instagram_url, instagram_enabled, google_maps_embed",
+];
 
 type AnyRow = Record<string, unknown>;
 
@@ -59,15 +69,17 @@ function normalizeSite(row: AnyRow): Site {
 async function querySite(
   filter: (col: string) => Promise<{ data: AnyRow | null; error: { code?: string } | null }>,
 ): Promise<Site | null> {
-  const full = await filter(SITE_COLUMNS_FULL);
-  if (full.data) return normalizeSite(full.data);
-  if (
-    full.error?.code === "42703" ||
-    full.error?.code === "PGRST204" ||
-    full.error?.code === "PGRST200"
-  ) {
-    const base = await filter(SITE_COLUMNS_BASE);
-    if (base.data) return normalizeSite(base.data);
+  for (const cols of SITE_COLUMN_SETS) {
+    const res = await filter(cols);
+    if (res.data) return normalizeSite(res.data);
+    if (
+      res.error?.code !== "42703" &&
+      res.error?.code !== "PGRST204" &&
+      res.error?.code !== "PGRST200"
+    ) {
+      // Annat fel än "okänd kolumn" — sluta försöka
+      break;
+    }
   }
   return null;
 }
