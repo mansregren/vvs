@@ -44,18 +44,13 @@ export function Header({
               <img
                 src={site.logo_url}
                 alt={site.name}
-                className="h-9 w-auto max-w-[120px] object-contain"
+                className="h-10 md:h-12 w-auto max-w-[180px] md:max-w-[240px] object-contain object-left"
               />
             ) : (
-              <span
-                className="inline-block w-3 h-3 rounded-full shrink-0"
-                style={{ background: site.primary_color }}
-                aria-hidden
-              />
+              <span className="font-semibold tracking-tight text-lg truncate">
+                {site.name}
+              </span>
             )}
-            <span className="font-semibold tracking-tight truncate">
-              {site.name}
-            </span>
           </a>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">

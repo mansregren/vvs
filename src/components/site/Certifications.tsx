@@ -22,39 +22,42 @@ export function Certifications({
       className="section border-t border-[var(--border)]"
     >
       <div className="container-x">
-        <div className="max-w-2xl mb-12">
-          <div className="eyebrow mb-3">Certifikat & branschmedlemskap</div>
-          <h2 className="h-display text-3xl md:text-4xl">
-            Auktoriserad — på riktigt
-          </h2>
-          <p className="mt-4 text-lg text-[var(--muted)]">
-            Vi följer branschstandarderna som krävs för att försäkringar och
-            garantier ska gälla.
-          </p>
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-12">
+          <div className="lg:col-span-5">
+            <div className="eyebrow mb-3">Certifikat & branschmedlemskap</div>
+            <h2 className="h-display text-3xl md:text-4xl lg:text-5xl">
+              Auktoriserad — på riktigt
+            </h2>
+          </div>
+          <div className="lg:col-span-7 lg:pt-3">
+            <p className="text-lg leading-relaxed text-[var(--muted)]">
+              Vi följer branschstandarderna som krävs för att försäkringar
+              och garantier ska gälla. Be om intygen vid uppdragsstart om du
+              vill verifiera.
+            </p>
+          </div>
         </div>
+
         <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {items.map((c) => {
             const logoUrl = assets?.[c.key];
             return (
-              <li
-                key={c.key}
-                className="card flex items-center gap-4"
-              >
-                {logoUrl ? (
-                  <div className="shrink-0 w-24 h-16 rounded-xl bg-white border border-[var(--border)] grid place-items-center overflow-hidden p-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
+              <li key={c.key} className="card flex flex-col gap-5">
+                <div className="aspect-[5/3] rounded-xl bg-white border border-[var(--border)] grid place-items-center p-4 overflow-hidden">
+                  {logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={logoUrl}
                       alt={c.label}
                       className="max-w-full max-h-full object-contain"
                     />
-                  </div>
-                ) : (
-                  <Badge initials={c.initials} color={c.color} />
-                )}
-                <div className="min-w-0">
+                  ) : (
+                    <Badge initials={c.initials} color={c.color} />
+                  )}
+                </div>
+                <div>
                   <div className="font-semibold leading-tight">{c.short}</div>
-                  <div className="text-xs text-[var(--muted)] mt-0.5 line-clamp-2">
+                  <div className="text-sm text-[var(--muted)] mt-2 leading-relaxed line-clamp-3">
                     {c.description}
                   </div>
                 </div>
@@ -70,10 +73,10 @@ export function Certifications({
 function Badge({ initials, color }: { initials: string; color: string }) {
   return (
     <div
-      className="shrink-0 w-14 h-14 rounded-xl grid place-items-center font-bold tracking-tight text-white"
+      className="w-20 h-20 rounded-2xl grid place-items-center font-bold tracking-tight text-white"
       style={{
         background: `linear-gradient(135deg, ${color}, color-mix(in oklab, ${color} 70%, black))`,
-        fontSize: initials.length >= 3 ? "0.85rem" : "1rem",
+        fontSize: initials.length >= 3 ? "1.15rem" : "1.4rem",
         letterSpacing: initials.length >= 3 ? "0" : "-0.02em",
       }}
       aria-hidden

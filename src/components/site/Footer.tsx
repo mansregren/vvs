@@ -8,24 +8,19 @@ export function Footer({ site }: { site: Site }) {
     <footer className="border-t border-[var(--border)] bg-[var(--surface)]">
       <div className="container-x py-16 grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-5">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="mb-4">
             {site.logo_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={site.logo_url}
                 alt={site.name}
-                className="h-8 w-auto"
+                className="h-10 w-auto max-w-[220px] object-contain object-left"
               />
             ) : (
-              <span
-                aria-hidden
-                className="block w-2.5 h-2.5 rounded-full"
-                style={{ background: site.primary_color }}
-              />
+              <div className="font-semibold tracking-tight text-xl">
+                {site.name}
+              </div>
             )}
-            <span className="font-semibold tracking-tight text-lg">
-              {site.name}
-            </span>
           </div>
           {site.tagline_secondary && (
             <p className="text-sm text-[var(--muted)] leading-relaxed max-w-md">
