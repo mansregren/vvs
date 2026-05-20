@@ -6,11 +6,11 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Cazt Media — Hemsidor för VVS- och byggföretag",
   description:
-    "Vi designar, bygger och sköter hemsidan åt VVS- och byggföretag — med löpande SEO. 699 kr/mån, allt ingår.",
+    "Vi designar, bygger och sköter hemsidan åt VVS- och byggföretag — med löpande SEO. 499 kr/mån exkl. moms.",
   openGraph: {
     title: "Cazt Media — Hemsidor för VVS- och byggföretag",
     description:
-      "Vi designar, bygger och sköter hemsidan åt VVS- och byggföretag — med löpande SEO. 699 kr/mån, allt ingår.",
+      "Vi designar, bygger och sköter hemsidan åt VVS- och byggföretag — med löpande SEO. 499 kr/mån exkl. moms.",
   },
 };
 
@@ -142,12 +142,16 @@ export default function InfoPage() {
               </div>
               <div className="card">
                 <div className="flex items-baseline gap-2">
-                  <span className="h-display text-5xl md:text-6xl">699 kr</span>
-                  <span className="text-[var(--muted)] text-lg">/mån</span>
+                  <span className="h-display text-5xl md:text-6xl">499 kr</span>
+                  <span className="text-[var(--muted)] text-lg">/mån exkl. moms</span>
                 </div>
                 <p className="mt-4 text-[var(--muted)] leading-relaxed">
-                  Hemsida, hosting, domän och löpande SEO-optimering ingår.
-                  Inga uppstartsavgifter.
+                  Hemsida, hosting och löpande SEO-optimering ingår. Inga
+                  uppstartsavgifter.
+                </p>
+                <p className="mt-2 text-sm text-[var(--muted-2)] leading-relaxed">
+                  Domän tillkommer om du inte redan har en — vanligtvis
+                  100–300 kr/år.
                 </p>
                 <a href="#kontakt" className="btn-primary mt-6 w-full justify-center">
                   Kom igång
