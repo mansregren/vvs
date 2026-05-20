@@ -12,6 +12,9 @@ import {
 
 export const dynamic = "force-dynamic";
 
+const navLink =
+  "px-3 py-1.5 rounded-lg hover:bg-[var(--warm)] text-[var(--muted)] hover:text-[var(--foreground)] scroll-mt-24";
+
 export default async function PlatformOverview() {
   const supabase = await createClient();
   const {
@@ -55,27 +58,40 @@ export default async function PlatformOverview() {
 
   return (
     <main className="container-x py-10 space-y-10 max-w-7xl">
-      <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-[var(--border)] pb-6">
-        <div>
-          <div className="eyebrow mb-1">Plattform-admin</div>
-          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-            Översikt — alla sajter
-          </h1>
-          <p className="text-[var(--muted)] mt-1 text-sm">
-            {user.email} ·{" "}
-            <Link
-              href="/admin"
-              className="underline underline-offset-4"
-            >
-              Min firma →
-            </Link>
-          </p>
+      <header className="space-y-6 border-b border-[var(--border)] pb-6">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <div className="eyebrow mb-1">Plattform-admin</div>
+            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+              Översikt — alla kunder
+            </h1>
+            <p className="text-[var(--muted)] mt-1 text-sm">{user.email}</p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <a href="#skapa" className="btn-primary btn-sm">
+              + Skapa sida
+            </a>
+            <form action={signOutPlatform}>
+              <button type="submit" className="btn-ghost btn-sm">
+                Logga ut
+              </button>
+            </form>
+          </div>
         </div>
-        <form action={signOutPlatform}>
-          <button type="submit" className="btn-ghost btn-sm">
-            Logga ut
-          </button>
-        </form>
+        <nav className="flex flex-wrap gap-1 text-sm font-medium">
+          <a href="#kunder" className={navLink}>
+            Alla kunder
+          </a>
+          <a href="#skapa" className={navLink}>
+            Skapa sida
+          </a>
+          <a href="#logo-bibliotek" className={navLink}>
+            Logo-bibliotek
+          </a>
+          <Link href="/admin" className={navLink}>
+            Min firma →
+          </Link>
+        </nav>
       </header>
 
       {/* Stats */}
@@ -87,7 +103,7 @@ export default async function PlatformOverview() {
       </section>
 
       {/* Skapa ny */}
-      <section className="card bg-[var(--warm)] space-y-4">
+      <section id="skapa" className="card bg-[var(--warm)] space-y-4 scroll-mt-24">
         <div>
           <div className="eyebrow mb-1" style={{ color: "var(--accent)" }}>
             Skapa ny
@@ -160,7 +176,7 @@ export default async function PlatformOverview() {
       </section>
 
       {/* Cert + Brand asset upload — hopfällbart så det inte tar upp adminen */}
-      <section>
+      <section id="logo-bibliotek" className="scroll-mt-24">
         <details className="group card">
           <summary className="flex items-center justify-between gap-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             <div>
@@ -232,10 +248,10 @@ export default async function PlatformOverview() {
       </section>
 
       {/* Sajt-lista */}
-      <section>
+      <section id="kunder" className="scroll-mt-24">
         <div className="flex items-baseline justify-between mb-6">
           <h2 className="text-xl font-semibold tracking-tight">
-            Alla sajter
+            Alla kunder ({stats.length})
           </h2>
           <span className="text-sm text-[var(--muted)]">
             Sortering: senast uppdaterad
@@ -316,11 +332,17 @@ export default async function PlatformOverview() {
                     <td className="py-3 px-3 text-[var(--muted)] text-xs">
                       {new Date(s.updated_at).toLocaleDateString("sv-SE")}
                     </td>
-                    <td className="py-3 pl-3 text-right">
+                    <td className="py-3 pl-3 text-right whitespace-nowrap">
+                      <Link
+                        href={`/admin/sajt/${s.id}`}
+                        className="text-sm font-medium underline-offset-4 hover:underline"
+                      >
+                        Hantera
+                      </Link>
                       <Link
                         href={`/${s.slug}`}
                         target="_blank"
-                        className="text-sm font-medium underline-offset-4 hover:underline"
+                        className="ml-4 text-sm text-[var(--muted)] underline-offset-4 hover:underline"
                       >
                         Öppna ↗
                       </Link>

@@ -3,26 +3,62 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isPlatformAdmin } from "@/lib/site";
 
-async function getCtx() {
+/**
+ * Bestämmer vilken sajt en action ska arbeta mot.
+ * - Utan `site_id` (eller med eget): användarens egen sajt via RLS-klienten.
+ * - Med annat `site_id`: kräver platform-admin och kör med service-role-klient
+ *   (annars skulle RLS blockera redigering av sajt man inte äger).
+ */
+async function resolveTarget(formData?: FormData) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return null;
-  const { data } = await supabase
+
+  const { data: link } = await supabase
     .from("site_users")
     .select("site_id, role")
     .eq("user_id", user.id)
     .maybeSingle();
-  return { user, siteId: data?.site_id ?? null, role: data?.role ?? null };
+  const ownSiteId = link?.site_id ?? null;
+
+  const requested = formData
+    ? ((formData.get("site_id") as string | null) || null)
+    : null;
+
+  if (requested && requested !== ownSiteId) {
+    const admin = await isPlatformAdmin(user.id);
+    if (!admin) return null;
+    return {
+      user,
+      siteId: requested,
+      db: createAdminClient(),
+      elevated: true as const,
+    };
+  }
+
+  return {
+    user,
+    siteId: ownSiteId,
+    db: supabase,
+    elevated: false as const,
+  };
+}
+
+function revalidateSite(siteId: string, slug?: string) {
+  revalidatePath("/admin");
+  revalidatePath(`/admin/sajt/${siteId}`);
+  revalidatePath("/admin/oversikt");
+  if (slug) revalidatePath(`/${slug}`);
+  revalidatePath("/", "layout");
 }
 
 export async function updateMySite(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
-
-  const supabase = await createClient();
 
   const servicesChecked = formData.getAll("service_keys").map(String);
   const servicesCustom = (
@@ -78,8 +114,7 @@ export async function updateMySite(formData: FormData) {
       ((formData.get("hero_tagline") as string) ?? "").trim() || null,
     tagline_secondary:
       ((formData.get("tagline_secondary") as string) ?? "").trim() || null,
-    about_text:
-      ((formData.get("about_text") as string) ?? "").trim() || null,
+    about_text: ((formData.get("about_text") as string) ?? "").trim() || null,
     cta_text: ((formData.get("cta_text") as string) ?? "").trim() || null,
     service_area:
       ((formData.get("service_area") as string) ?? "").trim() || null,
@@ -111,16 +146,13 @@ export async function updateMySite(formData: FormData) {
   };
 
   // Försök först med alla nya fält. Vid PGRST204/42703 ta bort dem och kör fallback.
-  let res = await supabase
+  let res = await ctx.db
     .from("sites")
     .update(update)
     .eq("id", ctx.siteId)
     .select("slug")
     .single();
-  if (
-    res.error?.code === "42703" ||
-    res.error?.code === "PGRST204"
-  ) {
+  if (res.error?.code === "42703" || res.error?.code === "PGRST204") {
     const baseFields = [
       "name",
       "city",
@@ -141,7 +173,7 @@ export async function updateMySite(formData: FormData) {
     ];
     const baseUpdate: Record<string, unknown> = {};
     for (const k of baseFields) baseUpdate[k] = update[k];
-    res = await supabase
+    res = await ctx.db
       .from("sites")
       .update(baseUpdate)
       .eq("id", ctx.siteId)
@@ -150,9 +182,7 @@ export async function updateMySite(formData: FormData) {
   }
   if (res.error) throw new Error(res.error.message);
 
-  revalidatePath("/admin");
-  revalidatePath(`/${res.data!.slug}`);
-  revalidatePath("/", "layout");
+  revalidateSite(ctx.siteId, res.data?.slug);
 }
 
 async function uploadImageToBucket(
@@ -160,9 +190,8 @@ async function uploadImageToBucket(
   field: string,
   bucket: "logos" | "media",
   sitePrefix: string,
+  siteId: string,
 ): Promise<string> {
-  const ctx = await getCtx();
-  if (!ctx?.siteId) redirect("/admin/login");
   const file = formData.get(field) as File | null;
   if (!file || file.size === 0) throw new Error("Ingen fil vald.");
   if (file.size > 8 * 1024 * 1024) {
@@ -170,7 +199,7 @@ async function uploadImageToBucket(
   }
   const admin = createAdminClient();
   const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
-  const path = `${ctx.siteId}/${sitePrefix}-${Date.now()}.${ext}`;
+  const path = `${siteId}/${sitePrefix}-${Date.now()}.${ext}`;
   const { error: upErr } = await admin.storage
     .from(bucket)
     .upload(path, file, { upsert: true, contentType: file.type });
@@ -180,37 +209,34 @@ async function uploadImageToBucket(
 }
 
 export async function uploadLogo(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
-  const url = await uploadImageToBucket(formData, "logo", "logos", "logo");
-  const supabase = await createClient();
-  const { error } = await supabase
+  const url = await uploadImageToBucket(formData, "logo", "logos", "logo", ctx.siteId);
+  const { error } = await ctx.db
     .from("sites")
     .update({ logo_url: url })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin");
+  revalidateSite(ctx.siteId);
 }
 
 export async function uploadHeroImage(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
-  const url = await uploadImageToBucket(formData, "image", "media", "hero");
-  const supabase = await createClient();
-  const { error } = await supabase
+  const url = await uploadImageToBucket(formData, "image", "media", "hero", ctx.siteId);
+  const { error } = await ctx.db
     .from("sites")
     .update({ hero_image_url: url })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin");
+  revalidateSite(ctx.siteId);
 }
 
 export async function uploadGalleryImage(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
-  const url = await uploadImageToBucket(formData, "image", "media", "gallery");
-  const supabase = await createClient();
-  const { data: site } = await supabase
+  const url = await uploadImageToBucket(formData, "image", "media", "gallery", ctx.siteId);
+  const { data: site } = await ctx.db
     .from("sites")
     .select("gallery_images")
     .eq("id", ctx.siteId)
@@ -219,21 +245,20 @@ export async function uploadGalleryImage(formData: FormData) {
     ? (site!.gallery_images as string[])
     : [];
   const next = [...current, url];
-  const { error } = await supabase
+  const { error } = await ctx.db
     .from("sites")
     .update({ gallery_images: next })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin");
+  revalidateSite(ctx.siteId);
 }
 
 export async function removeGalleryImage(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
   const url = (formData.get("url") as string) ?? "";
   if (!url) return;
-  const supabase = await createClient();
-  const { data: site } = await supabase
+  const { data: site } = await ctx.db
     .from("sites")
     .select("gallery_images")
     .eq("id", ctx.siteId)
@@ -242,50 +267,48 @@ export async function removeGalleryImage(formData: FormData) {
     ? (site!.gallery_images as string[])
     : [];
   const next = current.filter((u) => u !== url);
-  const { error } = await supabase
+  const { error } = await ctx.db
     .from("sites")
     .update({ gallery_images: next })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin");
+  revalidateSite(ctx.siteId);
 }
 
 export async function addReview(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
   const customer_name = ((formData.get("customer_name") as string) ?? "").trim();
   const text = ((formData.get("text") as string) ?? "").trim();
   const ratingRaw = (formData.get("rating") as string) ?? "5";
   const rating = Math.max(1, Math.min(5, parseInt(ratingRaw, 10) || 5));
   if (!customer_name || !text) throw new Error("Namn och text krävs.");
-  const supabase = await createClient();
-  const { error } = await supabase.from("site_reviews").insert({
+  const { error } = await ctx.db.from("site_reviews").insert({
     site_id: ctx.siteId,
     customer_name,
     text,
     rating,
   });
   if (error) throw new Error(error.message);
-  revalidatePath("/admin");
+  revalidateSite(ctx.siteId);
 }
 
 export async function removeReview(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
   const id = (formData.get("id") as string) ?? "";
   if (!id) return;
-  const supabase = await createClient();
-  const { error } = await supabase
+  const { error } = await ctx.db
     .from("site_reviews")
     .delete()
     .eq("id", id)
     .eq("site_id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin");
+  revalidateSite(ctx.siteId);
 }
 
 export async function duplicateSite(formData: FormData) {
-  const ctx = await getCtx();
+  const ctx = await resolveTarget(formData);
   if (!ctx?.siteId) redirect("/admin/login");
 
   const newSlug = ((formData.get("new_slug") as string) ?? "")
@@ -333,7 +356,8 @@ export async function duplicateSite(formData: FormData) {
     .insert({ site_id: copy.id, user_id: ctx.user.id, role: "owner" });
 
   revalidatePath("/admin");
-  redirect("/admin");
+  revalidatePath("/admin/oversikt");
+  redirect(ctx.elevated ? "/admin/oversikt" : "/admin");
 }
 
 export async function signOut() {
