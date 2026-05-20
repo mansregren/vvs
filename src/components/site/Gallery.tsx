@@ -9,7 +9,7 @@ export function Gallery({ site }: { site: Site }) {
           <div className="eyebrow mb-3">Galleri</div>
           <h2 className="h-display text-3xl md:text-4xl">Vårt arbete</h2>
           <p className="mt-4 text-lg text-[var(--muted)]">
-            Ett axplock av tidigare jobb — badrum, värmepumpar, rörarbeten.
+            Ett axplock av tidigare jobb.
           </p>
         </div>
         <div className="gallery-grid">
