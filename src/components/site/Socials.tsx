@@ -64,7 +64,7 @@ function SocialCard({
       href={url}
       target="_blank"
       rel="noreferrer"
-      className="card flex items-center gap-5 hover:shadow-md transition-shadow group"
+      className="card flex items-center gap-4 sm:gap-5 hover:shadow-md transition-shadow group"
     >
       <div
         className="shrink-0 w-14 h-14 rounded-xl grid place-items-center text-white"
@@ -74,11 +74,23 @@ function SocialCard({
       </div>
       <div className="min-w-0 flex-1">
         <div className="font-semibold text-lg">{label}</div>
-        <div className="text-sm text-[var(--muted)] truncate">{url}</div>
+        <div className="text-sm text-[var(--muted)]">{cta}</div>
       </div>
-      <div className="hidden sm:block text-sm font-medium text-[var(--foreground)]/70 group-hover:text-[var(--foreground)]">
-        {cta} →
-      </div>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+        className="shrink-0 text-[var(--muted)] group-hover:text-[var(--foreground)] transition-transform group-hover:translate-x-1"
+      >
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="13 6 19 12 13 18" />
+      </svg>
     </a>
   );
 }
