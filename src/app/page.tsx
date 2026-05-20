@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 import {
   getSiteByHost,
@@ -28,6 +29,31 @@ const PLATFORM_HOSTS = new Set([
   "caztmedia.com",
   "www.caztmedia.com",
 ]);
+
+export async function generateMetadata(): Promise<Metadata> {
+  const h = await headers();
+  const host = (h.get("host") ?? "").split(":")[0].toLowerCase();
+  const isPlatform =
+    PLATFORM_HOSTS.has(host) || host.endsWith(".vercel.app") || !host;
+
+  if (!isPlatform) {
+    const site = await getSiteByHost(host);
+    if (site) {
+      return {
+        title: site.name,
+        description: site.hero_tagline ?? null,
+      };
+    }
+  }
+
+  // Plattform-roten (caztmedia.com): neutral titel, ingen VVS-text, ej indexerbar.
+  return {
+    title: "Cazt Media",
+    description: null,
+    robots: { index: false, follow: false },
+    openGraph: { title: "Cazt Media" },
+  };
+}
 
 export default async function RootPage() {
   const h = await headers();
@@ -83,12 +109,12 @@ export default async function RootPage() {
   // bor på /hem.
   // ============================================================
   return (
-    <main className="min-h-[100dvh] flex flex-col items-center justify-center px-6 text-center">
+    <main className="min-h-[100dvh] flex flex-col items-center justify-center px-6 text-center bg-white">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/caztmedia.png"
         alt="Cazt Media"
-        className="w-56 md:w-72 h-auto mb-8"
+        className="w-80 md:w-[30rem] h-auto mb-8"
       />
       <a
         href="mailto:mansregren@caztmedia.com"
