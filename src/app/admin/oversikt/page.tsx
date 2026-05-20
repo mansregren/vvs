@@ -159,55 +159,76 @@ export default async function PlatformOverview() {
         </form>
       </section>
 
-      {/* Cert + Brand asset upload */}
-      <section className="space-y-6">
-        <div>
-          <div className="eyebrow mb-1" style={{ color: "var(--accent)" }}>
-            Logo-bibliotek
+      {/* Cert + Brand asset upload — hopfällbart så det inte tar upp adminen */}
+      <section>
+        <details className="group card">
+          <summary className="flex items-center justify-between gap-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <div>
+              <div className="eyebrow mb-1" style={{ color: "var(--accent)" }}>
+                Logo-bibliotek
+              </div>
+              <h2 className="text-xl font-semibold tracking-tight">
+                Certifikat- och märkesloggor
+              </h2>
+              <p className="text-sm text-[var(--muted)] mt-1">
+                {CERTIFICATIONS.length} certifikat · {BRAND_PARTNERS.length} märken.
+                Klicka för att öppna och ladda upp loggor.
+              </p>
+            </div>
+            <svg
+              className="w-5 h-5 shrink-0 text-[var(--muted)] transition-transform group-open:rotate-180"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden
+            >
+              <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </summary>
+
+          <div className="mt-6 space-y-6">
+            <p className="text-sm text-[var(--muted)] max-w-2xl">
+              Ladda upp officiella logo-filer som du har licens att använda (t.ex.
+              Säker Vatten-märket för auktoriserade firmor). Sajterna visar
+              uppladdad logo om den finns, annars en stiliserad badge.
+            </p>
+
+            <div>
+              <h3 className="font-medium mb-3">Certifikat ({CERTIFICATIONS.length})</h3>
+              <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {CERTIFICATIONS.map((c) => (
+                  <CertAssetCard
+                    key={c.key}
+                    cardKey={c.key}
+                    kind="certification"
+                    label={c.short}
+                    color={c.color}
+                    initials={c.initials}
+                    logoUrl={certAssets[c.key]}
+                  />
+                ))}
+              </ul>
+            </div>
+
+            <div className="pt-4">
+              <h3 className="font-medium mb-3">Märken ({BRAND_PARTNERS.length})</h3>
+              <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {BRAND_PARTNERS.map((b) => (
+                  <CertAssetCard
+                    key={b.key}
+                    cardKey={b.key}
+                    kind="brand"
+                    label={b.label}
+                    color={b.color}
+                    initials={b.initials}
+                    logoUrl={certAssets[b.key]}
+                  />
+                ))}
+              </ul>
+            </div>
           </div>
-          <h2 className="text-xl font-semibold tracking-tight">
-            Certifikat- och märkesloggor
-          </h2>
-          <p className="text-sm text-[var(--muted)] mt-1 max-w-2xl">
-            Ladda upp officiella logo-filer som du har licens att använda (t.ex.
-            Säker Vatten-märket för auktoriserade firmor). Sajterna visar
-            uppladdad logo om den finns, annars en stiliserad badge.
-          </p>
-        </div>
-
-        <div>
-          <h3 className="font-medium mb-3">Certifikat ({CERTIFICATIONS.length})</h3>
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {CERTIFICATIONS.map((c) => (
-              <CertAssetCard
-                key={c.key}
-                cardKey={c.key}
-                kind="certification"
-                label={c.short}
-                color={c.color}
-                initials={c.initials}
-                logoUrl={certAssets[c.key]}
-              />
-            ))}
-          </ul>
-        </div>
-
-        <div className="pt-4">
-          <h3 className="font-medium mb-3">Märken ({BRAND_PARTNERS.length})</h3>
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {BRAND_PARTNERS.map((b) => (
-              <CertAssetCard
-                key={b.key}
-                cardKey={b.key}
-                kind="brand"
-                label={b.label}
-                color={b.color}
-                initials={b.initials}
-                logoUrl={certAssets[b.key]}
-              />
-            ))}
-          </ul>
-        </div>
+        </details>
       </section>
 
       {/* Sajt-lista */}
@@ -342,32 +363,51 @@ function CertAssetCard({
   logoUrl?: string;
 }) {
   return (
-    <li className="card space-y-3">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-lg bg-white border border-[var(--border)] overflow-hidden grid place-items-center p-1.5 shrink-0">
-          {logoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={logoUrl}
-              alt={label}
-              className="max-w-full max-h-full object-contain"
-            />
-          ) : (
+    <li className="card !p-0 overflow-hidden">
+      <details className="group/card">
+        <summary className="flex items-center gap-3 p-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+          <div className="w-10 h-10 rounded-lg bg-white border border-[var(--border)] overflow-hidden grid place-items-center p-1 shrink-0">
+            {logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logoUrl}
+                alt={label}
+                className="max-w-full max-h-full object-contain"
+              />
+            ) : (
+              <div
+                className="w-full h-full rounded-md grid place-items-center text-white font-bold text-[10px]"
+                style={{
+                  background: `linear-gradient(135deg, ${color}, color-mix(in oklab, ${color} 70%, black))`,
+                }}
+                aria-hidden
+              >
+                {initials}
+              </div>
+            )}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="font-medium leading-tight truncate">{label}</div>
             <div
-              className="w-full h-full rounded-md grid place-items-center text-white font-bold text-xs"
-              style={{
-                background: `linear-gradient(135deg, ${color}, color-mix(in oklab, ${color} 70%, black))`,
-              }}
-              aria-hidden
+              className={`text-xs ${logoUrl ? "text-emerald-600" : "text-[var(--muted-2)]"}`}
             >
-              {initials}
+              {logoUrl ? "Logo uppladdad" : "Saknar logo"}
             </div>
-          )}
-        </div>
-        <div className="font-medium leading-tight truncate flex-1">{label}</div>
-      </div>
+          </div>
+          <svg
+            className="w-4 h-4 shrink-0 text-[var(--muted)] transition-transform group-open/card:rotate-180"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden
+          >
+            <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </summary>
 
-      <form action={uploadCertAsset} className="space-y-2">
+        <div className="p-3 pt-0 space-y-3">
+          <form action={uploadCertAsset} className="space-y-2">
         <input type="hidden" name="key" value={cardKey} />
         <input type="hidden" name="kind" value={kind} />
         <input
@@ -390,17 +430,19 @@ function CertAssetCard({
         </div>
       </form>
 
-      {logoUrl && (
-        <form action={removeCertAsset}>
-          <input type="hidden" name="key" value={cardKey} />
-          <button
-            type="submit"
-            className="text-xs text-red-600 hover:underline underline-offset-4"
-          >
-            Ta bort logo
-          </button>
-        </form>
-      )}
+          {logoUrl && (
+            <form action={removeCertAsset}>
+              <input type="hidden" name="key" value={cardKey} />
+              <button
+                type="submit"
+                className="text-xs text-red-600 hover:underline underline-offset-4"
+              >
+                Ta bort logo
+              </button>
+            </form>
+          )}
+        </div>
+      </details>
     </li>
   );
 }
