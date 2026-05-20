@@ -63,13 +63,13 @@ export default function InfoPage() {
   return (
     <main className="min-h-[100dvh] flex flex-col bg-white">
       {/* Header */}
-      <header className="border-b border-[var(--border)] sticky top-0 z-40 header-blur">
+      <header className="border-b border-[var(--border)] sticky top-0 z-40 bg-white">
         <div className="container-x flex items-center justify-between py-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/caztmedia.png"
             alt="Cazt Media"
-            className="w-28 md:w-32 h-auto"
+            className="w-40 md:w-52 h-auto"
           />
           <nav className="flex items-center gap-5 text-sm font-medium">
             <Link
