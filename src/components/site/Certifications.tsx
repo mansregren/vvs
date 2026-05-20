@@ -43,35 +43,29 @@ export function Certifications({
             return (
               <li
                 key={c.key}
-                className="card flex flex-col"
+                className="card flex flex-col items-center text-center"
               >
-                {logoUrl ? (
-                  <div className="relative h-24 md:h-28 mb-6 overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                <div className="h-24 md:h-28 mb-5 flex items-center justify-center">
+                  {logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={logoUrl}
                       alt={c.label}
-                      className="absolute inset-0 w-full h-full object-contain object-left"
+                      className="max-h-full max-w-full object-contain"
                     />
-                  </div>
-                ) : (
-                  <div className="mb-6">
+                  ) : (
                     <div
-                      className="text-2xl font-semibold tracking-tight leading-tight"
-                      style={{ color: c.color }}
-                    >
-                      {c.short}
-                    </div>
-                    <div
-                      className="h-0.5 w-10 mt-3 rounded-full"
-                      style={{ background: c.color, opacity: 0.4 }}
+                      className="w-20 h-20 rounded-2xl grid place-items-center text-white font-bold text-xl shadow-sm"
+                      style={{
+                        background: `linear-gradient(135deg, ${c.color}, color-mix(in oklab, ${c.color} 70%, black))`,
+                      }}
                       aria-hidden
-                    />
-                  </div>
-                )}
-                {logoUrl && (
-                  <div className="font-semibold leading-tight">{c.short}</div>
-                )}
+                    >
+                      {c.initials}
+                    </div>
+                  )}
+                </div>
+                <div className="font-semibold leading-tight">{c.short}</div>
                 <p className="text-sm text-[var(--muted)] mt-2 leading-relaxed">
                   {c.description}
                 </p>
