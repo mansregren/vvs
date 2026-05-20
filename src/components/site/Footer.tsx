@@ -1,4 +1,5 @@
 import { type Site } from "@/lib/types";
+import { showSiteName } from "@/lib/logo";
 
 export function Footer({ site }: { site: Site }) {
   const showFb = site.facebook_enabled && site.facebook_url;
@@ -14,12 +15,14 @@ export function Footer({ site }: { site: Site }) {
               <img
                 src={site.logo_url}
                 alt={site.name}
-                className="h-10 w-auto max-w-[120px] object-contain object-left shrink-0"
+                className="h-10 w-auto max-w-[200px] object-contain object-left shrink-0"
               />
             )}
-            <div className="font-semibold tracking-tight text-xl">
-              {site.name}
-            </div>
+            {showSiteName(site) && (
+              <div className="font-semibold tracking-tight text-xl">
+                {site.name}
+              </div>
+            )}
           </div>
           {site.tagline_secondary && (
             <p className="text-sm text-[var(--muted)] leading-relaxed max-w-md">

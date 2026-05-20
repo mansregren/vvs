@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { type Site } from "@/lib/types";
+import { showSiteName } from "@/lib/logo";
 
 type Section = { id: string; label: string };
 
@@ -43,12 +44,14 @@ export function Header({
               <img
                 src={site.logo_url}
                 alt={site.name}
-                className="h-11 md:h-12 w-auto max-w-[140px] object-contain object-left shrink-0"
+                className="h-11 md:h-12 w-auto max-w-[200px] md:max-w-[260px] object-contain object-left shrink-0"
               />
             )}
-            <span className="font-semibold tracking-tight text-lg md:text-2xl truncate">
-              {site.name}
-            </span>
+            {showSiteName(site) && (
+              <span className="font-semibold tracking-tight text-lg md:text-2xl truncate">
+                {site.name}
+              </span>
+            )}
           </a>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
