@@ -77,7 +77,7 @@ export function InstagramFeed({ site }: { site: Site }) {
                 boxShadow: "0 0 1px rgba(0,0,0,0.08)",
                 margin: 0,
                 maxWidth: "540px",
-                minWidth: "326px",
+                minWidth: 0,
                 padding: 0,
                 width: "100%",
               }}
