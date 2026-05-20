@@ -147,7 +147,7 @@ export default function InfoPage() {
                 </div>
                 <p className="mt-4 text-[var(--muted)] leading-relaxed">
                   Hemsida, hosting och löpande SEO-optimering ingår. Inga
-                  uppstartsavgifter.
+                  uppstartsavgifter och ingen bindningstid.
                 </p>
                 <p className="mt-2 text-sm text-[var(--muted-2)] leading-relaxed">
                   Domän tillkommer om du inte redan har en — vanligtvis
