@@ -15,7 +15,7 @@ export function Footer({ site }: { site: Site }) {
               <img
                 src={site.logo_url}
                 alt={site.name}
-                className="h-10 w-auto max-w-[200px] object-contain object-left shrink-0"
+                className="h-12 w-auto max-w-[240px] object-contain object-left shrink-0"
               />
             )}
             {showSiteName(site) && (
