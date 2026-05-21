@@ -97,10 +97,45 @@ export default function InfoPage() {
                   Se exempelsajt
                 </Link>
                 <a href="#kontakt" className="btn-ghost">
-                  Kontakta oss
+                  Kontakta mig
                 </a>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Förhandsvisning av exempelsajt */}
+        <section className="pb-10 md:pb-14">
+          <div className="container-x">
+            <Link
+              href="/demo"
+              className="group block max-w-3xl mx-auto rounded-2xl border border-[var(--border)] bg-white overflow-hidden shadow-[0_24px_60px_-24px_rgba(0,0,0,0.3)] transition-transform hover:-translate-y-1"
+            >
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)] bg-[var(--warm)]">
+                <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+                <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
+                <span className="w-3 h-3 rounded-full bg-[#28c840]" />
+                <span className="ml-3 text-xs text-[var(--muted-2)] truncate">
+                  caztmedia.com/demo
+                </span>
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/demo-preview.jpg"
+                alt="Exempel på en färdig VVS-hemsida"
+                className="w-full h-auto block"
+              />
+            </Link>
+            <p className="mt-4 text-center text-sm text-[var(--muted)]">
+              Så här kan din sajt se ut —{" "}
+              <Link
+                href="/demo"
+                className="underline underline-offset-4"
+                style={{ color: "var(--accent)" }}
+              >
+                öppna hela exempelsajten
+              </Link>
+            </p>
           </div>
         </section>
 
@@ -230,15 +265,24 @@ export default function InfoPage() {
                 Vill du komma igång?
               </h2>
               <p className="mt-4 text-[var(--muted)] leading-relaxed">
-                Hör av dig till Måns så går vi igenom vad din firma behöver.
+                Hör av dig till mig så går vi igenom vad din firma behöver.
                 Inga förpliktelser — bara ett samtal.
               </p>
-              <a
-                href="mailto:mansregren@caztmedia.com"
-                className="inline-block mt-6 text-xl md:text-2xl font-medium tracking-tight underline-offset-4 hover:underline"
-              >
-                mansregren@caztmedia.com
-              </a>
+              <div className="mt-6 flex flex-col gap-3">
+                <a
+                  href="tel:+46761997010"
+                  className="inline-flex items-center gap-2 text-xl md:text-2xl font-medium tracking-tight underline-offset-4 hover:underline"
+                  style={{ color: "var(--accent)" }}
+                >
+                  +46 76 199 70 10
+                </a>
+                <a
+                  href="mailto:mansregren@caztmedia.com"
+                  className="inline-block text-xl md:text-2xl font-medium tracking-tight underline-offset-4 hover:underline"
+                >
+                  mansregren@caztmedia.com
+                </a>
+              </div>
             </div>
           </div>
         </section>
