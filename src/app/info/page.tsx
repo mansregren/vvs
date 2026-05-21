@@ -31,6 +31,10 @@ const INCLUDED = [
     title: "Support och uppdateringar",
     body: "Behöver något ändras hör ni bara av er, så fixar vi det. Ingen väntan.",
   },
+  {
+    title: "Logga om ni saknar",
+    body: "Har ni ingen logga? Då hjälper jag er med en enkel — helt gratis, om ni vill.",
+  },
 ];
 
 const OM_MIG_PUNKTER = [
