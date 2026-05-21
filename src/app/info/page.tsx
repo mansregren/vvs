@@ -32,8 +32,8 @@ const INCLUDED = [
     body: "Behöver något ändras hör ni bara av er, så fixar vi det. Ingen väntan.",
   },
   {
-    title: "Logga om ni saknar",
-    body: "Har ni ingen logga? Då hjälper jag er med en enkel — helt gratis, om ni vill.",
+    title: "Logotyp om ni saknar",
+    body: "Har ni ingen logotyp? Då hjälper jag er med en enkel — helt gratis, om ni vill.",
   },
 ];
 
