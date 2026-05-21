@@ -13,14 +13,6 @@ export function Header({
   sections: Section[];
 }) {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -31,13 +23,7 @@ export function Header({
 
   return (
     <>
-      <header
-        className={`sticky top-0 z-40 transition-colors ${
-          scrolled
-            ? "header-blur border-b border-[var(--border)]"
-            : "bg-transparent"
-        }`}
-      >
+      <header className="sticky top-0 z-40 bg-white border-b border-[var(--border)]">
         <div className="container-x flex items-center justify-between gap-4 py-3">
           <a href="#top" className="flex items-center gap-3 min-w-0 flex-1">
             {site.logo_url && (

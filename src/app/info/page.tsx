@@ -17,28 +17,27 @@ export const metadata: Metadata = {
 const INCLUDED = [
   {
     title: "Färdig hemsida, designad åt er",
-    body: "Vi bygger sajten utifrån er firma — namn, tjänster, certifikat och bilder. Ni behöver inte röra en rad kod.",
+    body: "Byggd utifrån er firma — namn, tjänster, certifikat och bilder. Snabb och proffsig i både mobil och dator. Ni rör inte en rad kod.",
   },
   {
-    title: "Löpande SEO-optimering",
-    body: "Vi optimerar sajten så att ni syns på Google när kunder söker efter VVS och bygg lokalt.",
+    title: "Syns på Google",
+    body: "Löpande SEO så att ni dyker upp när kunder söker efter VVS, bygg och el lokalt.",
   },
   {
     title: "Hosting och domän",
     body: "Vi sköter driften och kopplar er egen domän. Allt fungerar utan att ni behöver tänka på tekniken.",
   },
   {
-    title: "Eget admin",
-    body: "Logga in och uppdatera tjänster, bilder, omdömen och kontaktuppgifter själva när som helst.",
-  },
-  {
-    title: "Mobilanpassad och snabb",
-    body: "Sajten ser lika proffsig ut i mobilen som på datorn — och laddar direkt.",
-  },
-  {
     title: "Support och uppdateringar",
     body: "Behöver något ändras hör ni bara av er, så fixar vi det. Ingen väntan.",
   },
+];
+
+const OM_MIG_PUNKTER = [
+  "Bor och jobbar i Skåne",
+  "Egen erfarenhet från VVS-branschen",
+  "Bygger sajter åt VVS, bygg och el",
+  "Kunnig inom hemsidor och SEO",
 ];
 
 const STEPS = [
@@ -140,9 +139,20 @@ export default function InfoPage() {
                   hemsida som sköts åt dig — månad för månad.
                 </p>
               </div>
-              <div className="card">
+              <div
+                className="card"
+                style={{
+                  borderColor: "var(--accent)",
+                  boxShadow: "0 0 0 4px var(--accent-soft)",
+                }}
+              >
                 <div className="flex items-baseline gap-2">
-                  <span className="h-display text-5xl md:text-6xl">499 kr</span>
+                  <span
+                    className="h-display text-5xl md:text-6xl"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    499 kr
+                  </span>
                   <span className="text-[var(--muted)] text-lg">/mån exkl. moms</span>
                 </div>
                 <p className="mt-4 text-[var(--muted)] leading-relaxed">
@@ -172,7 +182,11 @@ export default function InfoPage() {
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {INCLUDED.map((f) => (
-                <div key={f.title} className="card">
+                <div
+                  key={f.title}
+                  className="card"
+                  style={{ borderTop: "3px solid var(--accent)" }}
+                >
                   <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
                   <p className="text-[var(--muted)] leading-relaxed">{f.body}</p>
                 </div>
@@ -204,25 +218,43 @@ export default function InfoPage() {
           </div>
         </section>
 
-        {/* Exempel-CTA */}
-        <section className="section border-t border-[var(--border)]">
+        {/* Om mig */}
+        <section
+          className="section border-t border-[var(--border)]"
+          style={{ background: "var(--accent-soft)" }}
+        >
           <div className="container-x">
-            <div className="card flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div className="max-w-xl">
+            <div className="grid md:grid-cols-[1.4fr_1fr] gap-10 md:gap-14 items-start">
+              <div>
                 <div className="eyebrow mb-3" style={{ color: "var(--accent)" }}>
-                  Exempel
+                  Om mig
                 </div>
-                <h2 className="h-display text-2xl md:text-3xl">
-                  Se hur en färdig sajt kan se ut.
+                <h2 className="h-display text-3xl md:text-4xl">
+                  Jag heter Måns — och kan både rör och webb.
                 </h2>
-                <p className="mt-3 text-[var(--muted)] leading-relaxed">
-                  Vi har byggt en exempelsajt för en påhittad VVS-firma så du
-                  får en känsla för stilen och strukturen.
-                </p>
+                <div className="mt-5 space-y-4 text-[var(--muted)] leading-relaxed max-w-xl">
+                  <p>
+                    Jag bor i Skåne och jobbar själv inom VVS-branschen. Vid
+                    sidan av bygger jag hemsidor åt VVS-, bygg- och elföretag.
+                  </p>
+                  <p>
+                    Det betyder att jag förstår din vardag — och vet vad som
+                    faktiskt får kunder att höra av sig. Utöver hantverket har
+                    jag lång erfarenhet av hemsidor och SEO, så att din firma
+                    syns när folk söker lokalt.
+                  </p>
+                </div>
               </div>
-              <Link href="/demo" className="btn-primary shrink-0">
-                Öppna exempelsajt
-              </Link>
+              <div className="card bg-white">
+                <ul className="space-y-4">
+                  {OM_MIG_PUNKTER.map((p) => (
+                    <li key={p} className="flex items-start gap-3">
+                      <CheckIcon />
+                      <span className="font-medium">{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -263,5 +295,24 @@ export default function InfoPage() {
         </div>
       </footer>
     </main>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--accent)"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="mt-0.5 shrink-0"
+      aria-hidden
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
   );
 }
