@@ -50,7 +50,7 @@ export default function InfoPage() {
           <img
             src="/caztmedia.png"
             alt="Cazt Media"
-            className="w-52 md:w-72 h-auto -ml-3 md:-ml-4"
+            className="w-52 md:w-72 h-auto -ml-6 md:-ml-8"
           />
           <nav className="flex items-center gap-5 text-sm font-medium">
             <Link
