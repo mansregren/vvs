@@ -48,11 +48,27 @@ async function resolveTarget(formData?: FormData) {
   };
 }
 
-function revalidateSite(siteId: string, slug?: string) {
+async function revalidateSite(siteId: string, slug?: string) {
   revalidatePath("/admin");
   revalidatePath(`/admin/sajt/${siteId}`);
   revalidatePath("/admin/oversikt");
-  if (slug) revalidatePath(`/${slug}`);
+
+  // Bust den publika (ISR-cachade) sajt-sidan. Slå upp slug om den inte skickades.
+  let s = slug;
+  if (!s && siteId) {
+    const admin = createAdminClient();
+    const { data } = await admin
+      .from("sites")
+      .select("slug")
+      .eq("id", siteId)
+      .maybeSingle();
+    s = data?.slug ?? undefined;
+  }
+  if (s) {
+    revalidatePath(`/${s}`);
+    if (s === "demo-vvs") revalidatePath("/demo");
+  }
+  // Host-routade kunddomäner ligger på "/" — busta den layouten också.
   revalidatePath("/", "layout");
 }
 
@@ -182,7 +198,7 @@ export async function updateMySite(formData: FormData) {
   }
   if (res.error) throw new Error(res.error.message);
 
-  revalidateSite(ctx.siteId, res.data?.slug);
+  await revalidateSite(ctx.siteId, res.data?.slug);
 }
 
 async function uploadImageToBucket(
@@ -217,7 +233,7 @@ export async function uploadLogo(formData: FormData) {
     .update({ logo_url: url })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidateSite(ctx.siteId);
+  await revalidateSite(ctx.siteId);
 }
 
 export async function uploadHeroImage(formData: FormData) {
@@ -229,7 +245,7 @@ export async function uploadHeroImage(formData: FormData) {
     .update({ hero_image_url: url })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidateSite(ctx.siteId);
+  await revalidateSite(ctx.siteId);
 }
 
 export async function uploadGalleryImage(formData: FormData) {
@@ -250,7 +266,7 @@ export async function uploadGalleryImage(formData: FormData) {
     .update({ gallery_images: next })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidateSite(ctx.siteId);
+  await revalidateSite(ctx.siteId);
 }
 
 export async function removeGalleryImage(formData: FormData) {
@@ -272,7 +288,7 @@ export async function removeGalleryImage(formData: FormData) {
     .update({ gallery_images: next })
     .eq("id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidateSite(ctx.siteId);
+  await revalidateSite(ctx.siteId);
 }
 
 export async function addReview(formData: FormData) {
@@ -290,7 +306,7 @@ export async function addReview(formData: FormData) {
     rating,
   });
   if (error) throw new Error(error.message);
-  revalidateSite(ctx.siteId);
+  await revalidateSite(ctx.siteId);
 }
 
 export async function removeReview(formData: FormData) {
@@ -304,7 +320,7 @@ export async function removeReview(formData: FormData) {
     .eq("id", id)
     .eq("site_id", ctx.siteId);
   if (error) throw new Error(error.message);
-  revalidateSite(ctx.siteId);
+  await revalidateSite(ctx.siteId);
 }
 
 export async function duplicateSite(formData: FormData) {

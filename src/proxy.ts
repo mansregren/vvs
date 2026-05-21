@@ -55,8 +55,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // Skippa Next.js interna, statiska tillgångar, och images.
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  // Kör BARA på /admin. Publika sidor (/, /info, /demo, /[slug]) ska inte
+  // träffa middleware — annars körs ett Supabase auth-anrop på varje request
+  // och cachade/statiska sidor tappar sin CDN-snabbhet.
+  matcher: ["/admin", "/admin/:path*"],
 };

@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createPublicClient } from "@/lib/supabase/public";
 import { type Site, type Review, type SiteStats } from "./types";
 
 // Full kolumnsats (efter migration 0002+0003). Vid 42703/PGRST204 (okänd kolumn) faller vi tillbaka.
@@ -86,7 +87,7 @@ async function querySite(
 
 export async function getSiteBySlug(slug: string): Promise<Site | null> {
   return querySite(async (cols) => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("sites")
       .select(cols)
@@ -98,7 +99,7 @@ export async function getSiteBySlug(slug: string): Promise<Site | null> {
 
 export async function getSiteByHost(host: string): Promise<Site | null> {
   return querySite(async (cols) => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("sites")
       .select(cols)
@@ -119,9 +120,22 @@ export async function listSites(): Promise<
   return data ?? [];
 }
 
+// Cookie-fri lista över alla publika slugs — för generateStaticParams (build-time).
+export async function listPublicSlugs(): Promise<string[]> {
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase.from("sites").select("slug");
+    return (data ?? [])
+      .map((r) => (r as { slug: string }).slug)
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 export async function getReviewsForSite(siteId: string): Promise<Review[]> {
   if (!siteId || siteId.startsWith("mock-")) return [];
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("site_reviews")
     .select("*")

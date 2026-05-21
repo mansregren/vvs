@@ -15,9 +15,22 @@ import { Socials } from "@/components/site/Socials";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 import { getMockSite } from "@/lib/mock-data";
-import { getSiteBySlug, getReviewsForSite, getCertAssets } from "@/lib/site";
+import {
+  getSiteBySlug,
+  getReviewsForSite,
+  getCertAssets,
+  listPublicSlugs,
+} from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+// Cachas på CDN (ISR). Uppdateras direkt vid admin-spara via revalidatePath(`/${slug}`),
+// och som säkerhet automatiskt en gång i timmen.
+export const revalidate = 3600;
+
+// Prerendera kända firma-slugs vid build (statiska, CDN-snabba). Nya/okända
+// slugs genereras on-demand och cachas (dynamicParams = true som standard).
+export async function generateStaticParams() {
+  return (await listPublicSlugs()).map((slug) => ({ slug }));
+}
 
 async function loadSite(slug: string) {
   return (await getSiteBySlug(slug)) ?? getMockSite(slug);

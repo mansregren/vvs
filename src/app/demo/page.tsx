@@ -18,7 +18,9 @@ import { Footer } from "@/components/site/Footer";
 import { getMockSite } from "@/lib/mock-data";
 import { getSiteBySlug, getReviewsForSite, getCertAssets } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+// Cachas på CDN (ISR). Uppdateras direkt vid admin-spara via revalidatePath("/demo"),
+// och som säkerhet automatiskt en gång i timmen.
+export const revalidate = 3600;
 
 const DEMO_SLUG = "demo-vvs";
 
