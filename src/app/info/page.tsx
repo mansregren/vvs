@@ -121,7 +121,7 @@ export default function InfoPage() {
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/demo-preview.jpg"
+                src="/demo-preview-2.jpg"
                 alt="Exempel på en färdig VVS-hemsida"
                 className="w-full h-auto block"
               />
