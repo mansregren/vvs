@@ -40,24 +40,6 @@ const OM_MIG_PUNKTER = [
   "Kunnig inom hemsidor och SEO",
 ];
 
-const STEPS = [
-  {
-    step: "01",
-    title: "Hör av dig",
-    body: "Vi tar ett kort samtal om vad din firma behöver och vad sajten ska säga.",
-  },
-  {
-    step: "02",
-    title: "Vi bygger",
-    body: "Vi sätter upp sajten med ert innehåll, certifikat, bilder och tjänster.",
-  },
-  {
-    step: "03",
-    title: "Live på er domän",
-    body: "Sajten publiceras på er egen domän, optimerad för Google. Klart.",
-  },
-];
-
 export default function InfoPage() {
   return (
     <main className="min-h-[100dvh] flex flex-col bg-white">
@@ -192,29 +174,6 @@ export default function InfoPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Så funkar det */}
-        <section className="section border-t border-[var(--border)] bg-[var(--warm)]">
-          <div className="container-x">
-            <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="eyebrow mb-3">Så funkar det</div>
-              <h2 className="h-display text-3xl md:text-4xl">
-                Från första samtal till live.
-              </h2>
-            </div>
-            <ol className="grid md:grid-cols-3 gap-4 lg:gap-6">
-              {STEPS.map((s) => (
-                <li key={s.step} className="card">
-                  <div className="eyebrow mb-3" style={{ color: "var(--accent)" }}>
-                    {s.step}
-                  </div>
-                  <h3 className="font-semibold text-xl mb-2">{s.title}</h3>
-                  <p className="text-[var(--muted)] leading-relaxed">{s.body}</p>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
 
