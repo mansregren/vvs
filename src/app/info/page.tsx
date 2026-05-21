@@ -1,8 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Cazt Media — Hemsidor för VVS- och byggföretag",
   description:
@@ -127,6 +125,10 @@ export default function InfoPage() {
               <img
                 src="/demo-preview-2.jpg"
                 alt="Exempel på en färdig VVS-hemsida"
+                width={1200}
+                height={806}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto block"
               />
             </Link>
