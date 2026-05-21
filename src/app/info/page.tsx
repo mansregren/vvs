@@ -159,6 +159,10 @@ export default function InfoPage() {
                   Ingen stor investering, inga dolda kostnader. En komplett
                   hemsida som sköts åt dig — månad för månad.
                 </p>
+                <p className="mt-4 text-[var(--muted)] leading-relaxed max-w-md">
+                  Vi fakturerar månadsvis — jag behöver bara dina
+                  faktureringsuppgifter. Inget krångel med kortbetalning online.
+                </p>
               </div>
               <div
                 className="card"
