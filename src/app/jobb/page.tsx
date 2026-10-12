@@ -29,12 +29,6 @@ const SHOTS = [
 ];
 
 const BADGE = ["#2aa8f2", "#6f7dff", "#22c99a"];
-const PHRASES = [
-  ["Love what's next", "#7fd0fb"],
-  ["Your next chapter starts here", "#ffdc5e"],
-  ["More happy working", "#97a3ff"],
-] as const;
-
 const FEATURES = [
   {
     title: "Detaljerade annonser",
@@ -135,18 +129,6 @@ export default function JobbPage() {
         </div>
       </section>
 
-      {/* slogans */}
-      <section className="border-y border-[#0b2540]/6 bg-white/70">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-6 text-center text-lg font-semibold tracking-[-0.02em] text-[#0b2540] sm:flex-row sm:gap-6 sm:px-6 md:text-xl">
-          {PHRASES.map(([t], i) => (
-            <span key={t} className="flex items-center gap-6">
-              {i > 0 && <span className="hidden h-1.5 w-1.5 rounded-full bg-[#2aa8f2] sm:block" />}
-              {t}
-            </span>
-          ))}
-        </div>
-      </section>
-
       {/* arbetsgivare */}
       <section className="px-4 pt-16 sm:px-6 md:pt-20">
         <div className="mx-auto max-w-6xl">
@@ -161,34 +143,6 @@ export default function JobbPage() {
                   <span className="block text-[13px] font-semibold leading-tight sm:text-[14px]">{j.company}</span>
                   <span className="block truncate text-[12px] text-[#5b7590]">{j.city}</span>
                 </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* rekryterare */}
-      <section className="px-4 pt-16 sm:px-6 md:pt-20">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 rounded-[32px] bg-white px-6 py-10 sm:px-10 md:flex-row md:justify-between md:py-12">
-          <div className="max-w-md text-center md:text-left">
-            <h2 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl">
-              Choose a career that <span className="text-[#1e9be6]">chooses you too.</span>
-            </h2>
-            <p className="mt-3 text-[16px] leading-relaxed text-[#4a6680]">
-              Riktiga människor på andra sidan. Varje annons har en rekryterare med namn och ansikte — när ni båda swajpar höger pratar ni direkt i appen.
-            </p>
-          </div>
-          <div className="grid shrink-0 grid-cols-3 gap-x-4 gap-y-5 sm:gap-x-6">
-            {JOBS.map((j) => (
-              <div key={j.recruiter.name} className="flex w-[92px] flex-col items-center text-center">
-                <span className="relative">
-                  <Avatar src={j.recruiter.img} size={72} ring={3} className="shadow-[0_8px_20px_-8px_rgba(11,37,64,0.5)]" />
-                  <span className="absolute -bottom-1 -right-1 rounded-[9px] bg-white p-[2px]">
-                    <CompanyLogo job={j} size={24} radius={7} />
-                  </span>
-                </span>
-                <span className="mt-2 text-[13px] font-semibold leading-tight">{j.recruiter.name.split(" ")[0]}</span>
-                <span className="text-[11.5px] leading-tight text-[#5b7590]">{j.company}</span>
               </div>
             ))}
           </div>
@@ -224,8 +178,6 @@ export default function JobbPage() {
         </div>
       </section>
 
-      <LifeHours />
-
       {/* funktioner */}
       <section className="bg-[#cbe8fc] py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -246,11 +198,41 @@ export default function JobbPage() {
         </div>
       </section>
 
+      {/* rekryterare */}
+      <section className="px-4 pt-16 sm:px-6 md:pt-20">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 rounded-[32px] bg-white px-6 py-10 sm:px-10 md:flex-row md:justify-between md:py-12">
+          <div className="max-w-md text-center md:text-left">
+            <h2 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl">
+              Choose a career that <span className="text-[#1e9be6]">chooses you too.</span>
+            </h2>
+            <p className="mt-3 text-[16px] leading-relaxed text-[#4a6680]">
+              Riktiga människor på andra sidan. Varje annons har en rekryterare med namn och ansikte — när ni båda swajpar höger pratar ni direkt i appen.
+            </p>
+          </div>
+          <div className="grid shrink-0 grid-cols-3 gap-x-4 gap-y-5 sm:gap-x-6">
+            {JOBS.map((j) => (
+              <div key={j.recruiter.name} className="flex w-[92px] flex-col items-center text-center">
+                <span className="relative">
+                  <Avatar src={j.recruiter.img} size={72} ring={3} className="shadow-[0_8px_20px_-8px_rgba(11,37,64,0.5)]" />
+                  <span className="absolute -bottom-1 -right-1 rounded-[9px] bg-white p-[2px]">
+                    <CompanyLogo job={j} size={24} radius={7} />
+                  </span>
+                </span>
+                <span className="mt-2 text-[13px] font-semibold leading-tight">{j.recruiter.name.split(" ")[0]}</span>
+                <span className="text-[11.5px] leading-tight text-[#5b7590]">{j.company}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <LifeHours />
+
       {/* cta */}
       <section className="px-4 py-20 sm:px-6 md:py-28">
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[32px] bg-gradient-to-br from-[#2aa8f2] to-[#0b84d8] px-6 py-14 text-center text-white sm:px-12 md:py-20">
-          <span aria-hidden className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-[#ffdc5e]" />
-          <span aria-hidden className="absolute -bottom-16 -right-8 h-52 w-52 rounded-full bg-[#6f7dff]" />
+          <span aria-hidden className="absolute -left-14 -top-14 h-28 w-28 rounded-full bg-[#ffdc5e] sm:-left-10 sm:-top-10 sm:h-40 sm:w-40" />
+          <span aria-hidden className="absolute -bottom-20 -right-16 h-40 w-40 rounded-full sm:-bottom-16 sm:-right-8 sm:h-52 sm:w-52 bg-[#6f7dff]" />
           <span aria-hidden className="absolute bottom-8 left-[12%] h-6 w-6 rounded-full bg-[#22c99a]" />
           <h2 className="relative text-[34px] font-extrabold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
             Stop settling.
