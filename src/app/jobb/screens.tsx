@@ -275,27 +275,75 @@ export function AppHeader() {
       <Avatar src={USER_IMG} size={38} ring={2} className="shadow-[0_1px_4px_rgba(11,37,64,0.25)]" />
       <Logo />
       <IconBtn>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0" /></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.5a5.5 5.5 0 0 0-5.5 5.5v3.6c0 .9-.3 1.8-.9 2.5L4.5 16.6h15l-1.1-1.5a4.2 4.2 0 0 1-.9-2.5V9A5.5 5.5 0 0 0 12 3.5ZM9.8 19.5a2.4 2.4 0 0 0 4.4 0" /></svg>
       </IconBtn>
     </div>
   );
 }
 
+// Ikoner i SF Symbols-stil: outline när inaktiv, fylld när aktiv.
+function TabIcon({ name, filled }: { name: string; filled: boolean }) {
+  const common = { width: 27, height: 27, viewBox: "0 0 28 28", strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const sw = 1.7;
+  switch (name) {
+    case "Swajpa":
+      return filled ? (
+        <svg {...common}>
+          <path d="M10.5 8V6.6A2.1 2.1 0 0 1 12.6 4.5h2.8a2.1 2.1 0 0 1 2.1 2.1V8" fill="none" stroke="currentColor" strokeWidth={sw + 0.3} />
+          <rect x="3.5" y="8" width="21" height="15.5" rx="4" fill="currentColor" />
+          <path d="M3.5 14.5h21" stroke="#fff" strokeWidth="1.4" />
+          <rect x="12" y="13" width="4" height="3" rx="1" fill="#fff" />
+        </svg>
+      ) : (
+        <svg {...common} fill="none" stroke="currentColor" strokeWidth={sw}>
+          <path d="M10.5 8V6.6A2.1 2.1 0 0 1 12.6 4.5h2.8a2.1 2.1 0 0 1 2.1 2.1V8" />
+          <rect x="3.5" y="8" width="21" height="15.5" rx="4" />
+          <path d="M3.5 14.5h21" />
+        </svg>
+      );
+    case "Ansökningar":
+      return filled ? (
+        <svg {...common}>
+          <rect x="6" y="3.5" width="16" height="21" rx="3.5" fill="currentColor" />
+          <path d="M10 10h8M10 14h8M10 18h5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      ) : (
+        <svg {...common} fill="none" stroke="currentColor" strokeWidth={sw}>
+          <rect x="6" y="3.5" width="16" height="21" rx="3.5" />
+          <path d="M10 10h8M10 14h8M10 18h5" />
+        </svg>
+      );
+    case "Meddelanden":
+      return (
+        <svg {...common} fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={sw}>
+          <path d="M14 4.5c5.8 0 10.5 3.7 10.5 8.3S19.8 21 14 21c-1.2 0-2.3-.15-3.4-.43L5.5 23l1.3-3.9C4.7 17.6 3.5 15.3 3.5 12.8 3.5 8.2 8.2 4.5 14 4.5Z" />
+        </svg>
+      );
+    default:
+      return filled ? (
+        <svg {...common}>
+          <circle cx="14" cy="14" r="10.5" fill="currentColor" />
+          <circle cx="14" cy="11.3" r="3.6" fill="#fff" />
+          <path d="M7.3 21.2c1.5-2.6 3.9-3.9 6.7-3.9s5.2 1.3 6.7 3.9" fill="#fff" />
+        </svg>
+      ) : (
+        <svg {...common} fill="none" stroke="currentColor" strokeWidth={sw}>
+          <circle cx="14" cy="14" r="10.5" />
+          <circle cx="14" cy="11.3" r="3.6" />
+          <path d="M7.3 21.2c1.5-2.6 3.9-3.9 6.7-3.9s5.2 1.3 6.7 3.9" />
+        </svg>
+      );
+  }
+}
+
 export function TabBar({ active }: { active: number }) {
-  const tabs = [
-    { label: "Swajpa", d: "M4 8h16v11H4zM9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8M4 13h16" },
-    { label: "Ansökningar", d: "M5 4h14v16H5zM9 9h6M9 13h6M9 17h3" },
-    { label: "Meddelanden", d: "M4 5h16v11H9l-5 4z" },
-    { label: "Profil", d: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0" },
-  ];
+  const tabs = ["Swajpa", "Ansökningar", "Meddelanden", "Profil"];
   return (
-    <div className="absolute inset-x-0 bottom-0 flex h-[84px] justify-around border-t border-[#0b2540]/8 bg-white/95 pt-[10px] backdrop-blur">
+    <div className="absolute inset-x-0 bottom-0 flex h-[83px] justify-around border-t-[0.5px] border-black/15 bg-[#f9f9f9]/90 pt-[7px] backdrop-blur-xl">
       {tabs.map((t, i) => (
-        <span key={t.label} className="flex w-[80px] flex-col items-center gap-[3px]" style={{ color: i === active ? ACCENT_DEEP : "#9fb2c4" }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d={t.d} />
-          </svg>
-          <span className="text-[10px] font-medium">{t.label}</span>
+        <span key={t} className="flex w-[80px] flex-col items-center gap-[2px]" style={{ color: i === active ? ACCENT_DEEP : "#999999" }}>
+          <TabIcon name={t} filled={i === active} />
+          <span className="text-[10px] font-medium tracking-[0.01em]">{t}</span>
         </span>
       ))}
     </div>
@@ -386,7 +434,7 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
       {stamp && (
         <>
           <span
-            className="absolute left-[20px] top-[70px] -rotate-12 rounded-[10px] border-[3px] border-[#16b77a] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#16b77a]"
+            className="absolute left-[20px] top-[70px] -rotate-12 rounded-[10px] border-[3px] border-[#1e9be6] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#1e9be6]"
             style={{ opacity: stamp.like }}
           >
             SÖK
@@ -413,7 +461,7 @@ export function ActionButtons({ onNope, onSave, onLike }: { onNope?: () => void;
       <button type="button" aria-label="Spara" onClick={onSave} className={`${base} h-[48px] w-[48px]`} style={{ color: ACCENT }}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z" /></svg>
       </button>
-      <button type="button" aria-label="Sök jobbet" onClick={onLike} className={`${base} h-[62px] w-[62px] text-[#16b77a]`}>
+      <button type="button" aria-label="Sök jobbet" onClick={onLike} className={`${base} h-[62px] w-[62px] text-[#1e9be6]`}>
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.6 3 5 6.5 5c2 0 3.4 1.1 4.2 2.3h2.6C14.1 6.1 15.5 5 17.5 5 21 5 23.1 8.6 21.6 11.8 19.5 16.4 12 21 12 21Z" /></svg>
       </button>
     </div>
