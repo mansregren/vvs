@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import Swipe from "./Swipe";
+import Mockup from "./Mockup";
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -47,6 +48,8 @@ export default function JobbPage() {
 
         <Swipe />
       </div>
+
+      <Mockup />
     </main>
   );
 }
