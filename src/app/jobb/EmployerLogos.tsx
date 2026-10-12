@@ -55,11 +55,11 @@ function Sundets() {
 
 function Fjallpay() {
   return (
-    <span className="flex items-center gap-2 text-[#2b2d7a]">
+    <span className="flex items-center gap-2 text-[#0b2540]">
       <svg width="30" height="30" viewBox="0 0 30 30">
         <rect width="30" height="30" rx="9" fill="currentColor" />
         <path d="M5 22 12.5 10l4.5 7 2.5-3.5L25 22z" fill="#fff" />
-        <circle cx="21" cy="8.5" r="2" fill="#8f94ff" />
+        <circle cx="21" cy="8.5" r="2" fill="#2aa8f2" />
       </svg>
       <span className={`${space.className} text-[23px] font-bold leading-none tracking-[-0.05em]`}>fjällpay</span>
     </span>

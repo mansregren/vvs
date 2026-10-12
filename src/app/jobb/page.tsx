@@ -19,17 +19,17 @@ export const viewport = {
 const EARLY_ACCESS =
   "mailto:mansregren@caztmedia.com?subject=Tidig%20tillg%C3%A5ng%20till%20Work%20Crush";
 
-// Palett: Sky #2aa8f2 · Ice #dcf0fd · Navy #0b2540 · Periwinkle #6f7dff · Sunshine #ffdc5e · Mint #22c99a
+// Palett: Sky #2aa8f2 · Ice #dcf0fd · Navy #0b2540 · Sunshine #ffdc5e · Mint #22c99a
 const SHOTS = [
-  { title: "Love what's next", sub: "Swajpa på riktiga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
-  { title: "Brevet skrivs åt dig", sub: "Personligt, utifrån annonsen och din erfarenhet.", screen: <LetterScreen />, bg: "linear-gradient(180deg,#0b2540 0%,#14406b 100%)", dark: true },
-  { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "linear-gradient(180deg,#fff0b3 0%,#ffdc5e 100%)" },
-  { title: "Prata direkt med rekryteraren", sub: "Riktiga människor, inga svarta hål.", screen: <MessagesScreen />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
-  { title: "Allt på ett ställe", sub: "Se vem som läst din ansökan.", screen: <ListScreen />, bg: "linear-gradient(180deg,#2aa8f2 0%,#0b84d8 100%)", dark: true },
-  { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "linear-gradient(180deg,#97a3ff 0%,#6f7dff 100%)", dark: true },
+  { title: "Love what's next", sub: "Swajpa på riktiga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "#2aa8f2", dark: true },
+  { title: "Brevet skrivs åt dig", sub: "Personligt, utifrån annonsen och din erfarenhet.", screen: <LetterScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Prata direkt med rekryteraren", sub: "Riktiga människor, inga svarta hål.", screen: <MessagesScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Allt på ett ställe", sub: "Se vem som läst din ansökan.", screen: <ListScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "#2aa8f2", dark: true },
 ];
 
-const BADGE = ["#2aa8f2", "#6f7dff", "#22c99a"];
+const BADGE = ["#5bc0f8", "#1e8fdc", "#0b2540"];
 const FEATURES = [
   {
     title: "Detaljerade annonser",
@@ -68,7 +68,7 @@ export default function JobbPage() {
           className="pointer-events-none absolute inset-x-0 top-0 h-[720px]"
           style={{
             background:
-              "radial-gradient(45% 40% at 80% 30%, rgba(42,168,242,0.30) 0%, rgba(42,168,242,0) 70%), radial-gradient(30% 30% at 92% 75%, rgba(111,125,255,0.22) 0%, rgba(111,125,255,0) 70%), radial-gradient(30% 30% at 55% 85%, rgba(255,201,60,0.25) 0%, rgba(255,201,60,0) 70%), radial-gradient(35% 35% at 5% 10%, rgba(34,201,154,0.14) 0%, rgba(34,201,154,0) 70%)",
+              "radial-gradient(45% 40% at 80% 30%, rgba(42,168,242,0.30) 0%, rgba(42,168,242,0) 70%), radial-gradient(30% 30% at 92% 75%, rgba(42,168,242,0.22) 0%, rgba(42,168,242,0) 70%), radial-gradient(30% 30% at 55% 85%, rgba(255,201,60,0.25) 0%, rgba(255,201,60,0) 70%), radial-gradient(35% 35% at 5% 10%, rgba(34,201,154,0.14) 0%, rgba(34,201,154,0) 70%)",
           }}
         />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-16 pt-10 sm:px-6 md:grid-cols-[1.1fr_1fr] md:pb-24 md:pt-20">
@@ -110,7 +110,7 @@ export default function JobbPage() {
               <Phone width={320}>
                 <AppSwipe />
               </Phone>
-              <span className="absolute -top-4 left-0 z-10 -rotate-6 rounded-full bg-[#6f7dff] sm:top-16 sm:-left-24 px-4 py-2 text-sm font-bold text-white shadow-[0_12px_24px_-10px_rgba(111,125,255,0.9)]">
+              <span className="absolute -top-4 left-0 z-10 -rotate-6 rounded-full bg-[#2aa8f2] sm:top-16 sm:-left-24 px-4 py-2 text-sm font-bold text-white shadow-[0_12px_24px_-10px_rgba(42,168,242,0.9)]">
                 Love what&apos;s next ✦
               </span>
               <span className="absolute -right-3 top-[44%] z-10 hidden rotate-3 sm:flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2.5 text-[13px] font-semibold shadow-[0_14px_30px_-12px_rgba(11,37,64,0.45)] sm:-right-20">
@@ -175,7 +175,7 @@ export default function JobbPage() {
       <section className="bg-[#cbe8fc] py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="max-w-2xl text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl">
-            More <span className="text-[#6f7dff]">happy</span> working.
+            More <span className="text-[#2aa8f2]">happy</span> working.
           </h2>
           <div className="mt-12 grid gap-4 md:grid-cols-3">
             {FEATURES.map((f, i) => (
@@ -223,7 +223,7 @@ export default function JobbPage() {
       <section className="px-4 py-20 sm:px-6 md:py-28">
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[32px] bg-gradient-to-br from-[#2aa8f2] to-[#0b84d8] px-6 py-14 text-center text-white sm:px-12 md:py-20">
           <span aria-hidden className="absolute -left-14 -top-14 h-28 w-28 rounded-full bg-[#ffdc5e] sm:-left-10 sm:-top-10 sm:h-40 sm:w-40" />
-          <span aria-hidden className="absolute -bottom-20 -right-16 h-40 w-40 rounded-full sm:-bottom-16 sm:-right-8 sm:h-52 sm:w-52 bg-[#6f7dff]" />
+          <span aria-hidden className="absolute -bottom-20 -right-16 h-40 w-40 rounded-full sm:-bottom-16 sm:-right-8 sm:h-52 sm:w-52 bg-[#0b2540]" />
           <span aria-hidden className="absolute bottom-8 left-[12%] h-6 w-6 rounded-full bg-[#22c99a]" />
           <h2 className="relative text-[34px] font-extrabold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
             Stop settling.

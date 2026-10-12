@@ -42,11 +42,11 @@ const BRAND: Record<LogoKind, { bg: string; mark: React.ReactNode }> = {
     ),
   },
   peak: {
-    bg: "#2b2d7a",
+    bg: "#0b2540",
     mark: (
       <svg viewBox="0 0 30 30">
         <path d="M3 24 12 10l5 8 3-4 7 10z" fill="#fff" />
-        <circle cx="22" cy="7.5" r="2.4" fill="#8f94ff" />
+        <circle cx="22" cy="7.5" r="2.4" fill="#2aa8f2" />
       </svg>
     ),
   },
@@ -212,7 +212,7 @@ export const JOBS: Job[] = [
     deadline: "15 nov",
     distance: "Distans möjligt",
     posted: "3 dagar sedan",
-    gradient: "linear-gradient(135deg,#2b2d7a 0%,#6a6ff0 100%)",
+    gradient: "linear-gradient(135deg,#0b3d66 0%,#2aa8f2 100%)",
   },
   {
     field: "El",
