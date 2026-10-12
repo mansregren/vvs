@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Phone from "./Phone";
 import AppSwipe from "./AppSwipe";
-import { ListScreen, LetterScreen, Logo, MatchScreen, ReportScreen, SwipeStatic, JOBS } from "./screens";
+import { ListScreen, LetterScreen, Logo, MatchScreen, ReportScreen, SwipeStatic } from "./screens";
 
 export const metadata: Metadata = {
   title: "Work Crush — Love your job",
@@ -17,13 +17,21 @@ export const viewport = {
 const EARLY_ACCESS =
   "mailto:mansregren@caztmedia.com?subject=Tidig%20tillg%C3%A5ng%20till%20Work%20Crush";
 
+// Palett: Sky #2aa8f2 · Ice #dcf0fd · Navy #0b2540 · Coral #ff6f61 · Sunshine #ffc93c · Mint #22c99a
 const SHOTS = [
-  { title: "Swajpa höger på din framtid", sub: "Riktiga lediga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
+  { title: "Love what's next", sub: "Swajpa på riktiga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
   { title: "Brevet skrivs åt dig", sub: "Personligt, utifrån annonsen och din erfarenhet.", screen: <LetterScreen />, bg: "linear-gradient(180deg,#0b2540 0%,#14406b 100%)", dark: true },
-  { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
+  { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "linear-gradient(180deg,#ffe08a 0%,#ffc93c 100%)" },
   { title: "Allt på ett ställe", sub: "Se vem som läst din ansökan.", screen: <ListScreen />, bg: "linear-gradient(180deg,#2aa8f2 0%,#0b84d8 100%)", dark: true },
-  { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
+  { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "linear-gradient(180deg,#ff8f7a 0%,#ff6f61 100%)", dark: true },
 ];
+
+const BADGE = ["#2aa8f2", "#ff6f61", "#22c99a"];
+const PHRASES = [
+  ["Love what's next", "#7fd0fb"],
+  ["Your next chapter starts here", "#ffc93c"],
+  ["More happy working", "#ff8f7a"],
+] as const;
 
 const FEATURES = [
   {
@@ -63,7 +71,7 @@ export default function JobbPage() {
           className="pointer-events-none absolute inset-x-0 top-0 h-[720px]"
           style={{
             background:
-              "radial-gradient(60% 50% at 75% 35%, rgba(42,168,242,0.22) 0%, rgba(42,168,242,0) 70%), radial-gradient(40% 40% at 10% 10%, rgba(127,208,251,0.25) 0%, rgba(127,208,251,0) 70%)",
+              "radial-gradient(45% 40% at 80% 30%, rgba(42,168,242,0.30) 0%, rgba(42,168,242,0) 70%), radial-gradient(30% 30% at 92% 75%, rgba(255,111,97,0.22) 0%, rgba(255,111,97,0) 70%), radial-gradient(30% 30% at 55% 85%, rgba(255,201,60,0.25) 0%, rgba(255,201,60,0) 70%), radial-gradient(35% 35% at 5% 10%, rgba(34,201,154,0.14) 0%, rgba(34,201,154,0) 70%)",
           }}
         />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-16 pt-10 sm:px-6 md:grid-cols-[1.1fr_1fr] md:pb-24 md:pt-20">
@@ -101,23 +109,37 @@ export default function JobbPage() {
           </div>
 
           <div className="flex flex-col items-center">
-            <Phone width={320}>
-              <AppSwipe />
-            </Phone>
+            <div className="relative">
+              <Phone width={320}>
+                <AppSwipe />
+              </Phone>
+              <span className="absolute -top-4 left-0 z-10 -rotate-6 rounded-full bg-[#ff6f61] sm:top-16 sm:-left-24 px-4 py-2 text-sm font-bold text-white shadow-[0_12px_24px_-10px_rgba(255,111,97,0.9)]">
+                Love what&apos;s next ✦
+              </span>
+              <span className="absolute -right-3 top-[44%] z-10 hidden rotate-3 sm:flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2.5 text-[13px] font-semibold shadow-[0_14px_30px_-12px_rgba(11,37,64,0.45)] sm:-right-20">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#22c99a]" />3 nya matchningar
+              </span>
+              <span className="absolute -bottom-4 right-0 z-10 rotate-[-4deg] sm:bottom-28 sm:-left-20 sm:right-auto rounded-2xl bg-[#ffc93c] px-3.5 py-2.5 text-[13px] font-bold text-[#0b2540] shadow-[0_14px_30px_-12px_rgba(255,170,0,0.8)]">
+                Intervju imorgon 10:00
+              </span>
+            </div>
             <p className="mt-5 text-center text-sm text-[#7690a8] md:hidden">Dra kortet åt höger eller vänster.</p>
           </div>
         </div>
       </section>
 
-      {/* yrkesrad */}
-      <section className="border-y border-[#0b2540]/6 bg-[#cbe8fc]">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 py-6 text-[15px] font-medium text-[#4a6680] sm:px-6">
-          {JOBS.map((j) => (
-            <span key={j.field}>{j.field}</span>
-          ))}
-          <span>Bygg</span>
-          <span>Marknad</span>
-          <span>Logistik</span>
+      {/* löpband */}
+      <section className="overflow-hidden bg-[#0b2540] py-5">
+        <style>{`@keyframes wc-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+        <div className="flex w-max animate-[wc-marquee_28s_linear_infinite] items-center gap-8 whitespace-nowrap pr-8">
+          {[0, 1, 2, 3].flatMap((k) =>
+            PHRASES.map(([t, c]) => (
+              <span key={`${k}-${t}`} className="flex items-center gap-8 text-2xl font-extrabold tracking-[-0.03em] md:text-3xl">
+                <span style={{ color: c }}>{t}</span>
+                <span className="text-[#22c99a]">✦</span>
+              </span>
+            )),
+          )}
         </div>
       </section>
 
@@ -154,12 +176,12 @@ export default function JobbPage() {
       <section className="bg-[#cbe8fc] py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="max-w-2xl text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl">
-            Jobbsök som inte känns som ett jobb.
+            More <span className="text-[#ff6f61]">happy</span> working.
           </h2>
           <div className="mt-12 grid gap-4 md:grid-cols-3">
             {FEATURES.map((f, i) => (
               <div key={f.title} className="rounded-3xl border border-[#0b2540]/6 bg-white p-7">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2aa8f2] to-[#0b84d8] text-sm font-semibold text-white">
+                <span className="grid h-10 w-10 place-items-center rounded-xl text-sm font-semibold text-white" style={{ background: BADGE[i] }}>
                   {i + 1}
                 </span>
                 <h3 className="mt-5 text-xl font-semibold tracking-tight">{f.title}</h3>
@@ -172,16 +194,21 @@ export default function JobbPage() {
 
       {/* cta */}
       <section className="px-4 py-20 sm:px-6 md:py-28">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-[32px] bg-[#0b2540] px-6 py-14 text-center text-white sm:px-12 md:py-20">
-          <h2 className="text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl">
-            Nästa jobb är ett swajp bort.
+        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[32px] bg-gradient-to-br from-[#2aa8f2] to-[#0b84d8] px-6 py-14 text-center text-white sm:px-12 md:py-20">
+          <span aria-hidden className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-[#ffc93c]" />
+          <span aria-hidden className="absolute -bottom-16 -right-8 h-52 w-52 rounded-full bg-[#ff6f61]" />
+          <span aria-hidden className="absolute bottom-8 left-[12%] h-6 w-6 rounded-full bg-[#22c99a]" />
+          <h2 className="relative text-[34px] font-extrabold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
+            Your next chapter
+            <br />
+            starts here.
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-[17px] text-white/70">
-            Skriv upp dig så hör vi av oss när appen släpps.
+          <p className="relative mx-auto mt-4 max-w-md text-[17px] text-white/85">
+            Nästa jobb är ett swajp bort. Skriv upp dig så hör vi av oss när appen släpps.
           </p>
           <a
             href={EARLY_ACCESS}
-            className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-[15px] font-semibold text-[#0b2540] transition hover:bg-[#e8f6ff]"
+            className="relative mt-8 inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-[15px] font-semibold text-[#0b2540] transition hover:bg-[#e8f6ff]"
           >
             Få tidig tillgång
           </a>
