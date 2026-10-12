@@ -129,6 +129,8 @@ export default function JobbPage() {
         </div>
       </section>
 
+      <LifeHours />
+
       {/* arbetsgivare */}
       <section className="px-4 pt-16 sm:px-6 md:pt-20">
         <div className="mx-auto max-w-6xl">
@@ -225,8 +227,6 @@ export default function JobbPage() {
           </div>
         </div>
       </section>
-
-      <LifeHours />
 
       {/* cta */}
       <section className="px-4 py-20 sm:px-6 md:py-28">
