@@ -253,12 +253,12 @@ export default function JobbPage() {
           <span aria-hidden className="absolute -bottom-16 -right-8 h-52 w-52 rounded-full bg-[#6f7dff]" />
           <span aria-hidden className="absolute bottom-8 left-[12%] h-6 w-6 rounded-full bg-[#22c99a]" />
           <h2 className="relative text-[34px] font-extrabold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
-            Your next chapter
+            Stop settling.
             <br />
-            starts here.
+            Start swiping.
           </h2>
           <p className="relative mx-auto mt-4 max-w-md text-[17px] text-white/85">
-            Nästa jobb är ett swajp bort. Skriv upp dig så hör vi av oss när appen släpps.
+            Your next chapter starts here. Skriv upp dig så hör vi av oss när appen släpps.
           </p>
           <a
             href={EARLY_ACCESS}
