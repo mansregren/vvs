@@ -4,9 +4,9 @@ import AppSwipe from "./AppSwipe";
 import { ListScreen, LetterScreen, Logo, MatchScreen, ReportScreen, SwipeStatic, JOBS } from "./screens";
 
 export const metadata: Metadata = {
-  title: "jobbswajp — Swajpa höger på din framtid",
+  title: "Work Crush — Swajpa höger på din framtid",
   description:
-    "Swajpa höger för att bli jurist. Swajpa höger på ekonomi. jobbswajp matchar dig med lediga jobb och skriver ansökan åt dig.",
+    "Swajpa höger för att bli jurist. Swajpa höger på ekonomi. Work Crush matchar dig med lediga jobb och skriver ansökan åt dig.",
   robots: { index: false, follow: false },
 };
 
@@ -15,7 +15,7 @@ export const viewport = {
 };
 
 const EARLY_ACCESS =
-  "mailto:mansregren@caztmedia.com?subject=Tidig%20tillg%C3%A5ng%20till%20jobbswajp";
+  "mailto:mansregren@caztmedia.com?subject=Tidig%20tillg%C3%A5ng%20till%20Work%20Crush";
 
 const SHOTS = [
   { title: "Swajpa höger på din framtid", sub: "Riktiga lediga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
@@ -78,7 +78,7 @@ export default function JobbPage() {
               <span className="bg-gradient-to-r from-[#2aa8f2] to-[#0b84d8] bg-clip-text text-transparent">din framtid.</span>
             </h1>
             <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-[#4a6680] sm:text-lg">
-              Swajpa höger för att bli jurist. Swajpa höger på ekonomi. jobbswajp visar lediga jobb
+              Swajpa höger för att bli jurist. Swajpa höger på ekonomi. Work Crush visar lediga jobb
               nära dig — och skriver ansökan åt dig när du säger ja.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -126,7 +126,7 @@ export default function JobbPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0b84d8]">App Store</p>
           <h2 className="mt-3 max-w-2xl text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl">
-            Så ser jobbswajp ut i telefonen.
+            Så ser Work Crush ut i telefonen.
           </h2>
         </div>
         <div className="mx-auto mt-10 max-w-6xl">
@@ -188,7 +188,7 @@ export default function JobbPage() {
         </div>
       </section>
 
-      <footer className="pb-10 text-center text-sm text-[#7690a8]">© 2026 jobbswajp · Ett koncept från Cazt Media</footer>
+      <footer className="pb-10 text-center text-sm text-[#7690a8]">© 2026 Work Crush · Ett koncept från Cazt Media</footer>
     </main>
   );
 }

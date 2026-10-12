@@ -174,11 +174,11 @@ export function Logo({ size = 22 }: { size?: number }) {
         style={{ width: size + 8, height: size + 8, background: `linear-gradient(135deg,${ACCENT},${ACCENT_DEEP})` }}
       >
         <svg width={size * 0.62} height={size * 0.62} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12h12M13 6l6 6-6 6" />
+          <path d="M12 20s-7-4.3-8.9-8.6C1.7 8.4 3.6 5 6.9 5c1.9 0 3.2 1 4 2.2h2.2C13.9 6 15.2 5 17.1 5c3.3 0 5.2 3.4 3.8 6.4C19 15.7 12 20 12 20Z" fill="currentColor" stroke="none" />
         </svg>
       </span>
       <span className="font-semibold tracking-tight" style={{ fontSize: size, color: INK }}>
-        jobbswajp
+        Work Crush
       </span>
     </span>
   );
