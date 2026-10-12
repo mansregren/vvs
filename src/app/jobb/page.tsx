@@ -110,7 +110,7 @@ export default function JobbPage() {
               <Phone width={320}>
                 <AppSwipe />
               </Phone>
-              <span className="absolute -top-4 left-0 z-10 -rotate-6 rounded-full bg-[#2aa8f2] sm:top-16 sm:-left-24 px-4 py-2 text-sm font-bold text-white shadow-[0_12px_24px_-10px_rgba(42,168,242,0.9)]">
+              <span className="absolute -top-4 left-0 z-10 -rotate-6 rounded-full bg-[#0b2540] sm:top-16 sm:-left-24 px-4 py-2 text-sm font-bold text-white shadow-[0_12px_24px_-10px_rgba(42,168,242,0.9)]">
                 Love what&apos;s next ✦
               </span>
               <span className="absolute -right-3 top-[44%] z-10 hidden rotate-3 sm:flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2.5 text-[13px] font-semibold shadow-[0_14px_30px_-12px_rgba(11,37,64,0.45)] sm:-right-20">

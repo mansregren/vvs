@@ -5,6 +5,9 @@ export const MUTED = "#5b7590";
 export const ACCENT = "#2aa8f2";
 export const ACCENT_DEEP = "#0b84d8";
 export const APP_BG = "#f3f9fe";
+// Swajp-vyn: loggblå bakgrund med nästan vita, ljusblå kort.
+export const SWIPE_BG = "#2aa8f2";
+export const CARD_BG = "#f5fbff";
 
 export type LogoKind = "wave" | "boxes" | "cross" | "peak" | "bolt" | "book";
 
@@ -285,28 +288,31 @@ export function StatusBar({ light = false }: { light?: boolean }) {
   );
 }
 
-export function Logo({ size = 22 }: { size?: number }) {
+export function Logo({ size = 22, light = false }: { size?: number; light?: boolean }) {
   return (
-    <span className="font-extrabold leading-none tracking-[-0.045em]" style={{ fontSize: size + 2, color: INK }}>
-      Work <span style={{ color: ACCENT }}>Crush</span>
+    <span className="font-extrabold leading-none tracking-[-0.045em]" style={{ fontSize: size + 2, color: light ? "#ffffff" : INK }}>
+      Work <span style={{ color: light ? INK : ACCENT }}>Crush</span>
     </span>
   );
 }
 
-function IconBtn({ children }: { children: React.ReactNode }) {
+function IconBtn({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-white shadow-[0_1px_3px_rgba(11,37,64,0.12)]" style={{ color: INK }}>
+    <span
+      className={`grid h-[38px] w-[38px] place-items-center rounded-full ${light ? "bg-white/20 text-white" : "bg-white shadow-[0_1px_3px_rgba(11,37,64,0.12)]"}`}
+      style={light ? undefined : { color: INK }}
+    >
       {children}
     </span>
   );
 }
 
-export function AppHeader() {
+export function AppHeader({ light = false }: { light?: boolean }) {
   return (
     <div className="flex items-center justify-between px-[18px] pb-[10px] pt-[4px]">
       <Avatar src={USER_IMG} size={38} ring={2} className="shadow-[0_1px_4px_rgba(11,37,64,0.25)]" />
-      <Logo />
-      <IconBtn>
+      <Logo light={light} />
+      <IconBtn light={light}>
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.5a5.5 5.5 0 0 0-5.5 5.5v3.6c0 .9-.3 1.8-.9 2.5L4.5 16.6h15l-1.1-1.5a4.2 4.2 0 0 1-.9-2.5V9A5.5 5.5 0 0 0 12 3.5ZM9.8 19.5a2.4 2.4 0 0 0 4.4 0" /></svg>
       </IconBtn>
     </div>
@@ -397,7 +403,7 @@ function Meta({ label, value }: { label: string; value: string }) {
 
 export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope: number } }) {
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-[26px] bg-white shadow-[0_18px_40px_-18px_rgba(11,37,64,0.45)] ring-1 ring-[#0b2540]/6">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-[26px] shadow-[0_22px_44px_-18px_rgba(11,37,64,0.55)]" style={{ background: CARD_BG }}>
       <div
         className="relative bg-cover bg-center px-[18px] pb-[14px] pt-[14px] text-white"
         style={{ backgroundImage: `linear-gradient(180deg,rgba(11,37,64,0.15) 0%,rgba(11,37,64,0.35) 40%,rgba(11,37,64,0.88) 100%),url(${job.cover})` }}
@@ -427,7 +433,7 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
           {job.title}
         </h3>
 
-        <div className="mt-[10px] grid grid-cols-2 gap-x-[12px] gap-y-[8px] rounded-[14px] bg-[#f3f9fe] px-[12px] py-[10px]">
+        <div className="mt-[10px] grid grid-cols-2 gap-x-[12px] gap-y-[8px] rounded-[14px] bg-[#e4f2fd] px-[12px] py-[10px]">
           <div className="col-span-2">
             <Meta label="Lön" value={job.salary} />
           </div>
@@ -515,11 +521,11 @@ function Screen({ children, bg = APP_BG }: { children: React.ReactNode; bg?: str
 
 export function SwipeStatic({ job = JOBS[0] }: { job?: Job }) {
   return (
-    <Screen>
-      <StatusBar />
-      <AppHeader />
+    <Screen bg={SWIPE_BG}>
+      <StatusBar light />
+      <AppHeader light />
       <div className="relative mx-[16px] h-[560px]">
-        <div className="absolute inset-x-[14px] top-[12px] bottom-[-10px] rounded-[26px] bg-[#d8ecfa]" />
+        <div className="absolute inset-x-[14px] top-[12px] bottom-[-10px] rounded-[26px] bg-white/35" />
         <div className="absolute inset-0">
           <JobCard job={job} stamp={{ like: 1, nope: 0 }} />
         </div>

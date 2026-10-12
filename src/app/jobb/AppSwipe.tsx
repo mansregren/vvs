@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ACCENT, ACCENT_DEEP, APP_BG, ActionButtons, AppHeader, Avatar, CompanyLogo, INK, JOBS, JobCard, MUTED, StatusBar, TabBar, USER_IMG, type Job } from "./screens";
+import { ACCENT, ACCENT_DEEP, ActionButtons, AppHeader, Avatar, CompanyLogo, INK, JOBS, JobCard, MUTED, StatusBar, TabBar, USER_IMG, SWIPE_BG, CARD_BG, type Job } from "./screens";
 
 const THRESHOLD = 100;
 
@@ -71,12 +71,12 @@ export default function AppSwipe() {
   const nope = Math.min(Math.max(-dx / THRESHOLD, 0), 1);
 
   return (
-    <div className="relative h-full w-full select-none" style={{ background: APP_BG, color: INK }}>
-      <StatusBar />
-      <AppHeader />
+    <div className="relative h-full w-full select-none" style={{ background: SWIPE_BG, color: INK }}>
+      <StatusBar light />
+      <AppHeader light />
 
       {done ? (
-        <div className="mx-[16px] flex h-[560px] flex-col items-center justify-center rounded-[26px] bg-white px-[28px] text-center shadow-[0_18px_40px_-18px_rgba(11,37,64,0.35)]">
+        <div className="mx-[16px] flex h-[560px] flex-col items-center justify-center rounded-[26px] px-[28px] text-center shadow-[0_22px_44px_-18px_rgba(11,37,64,0.55)]" style={{ background: CARD_BG }}>
           <span className="grid h-[72px] w-[72px] place-items-center rounded-full text-[32px] text-white" style={{ background: `linear-gradient(135deg,${ACCENT},${ACCENT_DEEP})` }}>
             ✓
           </span>
