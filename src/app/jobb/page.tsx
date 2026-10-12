@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Phone from "./Phone";
 import AppSwipe from "./AppSwipe";
+import LifeHours from "./LifeHours";
 import { Avatar, CompanyLogo, JOBS, ListScreen, LetterScreen, Logo, MatchScreen, MessagesScreen, ReportScreen, SwipeStatic } from "./screens";
 
 export const metadata: Metadata = {
@@ -222,6 +223,8 @@ export default function JobbPage() {
           </div>
         </div>
       </section>
+
+      <LifeHours />
 
       {/* funktioner */}
       <section className="bg-[#cbe8fc] py-20 md:py-28">
