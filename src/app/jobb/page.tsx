@@ -172,10 +172,10 @@ export default function JobbPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 rounded-[32px] bg-white px-6 py-10 sm:px-10 md:flex-row md:justify-between md:py-12">
           <div className="max-w-md text-center md:text-left">
             <h2 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl">
-              Riktiga människor på andra sidan.
+              Choose a career that <span className="text-[#1e9be6]">chooses you too.</span>
             </h2>
             <p className="mt-3 text-[16px] leading-relaxed text-[#4a6680]">
-              Varje annons har en rekryterare med namn och ansikte. När det blir en match pratar ni direkt i appen.
+              Riktiga människor på andra sidan. Varje annons har en rekryterare med namn och ansikte — när ni båda swajpar höger pratar ni direkt i appen.
             </p>
           </div>
           <div className="grid shrink-0 grid-cols-3 gap-x-4 gap-y-5 sm:gap-x-6">
