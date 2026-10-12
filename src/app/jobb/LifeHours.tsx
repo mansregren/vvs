@@ -180,10 +180,17 @@ export default function LifeHours() {
           </div>
         </div>
 
-        <p className="mt-8 text-center text-[22px] font-semibold tracking-[-0.02em] sm:text-[26px]">
-          Gör dem till timmar du gillar. <span className="text-[#1e9be6]">Love your job.</span>
-        </p>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-[12.5px] leading-relaxed text-[#7690a8]">
+        <div className="mt-14 text-center">
+          <p className="text-[34px] font-extrabold leading-[1.05] tracking-[-0.04em] sm:text-6xl">
+            Your time is precious.
+            <br />
+            <span className="text-[#1e9be6]">Your work should be too.</span>
+          </p>
+          <p className="mt-4 text-[17px] font-medium text-[#4a6680] sm:text-lg">
+            You spend your life working. Make it one you love.
+          </p>
+        </div>
+        <p className="mx-auto mt-12 max-w-2xl text-center text-[12.5px] leading-relaxed text-[#7690a8]">
           Räknat på heltid: 40 timmar i veckan, 45 arbetsveckor per år (semester och helgdagar borträknade), från 22
           till 65 år. Sömn 8 timmar per dygn. Tågresa Malmö–Stockholm ca 4,5 timmar.
         </p>
