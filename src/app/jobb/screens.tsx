@@ -7,7 +7,7 @@ export const ACCENT_DEEP = "#0b84d8";
 export const APP_BG = "#f3f9fe";
 // Swajp-vyn: loggblå bakgrund med nästan vita, ljusblå kort.
 export const SWIPE_BG = "#2aa8f2";
-export const CARD_BG = "#f5fbff";
+export const CARD_BG = "#e6f4fe";
 
 export type LogoKind = "wave" | "boxes" | "cross" | "peak" | "bolt" | "book";
 
@@ -311,7 +311,13 @@ export function AppHeader({ light = false }: { light?: boolean }) {
   return (
     <div className="flex items-center justify-between px-[18px] pb-[10px] pt-[4px]">
       <Avatar src={USER_IMG} size={38} ring={2} className="shadow-[0_1px_4px_rgba(11,37,64,0.25)]" />
-      <Logo light={light} />
+      {light ? (
+        <span className="rounded-full bg-white/92 px-[14px] py-[7px] shadow-[0_4px_14px_-6px_rgba(11,37,64,0.4)] backdrop-blur">
+          <Logo size={20} />
+        </span>
+      ) : (
+        <Logo />
+      )}
       <IconBtn light={light}>
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.5a5.5 5.5 0 0 0-5.5 5.5v3.6c0 .9-.3 1.8-.9 2.5L4.5 16.6h15l-1.1-1.5a4.2 4.2 0 0 1-.9-2.5V9A5.5 5.5 0 0 0 12 3.5ZM9.8 19.5a2.4 2.4 0 0 0 4.4 0" /></svg>
       </IconBtn>
@@ -320,7 +326,7 @@ export function AppHeader({ light = false }: { light?: boolean }) {
 }
 
 // Ikoner i SF Symbols-stil: outline när inaktiv, fylld när aktiv.
-function TabIcon({ name, filled }: { name: string; filled: boolean }) {
+function TabIcon({ name, filled, cut }: { name: string; filled: boolean; cut: string }) {
   const common = { width: 27, height: 27, viewBox: "0 0 28 28", strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   const sw = 1.7;
   switch (name) {
@@ -329,8 +335,8 @@ function TabIcon({ name, filled }: { name: string; filled: boolean }) {
         <svg {...common}>
           <path d="M10.5 8V6.6A2.1 2.1 0 0 1 12.6 4.5h2.8a2.1 2.1 0 0 1 2.1 2.1V8" fill="none" stroke="currentColor" strokeWidth={sw + 0.3} />
           <rect x="3.5" y="8" width="21" height="15.5" rx="4" fill="currentColor" />
-          <path d="M3.5 14.5h21" stroke="#fff" strokeWidth="1.4" />
-          <rect x="12" y="13" width="4" height="3" rx="1" fill="#fff" />
+          <path d="M3.5 14.5h21" stroke={cut} strokeWidth="1.4" />
+          <rect x="12" y="13" width="4" height="3" rx="1" fill={cut} />
         </svg>
       ) : (
         <svg {...common} fill="none" stroke="currentColor" strokeWidth={sw}>
@@ -343,7 +349,7 @@ function TabIcon({ name, filled }: { name: string; filled: boolean }) {
       return filled ? (
         <svg {...common}>
           <rect x="6" y="3.5" width="16" height="21" rx="3.5" fill="currentColor" />
-          <path d="M10 10h8M10 14h8M10 18h5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M10 10h8M10 14h8M10 18h5" stroke={cut} strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       ) : (
         <svg {...common} fill="none" stroke="currentColor" strokeWidth={sw}>
@@ -361,8 +367,8 @@ function TabIcon({ name, filled }: { name: string; filled: boolean }) {
       return filled ? (
         <svg {...common}>
           <circle cx="14" cy="14" r="10.5" fill="currentColor" />
-          <circle cx="14" cy="11.3" r="3.6" fill="#fff" />
-          <path d="M7.3 21.2c1.5-2.6 3.9-3.9 6.7-3.9s5.2 1.3 6.7 3.9" fill="#fff" />
+          <circle cx="14" cy="11.3" r="3.6" fill={cut} />
+          <path d="M7.3 21.2c1.5-2.6 3.9-3.9 6.7-3.9s5.2 1.3 6.7 3.9" fill={cut} />
         </svg>
       ) : (
         <svg {...common} fill="none" stroke="currentColor" strokeWidth={sw}>
@@ -377,13 +383,29 @@ function TabIcon({ name, filled }: { name: string; filled: boolean }) {
 export function TabBar({ active }: { active: number }) {
   const tabs = ["Swajpa", "Ansökningar", "Meddelanden", "Profil"];
   return (
-    <div className="absolute inset-x-0 bottom-0 flex h-[83px] justify-around border-t-[0.5px] border-black/15 bg-[#f9f9f9]/90 pt-[7px] backdrop-blur-xl">
-      {tabs.map((t, i) => (
-        <span key={t} className="flex w-[80px] flex-col items-center gap-[2px]" style={{ color: i === active ? ACCENT_DEEP : "#999999" }}>
-          <TabIcon name={t} filled={i === active} />
-          <span className="text-[10px] font-medium tracking-[0.01em]">{t}</span>
-        </span>
-      ))}
+    <div
+      className="absolute inset-x-0 bottom-0 flex h-[83px] justify-around border-t border-white/30 pt-[7px] backdrop-blur-xl"
+      style={{
+        background: "linear-gradient(180deg,rgba(64,182,247,0.9) 0%,rgba(30,155,230,0.96) 100%)",
+        boxShadow: "0 -10px 30px -6px rgba(42,168,242,0.55), inset 0 1px 0 rgba(255,255,255,0.35)",
+      }}
+    >
+      {tabs.map((t, i) => {
+        const on = i === active;
+        return (
+          <span
+            key={t}
+            className="flex w-[80px] flex-col items-center gap-[2px]"
+            style={{
+              color: on ? "#ffffff" : "rgba(255,255,255,0.62)",
+              filter: on ? "drop-shadow(0 0 8px rgba(255,255,255,0.75))" : undefined,
+            }}
+          >
+            <TabIcon name={t} filled={on} cut="#1e9be6" />
+            <span className={`text-[10px] tracking-[0.01em] ${on ? "font-semibold" : "font-medium"}`}>{t}</span>
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -433,7 +455,7 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
           {job.title}
         </h3>
 
-        <div className="mt-[10px] grid grid-cols-2 gap-x-[12px] gap-y-[8px] rounded-[14px] bg-[#e4f2fd] px-[12px] py-[10px]">
+        <div className="mt-[10px] grid grid-cols-2 gap-x-[12px] gap-y-[8px] rounded-[14px] bg-[#d2eafc] px-[12px] py-[10px]">
           <div className="col-span-2">
             <Meta label="Lön" value={job.salary} />
           </div>
@@ -451,7 +473,7 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
             <span
               key={r}
               className="flex items-center gap-[4px] rounded-full px-[10px] py-[5px] text-[12.5px] font-medium"
-              style={ok ? { background: "#e1f3fd", color: ACCENT_DEEP } : { background: "#f1f3f5", color: "#8796a5" }}
+              style={ok ? { background: "#ffffff", color: ACCENT_DEEP } : { background: "rgba(255,255,255,0.55)", color: "#7d8fa1" }}
             >
               {ok ? "✓" : "–"} {r}
             </span>
