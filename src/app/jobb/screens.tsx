@@ -458,7 +458,7 @@ export function ActionButtons({ onNope, onSave, onLike }: { onNope?: () => void;
       <button type="button" aria-label="Inte intressant" onClick={onNope} className={`${base} h-[62px] w-[62px] text-[#ef4b5f]`}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M6 6l12 12M18 6 6 18" /></svg>
       </button>
-      <button type="button" aria-label="Spara" onClick={onSave} className={`${base} h-[48px] w-[48px]`} style={{ color: ACCENT }}>
+      <button type="button" aria-label="Spara" onClick={onSave} className={`${base} h-[48px] w-[48px]`} style={{ color: INK }}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z" /></svg>
       </button>
       <button type="button" aria-label="Sök jobbet" onClick={onLike} className={`${base} h-[62px] w-[62px] text-[#1e9be6]`}>
