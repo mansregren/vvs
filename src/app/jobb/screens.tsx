@@ -283,7 +283,7 @@ export function AppHeader() {
 
 export function TabBar({ active }: { active: number }) {
   const tabs = [
-    { label: "Swajpa", d: "M12 3c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 1-5 1-8Z" },
+    { label: "Swajpa", d: "M4 8h16v11H4zM9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8M4 13h16" },
     { label: "Ansökningar", d: "M5 4h14v16H5zM9 9h6M9 13h6M9 17h3" },
     { label: "Meddelanden", d: "M4 5h16v11H9l-5 4z" },
     { label: "Profil", d: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0" },
