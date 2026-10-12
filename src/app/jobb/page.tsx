@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Phone from "./Phone";
 import AppSwipe from "./AppSwipe";
 import LifeHours from "./LifeHours";
+import EmployerLogos from "./EmployerLogos";
 import { Avatar, CompanyLogo, JOBS, ListScreen, LetterScreen, Logo, MatchScreen, MessagesScreen, ReportScreen, SwipeStatic } from "./screens";
 
 export const metadata: Metadata = {
@@ -137,17 +138,7 @@ export default function JobbPage() {
           <p className="text-center text-sm font-medium text-[#5b7590]">
             Från startups till sjukhus — exempel på arbetsgivare i appen
           </p>
-          <div className="mt-6 grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3">
-            {JOBS.map((j) => (
-              <div key={j.company} className="flex items-center gap-2.5 rounded-2xl bg-white px-3 py-3 sm:gap-3 sm:px-4 shadow-[0_1px_3px_rgba(11,37,64,0.06)]">
-                <CompanyLogo job={j} size={36} radius={10} />
-                <span className="min-w-0">
-                  <span className="block text-[13px] font-semibold leading-tight sm:text-[14px]">{j.company}</span>
-                  <span className="block truncate text-[12px] text-[#5b7590]">{j.city}</span>
-                </span>
-              </div>
-            ))}
-          </div>
+          <EmployerLogos />
         </div>
       </section>
 
