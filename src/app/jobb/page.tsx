@@ -11,18 +11,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#f3f9fe",
+  themeColor: "#dcf0fd",
 };
 
 const EARLY_ACCESS =
   "mailto:mansregren@caztmedia.com?subject=Tidig%20tillg%C3%A5ng%20till%20jobbswajp";
 
 const SHOTS = [
-  { title: "Swajpa höger på din framtid", sub: "Riktiga lediga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "linear-gradient(180deg,#dff1fd 0%,#bfe3fb 100%)" },
+  { title: "Swajpa höger på din framtid", sub: "Riktiga lediga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
   { title: "Brevet skrivs åt dig", sub: "Personligt, utifrån annonsen och din erfarenhet.", screen: <LetterScreen />, bg: "linear-gradient(180deg,#0b2540 0%,#14406b 100%)", dark: true },
-  { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "linear-gradient(180deg,#e8f6ff 0%,#cdeafd 100%)" },
+  { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
   { title: "Allt på ett ställe", sub: "Se vem som läst din ansökan.", screen: <ListScreen />, bg: "linear-gradient(180deg,#2aa8f2 0%,#0b84d8 100%)", dark: true },
-  { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "linear-gradient(180deg,#f3f9fe 0%,#dcefff 100%)" },
+  { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
 ];
 
 const FEATURES = [
@@ -42,9 +42,9 @@ const FEATURES = [
 
 export default function JobbPage() {
   return (
-    <main className="flex-1 overflow-x-clip bg-[#f7fbff] font-sans text-[#0b2540] antialiased">
+    <main className="flex-1 overflow-x-clip bg-[#dcf0fd] font-sans text-[#0b2540] antialiased">
       {/* nav */}
-      <header className="sticky top-0 z-30 border-b border-[#0b2540]/6 bg-[#f7fbff]/85 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-[#0b2540]/6 bg-[#dcf0fd]/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Logo size={20} />
           <a
@@ -110,7 +110,7 @@ export default function JobbPage() {
       </section>
 
       {/* yrkesrad */}
-      <section className="border-y border-[#0b2540]/6 bg-white">
+      <section className="border-y border-[#0b2540]/6 bg-[#cbe8fc]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 py-6 text-[15px] font-medium text-[#4a6680] sm:px-6">
           {JOBS.map((j) => (
             <span key={j.field}>{j.field}</span>
@@ -151,14 +151,14 @@ export default function JobbPage() {
       </section>
 
       {/* funktioner */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-[#cbe8fc] py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="max-w-2xl text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl">
             Jobbsök som inte känns som ett jobb.
           </h2>
           <div className="mt-12 grid gap-4 md:grid-cols-3">
             {FEATURES.map((f, i) => (
-              <div key={f.title} className="rounded-3xl border border-[#0b2540]/8 bg-[#f7fbff] p-7">
+              <div key={f.title} className="rounded-3xl border border-[#0b2540]/6 bg-white p-7">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2aa8f2] to-[#0b84d8] text-sm font-semibold text-white">
                   {i + 1}
                 </span>
