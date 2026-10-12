@@ -6,8 +6,8 @@ export const ACCENT = "#2aa8f2";
 export const ACCENT_DEEP = "#0b84d8";
 export const APP_BG = "#f3f9fe";
 // Swajp-vyn: loggblå bakgrund med nästan vita, ljusblå kort.
-export const SWIPE_BG = "#2aa8f2";
-export const CARD_BG = "#e6f4fe";
+export const SWIPE_BG = "#eaf5fe";
+export const CARD_BG = "#ffffff";
 
 export type LogoKind = "wave" | "boxes" | "cross" | "peak" | "bolt" | "book";
 
@@ -383,29 +383,13 @@ function TabIcon({ name, filled, cut }: { name: string; filled: boolean; cut: st
 export function TabBar({ active }: { active: number }) {
   const tabs = ["Swajpa", "Ansökningar", "Meddelanden", "Profil"];
   return (
-    <div
-      className="absolute inset-x-0 bottom-0 flex h-[83px] justify-around border-t border-white/30 pt-[7px] backdrop-blur-xl"
-      style={{
-        background: "linear-gradient(180deg,rgba(64,182,247,0.9) 0%,rgba(30,155,230,0.96) 100%)",
-        boxShadow: "0 -10px 30px -6px rgba(42,168,242,0.55), inset 0 1px 0 rgba(255,255,255,0.35)",
-      }}
-    >
-      {tabs.map((t, i) => {
-        const on = i === active;
-        return (
-          <span
-            key={t}
-            className="flex w-[80px] flex-col items-center gap-[2px]"
-            style={{
-              color: on ? "#ffffff" : "rgba(255,255,255,0.62)",
-              filter: on ? "drop-shadow(0 0 8px rgba(255,255,255,0.75))" : undefined,
-            }}
-          >
-            <TabIcon name={t} filled={on} cut="#1e9be6" />
-            <span className={`text-[10px] tracking-[0.01em] ${on ? "font-semibold" : "font-medium"}`}>{t}</span>
-          </span>
-        );
-      })}
+    <div className="absolute inset-x-0 bottom-0 flex h-[83px] justify-around border-t-[0.5px] border-[#0b2540]/12 bg-[#f4faff]/92 pt-[7px] backdrop-blur-xl">
+      {tabs.map((t, i) => (
+        <span key={t} className="flex w-[80px] flex-col items-center gap-[2px]" style={{ color: i === active ? ACCENT_DEEP : "#99a6b3" }}>
+          <TabIcon name={t} filled={i === active} cut="#ffffff" />
+          <span className="text-[10px] font-medium tracking-[0.01em]">{t}</span>
+        </span>
+      ))}
     </div>
   );
 }
@@ -425,7 +409,7 @@ function Meta({ label, value }: { label: string; value: string }) {
 
 export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope: number } }) {
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-[26px] shadow-[0_22px_44px_-18px_rgba(11,37,64,0.55)]" style={{ background: CARD_BG }}>
+    <div className="relative flex h-full flex-col overflow-hidden rounded-[26px] shadow-[0_18px_40px_-18px_rgba(11,37,64,0.4)] ring-1 ring-[#0b2540]/6" style={{ background: CARD_BG }}>
       <div
         className="relative bg-cover bg-center px-[18px] pb-[14px] pt-[14px] text-white"
         style={{ backgroundImage: `linear-gradient(180deg,rgba(11,37,64,0.15) 0%,rgba(11,37,64,0.35) 40%,rgba(11,37,64,0.88) 100%),url(${job.cover})` }}
@@ -455,7 +439,7 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
           {job.title}
         </h3>
 
-        <div className="mt-[10px] grid grid-cols-2 gap-x-[12px] gap-y-[8px] rounded-[14px] bg-[#d2eafc] px-[12px] py-[10px]">
+        <div className="mt-[10px] grid grid-cols-2 gap-x-[12px] gap-y-[8px] rounded-[14px] bg-[#eef6fd] px-[12px] py-[10px]">
           <div className="col-span-2">
             <Meta label="Lön" value={job.salary} />
           </div>
@@ -473,7 +457,7 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
             <span
               key={r}
               className="flex items-center gap-[4px] rounded-full px-[10px] py-[5px] text-[12.5px] font-medium"
-              style={ok ? { background: "#ffffff", color: ACCENT_DEEP } : { background: "rgba(255,255,255,0.55)", color: "#7d8fa1" }}
+              style={ok ? { background: "#e1f3fd", color: ACCENT_DEEP } : { background: "#f1f3f5", color: "#8796a5" }}
             >
               {ok ? "✓" : "–"} {r}
             </span>
@@ -544,10 +528,10 @@ function Screen({ children, bg = APP_BG }: { children: React.ReactNode; bg?: str
 export function SwipeStatic({ job = JOBS[0] }: { job?: Job }) {
   return (
     <Screen bg={SWIPE_BG}>
-      <StatusBar light />
-      <AppHeader light />
+      <StatusBar />
+      <AppHeader />
       <div className="relative mx-[16px] h-[560px]">
-        <div className="absolute inset-x-[14px] top-[12px] bottom-[-10px] rounded-[26px] bg-white/35" />
+        <div className="absolute inset-x-[14px] top-[12px] bottom-[-10px] rounded-[26px] bg-[#d6ebfb]" />
         <div className="absolute inset-0">
           <JobCard job={job} stamp={{ like: 1, nope: 0 }} />
         </div>
