@@ -10,50 +10,75 @@ export type LogoKind = "wave" | "boxes" | "cross" | "peak" | "bolt" | "book";
 
 export const USER_IMG = "/jobb/women-65.jpg";
 
-const LOGO_PATHS: Record<LogoKind, React.ReactNode> = {
-  wave: (
-    <>
-      <path d="M5 9 12 19l7-10" strokeWidth="2.6" />
-      <path d="M3 6c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" strokeWidth="2" />
-    </>
-  ),
-  boxes: (
-    <>
-      <rect x="4" y="12" width="7" height="7" rx="1" />
-      <rect x="13" y="12" width="7" height="7" rx="1" />
-      <rect x="8.5" y="4" width="7" height="7" rx="1" />
-    </>
-  ),
-  cross: <path d="M9.5 4h5v5.5H20v5h-5.5V20h-5v-5.5H4v-5h5.5z" />,
-  peak: (
-    <>
-      <path d="M3 19 10 7l4 6 2-3 5 9z" />
-      <circle cx="17" cy="6" r="1.8" />
-    </>
-  ),
-  bolt: <path d="M13.5 3 5 13.5h6L10 21l9-11.5h-6z" />,
-  book: <path d="M3 6c3-1.3 6-1.3 9 .5v13c-3-1.8-6-1.8-9-.5zM21 6c-3-1.3-6-1.3-9 .5v13c3-1.8 6-1.8 9-.5z" />,
+// Varumärkesmärken – samma symboler som ordlogotyperna i EmployerLogos.tsx.
+const BRAND: Record<LogoKind, { bg: string; mark: React.ReactNode }> = {
+  wave: {
+    bg: "#ffffff",
+    mark: (
+      <svg viewBox="0 0 32 32" fill="none" stroke="#0b2540" strokeWidth="2.4" strokeLinecap="round">
+        <path d="M3 12c3-3 6-3 9 0s6 3 9 0 6-3 8-1" />
+        <path d="M3 19c3-3 6-3 9 0s6 3 9 0 6-3 8-1" opacity=".55" />
+        <path d="M16 4v24" strokeWidth="2.8" />
+      </svg>
+    ),
+  },
+  boxes: {
+    bg: "#ffffff",
+    mark: (
+      <svg viewBox="0 0 28 28" fill="#0a6b6b">
+        <rect x="2" y="14" width="11" height="11" rx="2" />
+        <rect x="15" y="14" width="11" height="11" rx="2" opacity=".7" />
+        <rect x="8.5" y="2" width="11" height="11" rx="2" opacity=".45" />
+      </svg>
+    ),
+  },
+  cross: {
+    bg: "#ffffff",
+    mark: (
+      <svg viewBox="0 0 30 30">
+        <circle cx="15" cy="15" r="14" fill="#1f4fbf" />
+        <path d="M12.5 7h5v5.5H23v5h-5.5V23h-5v-5.5H7v-5h5.5z" fill="#fff" />
+      </svg>
+    ),
+  },
+  peak: {
+    bg: "#2b2d7a",
+    mark: (
+      <svg viewBox="0 0 30 30">
+        <path d="M3 24 12 10l5 8 3-4 7 10z" fill="#fff" />
+        <circle cx="22" cy="7.5" r="2.4" fill="#8f94ff" />
+      </svg>
+    ),
+  },
+  bolt: {
+    bg: "#ffcf33",
+    mark: (
+      <svg viewBox="0 0 24 24" fill="#0b2540">
+        <path d="M13.5 2 4 14h6.5L9.5 22 20 9.5h-6.5z" />
+      </svg>
+    ),
+  },
+  book: {
+    bg: "#ffffff",
+    mark: (
+      <svg viewBox="0 0 30 30" fill="none" stroke="#145a73" strokeWidth="2.2" strokeLinejoin="round">
+        <path d="M15 8c-3-2-7-2.5-11-1.5v16c4-1 8-.5 11 1.5 3-2 7-2.5 11-1.5v-16C22 5.5 18 6 15 8Z" />
+        <path d="M15 8v16" />
+      </svg>
+    ),
+  },
 };
-const FILLED: LogoKind[] = ["boxes", "cross", "peak", "bolt", "book"];
 
 export function CompanyLogo({ job, size = 52, radius = 14 }: { job: Job; size?: number; radius?: number }) {
-  const filled = FILLED.includes(job.logo);
+  const b = BRAND[job.logo];
   return (
     <span
-      className="grid shrink-0 place-items-center text-white"
-      style={{ width: size, height: size, borderRadius: radius, background: job.gradient }}
+      className="grid shrink-0 place-items-center shadow-[inset_0_0_0_1px_rgba(11,37,64,0.08)]"
+      style={{ width: size, height: size, borderRadius: radius, background: b.bg }}
     >
-      <svg
-        width={size * 0.56}
-        height={size * 0.56}
-        viewBox="0 0 24 24"
-        fill={filled ? "currentColor" : "none"}
-        stroke={filled ? "none" : "currentColor"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {LOGO_PATHS[job.logo]}
-      </svg>
+      <span className="block" style={{ width: size * 0.6, height: size * 0.6 }}>
+        {b.mark}
+      </span>
     </span>
   );
 }
@@ -93,6 +118,7 @@ export type Job = {
   distance: string;
   posted: string;
   gradient: string;
+  cover: string;
 };
 
 export const JOBS: Job[] = [
@@ -101,6 +127,7 @@ export const JOBS: Job[] = [
     title: "Biträdande jurist",
     employer: "Advokatbyrå inom affärsjuridik",
     initial: "A",
+    cover: "/jobb/cover/juridik.jpg",
     company: "Vågbrytaren Advokater",
     logo: "wave",
     recruiter: { name: "Sara Lind", role: "Rekryterare", img: "/jobb/women-44.jpg" },
@@ -123,6 +150,7 @@ export const JOBS: Job[] = [
     title: "Controller",
     employer: "Industriföretag inom förpackning",
     initial: "I",
+    cover: "/jobb/cover/lager.jpg",
     company: "Kvarnholm Pack",
     logo: "boxes",
     recruiter: { name: "Erik Holm", role: "HR-chef", img: "/jobb/men-32.jpg" },
@@ -145,6 +173,7 @@ export const JOBS: Job[] = [
     title: "Sjuksköterska, akutmottagning",
     employer: "Universitetssjukhus",
     initial: "U",
+    cover: "/jobb/cover/vard.jpg",
     company: "Sundets Akutvård",
     logo: "cross",
     recruiter: { name: "Mei Andersson", role: "Vårdenhetschef", img: "/jobb/women-12.jpg" },
@@ -167,6 +196,7 @@ export const JOBS: Job[] = [
     title: "Frontendutvecklare",
     employer: "Fintech-bolag, 120 anställda",
     initial: "F",
+    cover: "/jobb/cover/tech.jpg",
     company: "Fjällpay",
     logo: "peak",
     recruiter: { name: "Anton Berg", role: "Engineering Manager", img: "/jobb/men-46.jpg" },
@@ -189,6 +219,7 @@ export const JOBS: Job[] = [
     title: "Elektriker, service & installation",
     employer: "Installationsfirma, 35 anställda",
     initial: "E",
+    cover: "/jobb/cover/el.jpg",
     company: "Ljusbåge El",
     logo: "bolt",
     recruiter: { name: "Omar Haddad", role: "Servicechef", img: "/jobb/men-11.jpg" },
@@ -211,6 +242,7 @@ export const JOBS: Job[] = [
     title: "Lärare i matematik och NO, åk 7–9",
     employer: "Kommunal grundskola",
     initial: "G",
+    cover: "/jobb/cover/skola.jpg",
     company: "Majornas Skola",
     logo: "book",
     recruiter: { name: "Emma Nyström", role: "Rektor", img: "/jobb/women-68.jpg" },
@@ -366,16 +398,19 @@ function Meta({ label, value }: { label: string; value: string }) {
 export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope: number } }) {
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-[26px] bg-white shadow-[0_18px_40px_-18px_rgba(11,37,64,0.45)] ring-1 ring-[#0b2540]/6">
-      <div className="relative px-[18px] pb-[14px] pt-[14px] text-white" style={{ background: job.gradient }}>
+      <div
+        className="relative bg-cover bg-center px-[18px] pb-[14px] pt-[14px] text-white"
+        style={{ backgroundImage: `linear-gradient(180deg,rgba(11,37,64,0.15) 0%,rgba(11,37,64,0.35) 40%,rgba(11,37,64,0.88) 100%),url(${job.cover})` }}
+      >
         <div className="flex items-start justify-between">
-          <span className="rounded-[16px] bg-white p-[3px]">
-            <CompanyLogo job={job} size={48} radius={13} />
+          <span className="rounded-[16px] shadow-[0_6px_16px_-6px_rgba(0,0,0,0.5)]">
+            <CompanyLogo job={job} size={50} radius={14} />
           </span>
-          <span className="rounded-full bg-white/18 px-[10px] py-[5px] text-[12px] font-semibold backdrop-blur">
+          <span className="rounded-full bg-black/35 px-[10px] py-[5px] text-[12px] font-semibold backdrop-blur">
             {job.match} % match
           </span>
         </div>
-        <p className="mt-[10px] text-[16px] font-semibold leading-tight">{job.company}</p>
+        <p className="mt-[38px] text-[16px] font-semibold leading-tight">{job.company}</p>
         <p className="mt-[1px] text-[13px] font-medium text-white/75">{job.employer}</p>
         <p className="mt-[4px] flex items-center gap-[5px] text-[13px] font-semibold">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" /></svg>
@@ -434,13 +469,13 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
       {stamp && (
         <>
           <span
-            className="absolute left-[20px] top-[70px] -rotate-12 rounded-[10px] border-[3px] border-[#1e9be6] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#1e9be6]"
+            className="absolute left-[86px] top-[22px] -rotate-12 rounded-[10px] border-[3px] border-[#1e9be6] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#1e9be6]"
             style={{ opacity: stamp.like }}
           >
             SÖK
           </span>
           <span
-            className="absolute right-[20px] top-[70px] rotate-12 rounded-[10px] border-[3px] border-[#ef4b5f] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#ef4b5f]"
+            className="absolute right-[22px] top-[50px] rotate-12 rounded-[10px] border-[3px] border-[#ef4b5f] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#ef4b5f]"
             style={{ opacity: stamp.nope }}
           >
             NEJ
