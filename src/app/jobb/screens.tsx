@@ -6,11 +6,80 @@ export const ACCENT = "#2aa8f2";
 export const ACCENT_DEEP = "#0b84d8";
 export const APP_BG = "#f3f9fe";
 
+export type LogoKind = "wave" | "boxes" | "cross" | "peak" | "bolt" | "book";
+
+export const USER_IMG = "/jobb/women-65.jpg";
+
+const LOGO_PATHS: Record<LogoKind, React.ReactNode> = {
+  wave: (
+    <>
+      <path d="M5 9 12 19l7-10" strokeWidth="2.6" />
+      <path d="M3 6c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" strokeWidth="2" />
+    </>
+  ),
+  boxes: (
+    <>
+      <rect x="4" y="12" width="7" height="7" rx="1" />
+      <rect x="13" y="12" width="7" height="7" rx="1" />
+      <rect x="8.5" y="4" width="7" height="7" rx="1" />
+    </>
+  ),
+  cross: <path d="M9.5 4h5v5.5H20v5h-5.5V20h-5v-5.5H4v-5h5.5z" />,
+  peak: (
+    <>
+      <path d="M3 19 10 7l4 6 2-3 5 9z" />
+      <circle cx="17" cy="6" r="1.8" />
+    </>
+  ),
+  bolt: <path d="M13.5 3 5 13.5h6L10 21l9-11.5h-6z" />,
+  book: <path d="M3 6c3-1.3 6-1.3 9 .5v13c-3-1.8-6-1.8-9-.5zM21 6c-3-1.3-6-1.3-9 .5v13c3-1.8 6-1.8 9-.5z" />,
+};
+const FILLED: LogoKind[] = ["boxes", "cross", "peak", "bolt", "book"];
+
+export function CompanyLogo({ job, size = 52, radius = 14 }: { job: Job; size?: number; radius?: number }) {
+  const filled = FILLED.includes(job.logo);
+  return (
+    <span
+      className="grid shrink-0 place-items-center text-white"
+      style={{ width: size, height: size, borderRadius: radius, background: job.gradient }}
+    >
+      <svg
+        width={size * 0.56}
+        height={size * 0.56}
+        viewBox="0 0 24 24"
+        fill={filled ? "currentColor" : "none"}
+        stroke={filled ? "none" : "currentColor"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {LOGO_PATHS[job.logo]}
+      </svg>
+    </span>
+  );
+}
+
+export function Avatar({ src, size, ring = 0, className = "" }: { src: string; size: number; ring?: number; className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt=""
+      width={size}
+      height={size}
+      className={`shrink-0 rounded-full object-cover ${className}`}
+      style={{ width: size, height: size, boxShadow: ring ? `0 0 0 ${ring}px #fff` : undefined }}
+    />
+  );
+}
+
 export type Job = {
   field: string;
   title: string;
   employer: string;
   initial: string;
+  company: string;
+  logo: LogoKind;
+  recruiter: { name: string; role: string; img: string };
   city: string;
   area: string;
   salary: string;
@@ -32,6 +101,9 @@ export const JOBS: Job[] = [
     title: "Biträdande jurist",
     employer: "Advokatbyrå inom affärsjuridik",
     initial: "A",
+    company: "Vågbrytaren Advokater",
+    logo: "wave",
+    recruiter: { name: "Sara Lind", role: "Rekryterare", img: "/jobb/women-44.jpg" },
     city: "Malmö",
     area: "Västra Hamnen",
     salary: "42 000–48 000 kr/mån",
@@ -51,6 +123,9 @@ export const JOBS: Job[] = [
     title: "Controller",
     employer: "Industriföretag inom förpackning",
     initial: "I",
+    company: "Kvarnholm Pack",
+    logo: "boxes",
+    recruiter: { name: "Erik Holm", role: "HR-chef", img: "/jobb/men-32.jpg" },
     city: "Helsingborg",
     area: "Berga",
     salary: "45 000–52 000 kr/mån",
@@ -70,6 +145,9 @@ export const JOBS: Job[] = [
     title: "Sjuksköterska, akutmottagning",
     employer: "Universitetssjukhus",
     initial: "U",
+    company: "Sundets Akutvård",
+    logo: "cross",
+    recruiter: { name: "Mei Andersson", role: "Vårdenhetschef", img: "/jobb/women-12.jpg" },
     city: "Lund",
     area: "Klinikområdet",
     salary: "38 500–43 000 kr/mån",
@@ -89,6 +167,9 @@ export const JOBS: Job[] = [
     title: "Frontendutvecklare",
     employer: "Fintech-bolag, 120 anställda",
     initial: "F",
+    company: "Fjällpay",
+    logo: "peak",
+    recruiter: { name: "Anton Berg", role: "Engineering Manager", img: "/jobb/men-46.jpg" },
     city: "Stockholm",
     area: "Södermalm",
     salary: "50 000–62 000 kr/mån",
@@ -108,6 +189,9 @@ export const JOBS: Job[] = [
     title: "Elektriker, service & installation",
     employer: "Installationsfirma, 35 anställda",
     initial: "E",
+    company: "Ljusbåge El",
+    logo: "bolt",
+    recruiter: { name: "Omar Haddad", role: "Servicechef", img: "/jobb/men-11.jpg" },
     city: "Malmö",
     area: "Hyllie",
     salary: "34 000–40 000 kr/mån + tillägg",
@@ -127,6 +211,9 @@ export const JOBS: Job[] = [
     title: "Lärare i matematik och NO, åk 7–9",
     employer: "Kommunal grundskola",
     initial: "G",
+    company: "Majornas Skola",
+    logo: "book",
+    recruiter: { name: "Emma Nyström", role: "Rektor", img: "/jobb/women-68.jpg" },
     city: "Göteborg",
     area: "Majorna",
     salary: "36 000–41 000 kr/mån",
@@ -185,9 +272,7 @@ function IconBtn({ children }: { children: React.ReactNode }) {
 export function AppHeader() {
   return (
     <div className="flex items-center justify-between px-[18px] pb-[10px] pt-[4px]">
-      <IconBtn>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 7h16M7 12h10M10 17h4" /></svg>
-      </IconBtn>
+      <Avatar src={USER_IMG} size={38} ring={2} className="shadow-[0_1px_4px_rgba(11,37,64,0.25)]" />
       <Logo />
       <IconBtn>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0" /></svg>
@@ -233,32 +318,33 @@ function Meta({ label, value }: { label: string; value: string }) {
 export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope: number } }) {
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-[26px] bg-white shadow-[0_18px_40px_-18px_rgba(11,37,64,0.45)] ring-1 ring-[#0b2540]/6">
-      <div className="relative px-[20px] pb-[18px] pt-[18px] text-white" style={{ background: job.gradient }}>
+      <div className="relative px-[18px] pb-[14px] pt-[14px] text-white" style={{ background: job.gradient }}>
         <div className="flex items-start justify-between">
-          <span className="grid h-[52px] w-[52px] place-items-center rounded-[14px] bg-white text-[24px] font-bold" style={{ color: INK }}>
-            {job.initial}
+          <span className="rounded-[16px] bg-white p-[3px]">
+            <CompanyLogo job={job} size={48} radius={13} />
           </span>
           <span className="rounded-full bg-white/18 px-[10px] py-[5px] text-[12px] font-semibold backdrop-blur">
             {job.match} % match
           </span>
         </div>
-        <p className="mt-[14px] text-[14px] font-medium text-white/80">{job.employer}</p>
-        <p className="mt-[2px] flex items-center gap-[5px] text-[14px] font-semibold">
+        <p className="mt-[10px] text-[16px] font-semibold leading-tight">{job.company}</p>
+        <p className="mt-[1px] text-[13px] font-medium text-white/75">{job.employer}</p>
+        <p className="mt-[4px] flex items-center gap-[5px] text-[13px] font-semibold">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" /></svg>
           {job.city} · {job.area}
           <span className="font-normal text-white/70">· {job.distance}</span>
         </p>
       </div>
 
-      <div className="flex flex-1 flex-col px-[20px] pt-[16px]">
+      <div className="flex flex-1 flex-col px-[18px] pt-[12px]">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em]" style={{ color: ACCENT_DEEP }}>
           {job.field}
         </p>
-        <h3 className="mt-[4px] text-[25px] font-semibold leading-[1.15] tracking-tight" style={{ color: INK }}>
+        <h3 className="mt-[2px] text-[22px] font-semibold leading-[1.15] tracking-tight" style={{ color: INK }}>
           {job.title}
         </h3>
 
-        <div className="mt-[14px] grid grid-cols-2 gap-x-[14px] gap-y-[12px] rounded-[16px] bg-[#f3f9fe] p-[14px]">
+        <div className="mt-[10px] grid grid-cols-2 gap-x-[12px] gap-y-[8px] rounded-[14px] bg-[#f3f9fe] px-[12px] py-[10px]">
           <div className="col-span-2">
             <Meta label="Lön" value={job.salary} />
           </div>
@@ -268,7 +354,7 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
           <Meta label="Arbetsplats" value={job.place} />
         </div>
 
-        <p className="mt-[14px] text-[11px] font-medium uppercase tracking-[0.06em]" style={{ color: MUTED }}>
+        <p className="mt-[10px] text-[11px] font-medium uppercase tracking-[0.06em]" style={{ color: MUTED }}>
           Krav · ditt CV
         </p>
         <div className="mt-[6px] flex flex-wrap gap-[6px]">
@@ -283,8 +369,14 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
           ))}
         </div>
 
-        <div className="mt-auto flex items-center justify-between border-t border-[#0b2540]/8 py-[12px] text-[12.5px]" style={{ color: MUTED }}>
-          <span>Publicerad {job.posted}</span>
+        <div className="mt-auto flex items-center justify-between border-t border-[#0b2540]/8 py-[10px] text-[12.5px]" style={{ color: MUTED }}>
+          <span className="flex items-center gap-[8px]">
+            <Avatar src={job.recruiter.img} size={28} />
+            <span className="leading-tight">
+              <span className="block font-semibold" style={{ color: INK }}>{job.recruiter.name}</span>
+              <span className="block text-[11.5px]">{job.recruiter.role}</span>
+            </span>
+          </span>
           <span className="font-semibold" style={{ color: INK }}>
             Sista dag: {job.deadline}
           </span>
@@ -294,13 +386,13 @@ export function JobCard({ job, stamp }: { job: Job; stamp?: { like: number; nope
       {stamp && (
         <>
           <span
-            className="absolute left-[20px] top-[88px] -rotate-12 rounded-[10px] border-[3px] border-[#16b77a] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#16b77a]"
+            className="absolute left-[20px] top-[70px] -rotate-12 rounded-[10px] border-[3px] border-[#16b77a] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#16b77a]"
             style={{ opacity: stamp.like }}
           >
             SÖK
           </span>
           <span
-            className="absolute right-[20px] top-[88px] rotate-12 rounded-[10px] border-[3px] border-[#ef4b5f] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#ef4b5f]"
+            className="absolute right-[20px] top-[70px] rotate-12 rounded-[10px] border-[3px] border-[#ef4b5f] bg-white/90 px-[12px] py-[2px] text-[26px] font-extrabold tracking-wide text-[#ef4b5f]"
             style={{ opacity: stamp.nope }}
           >
             NEJ
@@ -368,12 +460,10 @@ export function LetterScreen() {
         <span className="w-[70px]" />
       </div>
       <div className="mx-[18px] flex items-center gap-[12px] rounded-[16px] bg-[#f3f9fe] p-[12px]">
-        <span className="grid h-[42px] w-[42px] place-items-center rounded-[12px] text-[18px] font-bold text-white" style={{ background: job.gradient }}>
-          {job.initial}
-        </span>
+        <CompanyLogo job={job} size={42} radius={12} />
         <span className="min-w-0">
           <span className="block truncate text-[15px] font-semibold">{job.title}</span>
-          <span className="block truncate text-[13px]" style={{ color: MUTED }}>{job.city} · {job.area} · {job.extent}</span>
+          <span className="block truncate text-[13px]" style={{ color: MUTED }}>{job.company} · {job.city}</span>
         </span>
       </div>
       <div className="mx-[18px] mt-[16px] flex items-center gap-[8px]">
@@ -414,19 +504,22 @@ export function MatchScreen() {
   return (
     <Screen bg={`linear-gradient(170deg,#7fd0fb 0%,${ACCENT} 45%,${ACCENT_DEEP} 100%)`}>
       <StatusBar light />
-      <div className="flex flex-col items-center px-[28px] pt-[70px] text-center text-white">
+      <div className="flex flex-col items-center px-[28px] pt-[56px] text-center text-white">
         <p className="text-[14px] font-semibold uppercase tracking-[0.2em] text-white/80">Ny intervju</p>
         <h3 className="mt-[6px] text-[46px] font-semibold leading-none tracking-tight">Det är en match</h3>
         <div className="mt-[38px] flex items-center">
-          <span className="grid h-[104px] w-[104px] place-items-center rounded-full border-[4px] border-white bg-[#ffd9a8] text-[40px] font-semibold" style={{ color: INK }}>
-            LS
+          <span className="-rotate-6">
+            <Avatar src={USER_IMG} size={108} ring={4} />
           </span>
-          <span className="-ml-[18px] grid h-[104px] w-[104px] place-items-center rounded-full border-[4px] border-white text-[40px] font-bold" style={{ background: job.gradient }}>
-            {job.initial}
+          <span className="relative -ml-[20px] rotate-6">
+            <Avatar src={job.recruiter.img} size={108} ring={4} />
+            <span className="absolute -bottom-[4px] -right-[4px] rounded-[14px] bg-white p-[3px]">
+              <CompanyLogo job={job} size={36} radius={11} />
+            </span>
           </span>
         </div>
         <p className="mt-[22px] text-[17px] leading-snug text-white/90">
-          {job.employer} vill träffa dig för
+          {job.recruiter.name} på {job.company} vill träffa dig för
           <br />
           <strong className="font-semibold text-white">{job.title}</strong> i {job.city}.
         </p>
@@ -481,13 +574,11 @@ export function ListScreen() {
       <ul className="mt-[18px] space-y-[8px] px-[16px]">
         {rows.map(([j, s, d]) => (
           <li key={j.title} className="flex items-center gap-[12px] rounded-[16px] bg-white p-[12px] shadow-[0_1px_3px_rgba(11,37,64,0.08)]">
-            <span className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[12px] text-[18px] font-bold text-white" style={{ background: j.gradient }}>
-              {j.initial}
-            </span>
+            <CompanyLogo job={j} size={44} radius={12} />
             <span className="min-w-0 flex-1">
               <span className="block truncate text-[15px] font-semibold">{j.title}</span>
               <span className="block truncate text-[13px]" style={{ color: MUTED }}>
-                {j.city} · {j.area} · {d}
+                {j.company} · {j.city} · {d}
               </span>
             </span>
             <span className="shrink-0 rounded-full px-[10px] py-[4px] text-[12px] font-semibold" style={{ background: STATUS[s].bg, color: STATUS[s].fg }}>
@@ -543,6 +634,57 @@ export function ReportScreen() {
           Kopiera till rapporten
         </div>
       </div>
+    </Screen>
+  );
+}
+
+export function MessagesScreen() {
+  const chats: [Job, string, string, boolean][] = [
+    [JOBS[3], "Hej Linn! Tisdag 10:00 funkar fint. Vi ses på kontoret.", "09:12", true],
+    [JOBS[0], "Tack för ditt brev, vi återkommer i veckan.", "Igår", true],
+    [JOBS[1], "Kan du skicka med betyg från civilekonomen?", "Igår", false],
+    [JOBS[4], "Välkommen på en provdag i Hyllie!", "Mån", false],
+    [JOBS[2], "Vi har tagit emot din ansökan.", "Sön", false],
+  ];
+  return (
+    <Screen>
+      <StatusBar />
+      <div className="px-[20px] pt-[6px]">
+        <h3 className="text-[32px] font-semibold tracking-tight">Meddelanden</h3>
+        <p className="mt-[2px] text-[14px]" style={{ color: MUTED }}>Prata direkt med rekryteraren</p>
+      </div>
+      <div className="mt-[16px] flex gap-[14px] overflow-hidden px-[20px] pt-[4px]">
+        {JOBS.slice(0, 5).map((j) => (
+          <span key={j.title} className="flex w-[60px] shrink-0 flex-col items-center gap-[6px]">
+            <span className="rounded-full p-[2px]" style={{ background: `linear-gradient(135deg,${ACCENT},${ACCENT_DEEP})` }}>
+              <Avatar src={j.recruiter.img} size={54} ring={2} />
+            </span>
+            <span className="w-full truncate text-center text-[11.5px] font-medium">{j.recruiter.name.split(" ")[0]}</span>
+          </span>
+        ))}
+      </div>
+      <ul className="mt-[14px] space-y-[2px] px-[12px]">
+        {chats.map(([j, msg, t, unread]) => (
+          <li key={j.title} className="flex items-center gap-[12px] rounded-[16px] px-[8px] py-[10px]">
+            <span className="relative shrink-0">
+              <Avatar src={j.recruiter.img} size={52} />
+              <span className="absolute -bottom-[3px] -right-[3px] rounded-[9px] bg-white p-[2px]">
+                <CompanyLogo job={j} size={22} radius={7} />
+              </span>
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="flex items-baseline justify-between gap-[8px]">
+                <span className="truncate text-[15px] font-semibold">{j.recruiter.name}</span>
+                <span className="shrink-0 text-[12px]" style={{ color: MUTED }}>{t}</span>
+              </span>
+              <span className="block truncate text-[12.5px] font-medium" style={{ color: ACCENT_DEEP }}>{j.company}</span>
+              <span className={`block truncate text-[13.5px] ${unread ? "font-semibold" : ""}`} style={{ color: unread ? INK : MUTED }}>{msg}</span>
+            </span>
+            {unread && <span className="h-[10px] w-[10px] shrink-0 rounded-full" style={{ background: ACCENT }} />}
+          </li>
+        ))}
+      </ul>
+      <TabBar active={2} />
     </Screen>
   );
 }

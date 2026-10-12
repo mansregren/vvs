@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Phone from "./Phone";
 import AppSwipe from "./AppSwipe";
-import { ListScreen, LetterScreen, Logo, MatchScreen, ReportScreen, SwipeStatic } from "./screens";
+import { Avatar, CompanyLogo, JOBS, ListScreen, LetterScreen, Logo, MatchScreen, MessagesScreen, ReportScreen, SwipeStatic } from "./screens";
 
 export const metadata: Metadata = {
   title: "Work Crush — Love your job",
@@ -22,6 +22,7 @@ const SHOTS = [
   { title: "Love what's next", sub: "Swajpa på riktiga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
   { title: "Brevet skrivs åt dig", sub: "Personligt, utifrån annonsen och din erfarenhet.", screen: <LetterScreen />, bg: "linear-gradient(180deg,#0b2540 0%,#14406b 100%)", dark: true },
   { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "linear-gradient(180deg,#fff0b3 0%,#ffdc5e 100%)" },
+  { title: "Prata direkt med rekryteraren", sub: "Riktiga människor, inga svarta hål.", screen: <MessagesScreen />, bg: "linear-gradient(180deg,#ffffff 0%,#e6f4fe 100%)" },
   { title: "Allt på ett ställe", sub: "Se vem som läst din ansökan.", screen: <ListScreen />, bg: "linear-gradient(180deg,#2aa8f2 0%,#0b84d8 100%)", dark: true },
   { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "linear-gradient(180deg,#97a3ff 0%,#6f7dff 100%)", dark: true },
 ];
@@ -117,7 +118,12 @@ export default function JobbPage() {
                 Love what&apos;s next ✦
               </span>
               <span className="absolute -right-3 top-[44%] z-10 hidden rotate-3 sm:flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2.5 text-[13px] font-semibold shadow-[0_14px_30px_-12px_rgba(11,37,64,0.45)] sm:-right-20">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#22c99a]" />3 nya matchningar
+                <span className="flex -space-x-2">
+                  {JOBS.slice(3, 6).map((j) => (
+                    <Avatar key={j.title} src={j.recruiter.img} size={26} ring={2} />
+                  ))}
+                </span>
+                3 nya matchningar
               </span>
               <span className="absolute -bottom-4 right-0 z-10 rotate-[-4deg] sm:bottom-28 sm:-left-20 sm:right-auto rounded-2xl bg-[#ffdc5e] px-3.5 py-2.5 text-[13px] font-bold text-[#0b2540] shadow-[0_14px_30px_-12px_rgba(230,190,40,0.8)]">
                 Intervju imorgon 10:00
@@ -137,6 +143,54 @@ export default function JobbPage() {
               {t}
             </span>
           ))}
+        </div>
+      </section>
+
+      {/* arbetsgivare */}
+      <section className="px-4 pt-16 sm:px-6 md:pt-20">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-center text-sm font-medium text-[#5b7590]">
+            Från startups till sjukhus — exempel på arbetsgivare i appen
+          </p>
+          <div className="mt-6 grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3">
+            {JOBS.map((j) => (
+              <div key={j.company} className="flex items-center gap-2.5 rounded-2xl bg-white px-3 py-3 sm:gap-3 sm:px-4 shadow-[0_1px_3px_rgba(11,37,64,0.06)]">
+                <CompanyLogo job={j} size={36} radius={10} />
+                <span className="min-w-0">
+                  <span className="block text-[13px] font-semibold leading-tight sm:text-[14px]">{j.company}</span>
+                  <span className="block truncate text-[12px] text-[#5b7590]">{j.city}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* rekryterare */}
+      <section className="px-4 pt-16 sm:px-6 md:pt-20">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 rounded-[32px] bg-white px-6 py-10 sm:px-10 md:flex-row md:justify-between md:py-12">
+          <div className="max-w-md text-center md:text-left">
+            <h2 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl">
+              Riktiga människor på andra sidan.
+            </h2>
+            <p className="mt-3 text-[16px] leading-relaxed text-[#4a6680]">
+              Varje annons har en rekryterare med namn och ansikte. När det blir en match pratar ni direkt i appen.
+            </p>
+          </div>
+          <div className="grid shrink-0 grid-cols-3 gap-x-4 gap-y-5 sm:gap-x-6">
+            {JOBS.map((j) => (
+              <div key={j.recruiter.name} className="flex w-[92px] flex-col items-center text-center">
+                <span className="relative">
+                  <Avatar src={j.recruiter.img} size={72} ring={3} className="shadow-[0_8px_20px_-8px_rgba(11,37,64,0.5)]" />
+                  <span className="absolute -bottom-1 -right-1 rounded-[9px] bg-white p-[2px]">
+                    <CompanyLogo job={j} size={24} radius={7} />
+                  </span>
+                </span>
+                <span className="mt-2 text-[13px] font-semibold leading-tight">{j.recruiter.name.split(" ")[0]}</span>
+                <span className="text-[11.5px] leading-tight text-[#5b7590]">{j.company}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
