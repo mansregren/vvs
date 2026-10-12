@@ -4,7 +4,7 @@ import AppSwipe from "./AppSwipe";
 import { ListScreen, LetterScreen, Logo, MatchScreen, ReportScreen, SwipeStatic, JOBS } from "./screens";
 
 export const metadata: Metadata = {
-  title: "Work Crush — Swajpa höger på din framtid",
+  title: "Work Crush — Love your job",
   description:
     "Swajpa höger för att bli jurist. Swajpa höger på ekonomi. Work Crush matchar dig med lediga jobb och skriver ansökan åt dig.",
   robots: { index: false, follow: false },
@@ -72,10 +72,10 @@ export default function JobbPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-[#2aa8f2]" />
               Kommer snart till iPhone och Android
             </p>
-            <h1 className="mt-5 text-[44px] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-6xl md:text-[72px]">
-              Swajpa höger på
+            <h1 className="mt-5 text-[56px] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-7xl md:text-[88px]">
+              Love
               <br />
-              <span className="bg-gradient-to-r from-[#2aa8f2] to-[#0b84d8] bg-clip-text text-transparent">din framtid.</span>
+              <span className="bg-gradient-to-r from-[#2aa8f2] to-[#0b84d8] bg-clip-text text-transparent">your job.</span>
             </h1>
             <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-[#4a6680] sm:text-lg">
               Swajpa höger för att bli jurist. Swajpa höger på ekonomi. Work Crush visar lediga jobb
