@@ -3,12 +3,28 @@ import Phone from "./Phone";
 import AppSwipe from "./AppSwipe";
 import LifeHours from "./LifeHours";
 import EmployerLogos from "./EmployerLogos";
-import { Avatar, CompanyLogo, JOBS, ListScreen, LetterScreen, Logo, MatchScreen, MessagesScreen, ReportScreen, SwipeStatic } from "./screens";
+import {
+  Avatar,
+  ChangedScreen,
+  ChecklistScreen,
+  CompanyLogo,
+  FeedbackScreen,
+  JOBS,
+  ListScreen,
+  LetterScreen,
+  Logo,
+  MapScreen,
+  MatchScreen,
+  MessagesScreen,
+  ReportScreen,
+  SurpriseScreen,
+  SwipeStatic,
+} from "./screens";
 
 export const metadata: Metadata = {
-  title: "Work Crush — Love your job",
+  title: "Work Crush — Find work worth falling for",
   description:
-    "Swajpa höger för att bli jurist. Swajpa höger på ekonomi. Work Crush matchar dig med lediga jobb och skriver ansökan åt dig.",
+    "Du förtjänar mer än måndagsångest. Work Crush hjälper dig upptäcka vad du faktiskt kan göra härnäst — och skriver ansökan åt dig.",
   robots: { index: false, follow: false },
 };
 
@@ -22,11 +38,16 @@ const EARLY_ACCESS =
 // Palett: Sky #2aa8f2 · Ice #dcf0fd · Navy #0b2540 · Sunshine #ffdc5e · Mint #22c99a
 const SHOTS = [
   { title: "Love what's next", sub: "Swajpa på riktiga jobb, matchade mot ditt CV.", screen: <SwipeStatic />, bg: "#2aa8f2", dark: true },
+  { title: "Överrasknings\u00admatchen", sub: "Yrken du inte visste fanns — som passar dig.", screen: <SurpriseScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Villkoren har ändrats", sub: "Kravet som stoppade dig är borta. Swajpa igen.", screen: <ChangedScreen />, bg: "#2aa8f2", dark: true },
   { title: "Brevet skrivs åt dig", sub: "Personligt, utifrån annonsen och din erfarenhet.", screen: <LetterScreen />, bg: "#2aa8f2", dark: true },
   { title: "Det är en match", sub: "Boka intervju direkt i appen.", screen: <MatchScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Redo för intervjun", sub: "Checklista 15 minuter innan. Lycka till!", screen: <ChecklistScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Pendla smart", sub: "Se resvägen med cykel, tåg och buss.", screen: <MapScreen />, bg: "#2aa8f2", dark: true },
   { title: "Prata direkt med rekryteraren", sub: "Riktiga människor, inga svarta hål.", screen: <MessagesScreen />, bg: "#2aa8f2", dark: true },
   { title: "Allt på ett ställe", sub: "Se vem som läst din ansökan.", screen: <ListScreen />, bg: "#2aa8f2", dark: true },
   { title: "Aktivitetsrapporten, klar", sub: "Månadens sökta jobb, redo att föra över.", screen: <ReportScreen />, bg: "#2aa8f2", dark: true },
+  { title: "Du styr matchningen", sub: "Säg vad som passar — och varför.", screen: <FeedbackScreen />, bg: "#2aa8f2", dark: true },
 ];
 
 const BADGE = ["#5bc0f8", "#1e8fdc", "#0b2540"];
@@ -41,8 +62,27 @@ const FEATURES = [
   },
   {
     title: "Full koll",
-    body: "Se vilka ansökningar som lästs, boka intervjuer och få månadens aktivitetsrapport sammanställd.",
+    body: "Datum på varje ansökan, en tidslinje för varje rekrytering och månadens aktivitetsrapport sammanställd.",
   },
+  {
+    title: "Träna inför intervjun",
+    body: "Vanliga frågor utifrån just det jobbet, hjälp att formulera svar och en övningsintervju.",
+  },
+  {
+    title: "Kalendern sköter sig själv",
+    body: "Koppla till telefonens kalender. Bokas intervjun om uppdateras den automatiskt.",
+  },
+  {
+    title: "Ditt eget bibliotek",
+    body: "Anteckningar till varje intervju, dina lärdomar, referenser och dokument — sorterat på datum.",
+  },
+];
+
+const FILTERS = ["Utan krav på examen", "Inget gymnasiekrav", "Nyexaminerad", "Säsongsjobb 🍓", "Flexibla tider", "Nattjobb", "Praktik"];
+const GLOSSARY: [string, string][] = [
+  ["Controller", "Håller koll på företagets ekonomi och tar fram siffrorna som chefer fattar beslut på."],
+  ["HR", "Human Resources. Personalavdelningen: rekrytering, löner och arbetsmiljö."],
+  ["Tillsvidare", "Fast anställning utan slutdatum. Motsatsen är visstid."],
 ];
 
 export default function JobbPage() {
@@ -77,14 +117,14 @@ export default function JobbPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-[#2aa8f2]" />
               Kommer snart till iPhone och Android
             </p>
-            <h1 className="mt-5 text-[56px] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-7xl md:text-[88px]">
-              Love
+            <h1 className="mt-5 text-[42px] font-semibold leading-[1.04] tracking-[-0.035em] sm:text-6xl md:text-[60px] lg:text-[72px]">
+              Find work worth
               <br />
-              <span className="bg-gradient-to-r from-[#2aa8f2] to-[#0b84d8] bg-clip-text text-transparent">your job.</span>
+              <span className="bg-gradient-to-r from-[#2aa8f2] to-[#0b84d8] bg-clip-text text-transparent">falling for.</span>
             </h1>
-            <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-[#4a6680] sm:text-lg">
-              Swajpa höger för att bli jurist. Swajpa höger på ekonomi. Work Crush visar lediga jobb
-              nära dig — och skriver ansökan åt dig när du säger ja.
+            <p className="mt-5 text-[22px] font-semibold tracking-[-0.02em] sm:text-2xl">Du förtjänar mer än måndagsångest.</p>
+            <p className="mt-3 max-w-lg text-[17px] leading-relaxed text-[#4a6680] sm:text-lg">
+              Work Crush matchar dig med jobb som passar den du är — och skriver ansökan åt dig när du swajpar höger.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
@@ -131,6 +171,35 @@ export default function JobbPage() {
       </section>
 
       <LifeHours />
+
+      {/* kärnan */}
+      <section className="px-4 pt-16 sm:px-6 md:pt-24">
+        <div className="mx-auto max-w-6xl rounded-[32px] bg-[#0b2540] px-6 py-12 text-white sm:px-12 md:py-16">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#5bc0f8]">Mer än en jobbapp</p>
+          <h2 className="mt-3 max-w-3xl text-[32px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl">
+            För dig som känner dig vilsen, underskattad eller fast i fel jobb.
+          </h2>
+          <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-white/75">
+            Work Crush visar inte bara lediga jobb. Appen hjälper dig upptäcka vad du faktiskt kan göra härnäst — och varje
+            funktion finns för att ta dig närmare ett bättre arbetsliv, inte för att hålla dig kvar i appen.
+          </p>
+          <div className="mt-10 grid gap-3 sm:grid-cols-3">
+            {[
+              ["Upptäck", "Överraskningsmatcher med yrken du inte visste fanns, och titlar förklarade på vanlig svenska."],
+              ["Sök", "Personligt brev på sekunder, datum på allt och en tydlig tidslinje för varje rekrytering."],
+              ["Väx", "Intervjuträning, dina karriärsteg och ett eget bibliotek med lärdomar som följer med dig."],
+            ].map(([t, b]) => (
+              <div key={t} className="rounded-3xl bg-white/[0.07] p-6 ring-1 ring-white/10">
+                <h3 className="text-xl font-semibold text-[#5bc0f8]">{t}</h3>
+                <p className="mt-2 leading-relaxed text-white/75">{b}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-10 text-[22px] font-semibold tracking-[-0.02em] sm:text-[26px]">
+            Appen du aldrig behöver radera <span className="text-white/55">— den växer med dig, även när du har fått jobbet.</span>
+          </p>
+        </div>
+      </section>
 
       {/* arbetsgivare */}
       <section className="px-4 pt-16 sm:px-6 md:pt-20">
@@ -180,7 +249,7 @@ export default function JobbPage() {
           <div className="mt-12 grid gap-4 md:grid-cols-3">
             {FEATURES.map((f, i) => (
               <div key={f.title} className="rounded-3xl border border-[#0b2540]/6 bg-white p-7">
-                <span className="grid h-10 w-10 place-items-center rounded-xl text-sm font-semibold text-white" style={{ background: BADGE[i] }}>
+                <span className="grid h-10 w-10 place-items-center rounded-xl text-sm font-semibold text-white" style={{ background: BADGE[i % 3] }}>
                   {i + 1}
                 </span>
                 <h3 className="mt-5 text-xl font-semibold tracking-tight">{f.title}</h3>
@@ -191,8 +260,43 @@ export default function JobbPage() {
         </div>
       </section>
 
+      {/* alla ska kunna börja */}
+      <section className="px-4 py-20 sm:px-6 md:py-28">
+        <div className="mx-auto grid max-w-6xl items-start gap-10 md:grid-cols-2">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0b84d8]">För alla</p>
+            <h2 className="mt-3 text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl">
+              Ingen erfarenhet? <span className="text-[#2aa8f2]">Ingen fara.</span>
+            </h2>
+            <p className="mt-4 max-w-md text-[17px] leading-relaxed text-[#4a6680]">
+              Det är svårast att komma in när man är ung. Work Crush räknar inte bara år av erfarenhet — nyexaminerad,
+              praktik och sommarjobb räknas också.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {FILTERS.map((f) => (
+                <span key={f} className="rounded-full border border-[#2aa8f2]/25 bg-white px-4 py-2 text-[15px] font-medium text-[#0b2540]">
+                  {f}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-[28px] bg-white p-6 sm:p-8">
+            <p className="text-sm font-semibold text-[#5b7590]">Vad betyder det?</p>
+            <p className="mt-1 text-[22px] font-semibold tracking-[-0.02em]">Titlar och förkortningar, förklarade</p>
+            <dl className="mt-6 space-y-5">
+              {GLOSSARY.map(([t, d]) => (
+                <div key={t} className="border-t border-[#0b2540]/8 pt-5">
+                  <dt className="inline-flex rounded-lg bg-[#dcf0fd] px-2.5 py-1 text-[15px] font-semibold text-[#0b84d8]">{t}</dt>
+                  <dd className="mt-2 leading-relaxed text-[#4a6680]">{d}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
+
       {/* rekryterare */}
-      <section className="px-4 pt-16 sm:px-6 md:pt-20">
+      <section className="px-4 sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 rounded-[32px] bg-white px-6 py-10 sm:px-10 md:flex-row md:justify-between md:py-12">
           <div className="max-w-md text-center md:text-left">
             <h2 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl">

@@ -783,3 +783,292 @@ export function MessagesScreen() {
     </Screen>
   );
 }
+
+/* ---------- Nya skärmar: överraskning, ändrade villkor, karta, checklista, feedback ---------- */
+
+export function SurpriseScreen() {
+  const job = JOBS[3];
+  return (
+    <Screen bg={SWIPE_BG}>
+      <StatusBar />
+      <AppHeader />
+      <div className="mx-[16px] overflow-hidden rounded-[26px] bg-white shadow-[0_18px_40px_-18px_rgba(11,37,64,0.4)] ring-1 ring-[#0b2540]/6">
+        <div className="px-[18px] pb-[18px] pt-[16px] text-white" style={{ background: `linear-gradient(150deg,#7fd0fb 0%,${ACCENT} 50%,${ACCENT_DEEP} 100%)` }}>
+          <span className="inline-flex items-center gap-[6px] rounded-full bg-white px-[10px] py-[5px] text-[12px] font-bold" style={{ color: ACCENT_DEEP }}>
+            ✦ Överraskningsmatch
+          </span>
+          <p className="mt-[14px] text-[14px] font-medium text-white/85">Du har aldrig sökt något liknande — men det passar dig.</p>
+          <h3 className="mt-[6px] text-[28px] font-semibold leading-[1.1] tracking-tight">Compliance-analytiker</h3>
+          <p className="mt-[8px] flex items-center gap-[8px] text-[14px] font-semibold">
+            <CompanyLogo job={job} size={28} radius={8} />
+            {job.company} · {job.city}
+          </p>
+        </div>
+        <div className="px-[18px] pb-[18px] pt-[14px]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: MUTED }}>Yrket på 10 sekunder</p>
+          <p className="mt-[4px] text-[15px] leading-[1.45]" style={{ color: "#23405d" }}>
+            Du ser till att företaget följer lagar och regler — till exempel kring penningtvätt och kunddata.
+          </p>
+          <p className="mt-[14px] text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: MUTED }}>Varför du?</p>
+          <ul className="mt-[6px] space-y-[7px] text-[14.5px]">
+            {[
+              ["Juristexamen", "regelverk är din vardag"],
+              ["Tingsnotarie", "van att utreda noggrant"],
+              ["Flytande engelska", "bolaget jobbar internationellt"],
+            ].map(([a, b]) => (
+              <li key={a} className="flex items-start gap-[8px]">
+                <span className="mt-[1px] grid h-[20px] w-[20px] shrink-0 place-items-center rounded-full text-[11px] font-bold text-white" style={{ background: ACCENT }}>✓</span>
+                <span>
+                  <strong className="font-semibold">{a}</strong> <span style={{ color: MUTED }}>— {b}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-[14px] flex items-center justify-between rounded-[14px] bg-[#eef6fd] px-[12px] py-[10px]">
+            <span className="text-[13px]" style={{ color: MUTED }}>Lön</span>
+            <span className="text-[14px] font-semibold">47 000–55 000 kr/mån</span>
+          </div>
+        </div>
+      </div>
+      <div className="mt-[20px]">
+        <ActionButtons />
+      </div>
+      <TabBar active={0} />
+    </Screen>
+  );
+}
+
+export function ChangedScreen() {
+  const job = JOBS[1];
+  return (
+    <Screen bg={SWIPE_BG}>
+      <StatusBar />
+      <AppHeader />
+      <div className="mx-[16px] rounded-[20px] bg-[#ffdc5e] px-[16px] py-[14px] shadow-[0_14px_30px_-16px_rgba(200,160,20,0.9)]">
+        <p className="text-[12px] font-bold uppercase tracking-[0.1em]">Villkoren har ändrats</p>
+        <p className="mt-[4px] text-[16px] font-semibold leading-snug">Kravet som stoppade dig är borta. Swajpa höger!</p>
+      </div>
+      <div className="mx-[16px] mt-[12px] overflow-hidden rounded-[26px] bg-white shadow-[0_18px_40px_-18px_rgba(11,37,64,0.4)] ring-1 ring-[#0b2540]/6">
+        <div className="flex items-center gap-[12px] border-b border-[#0b2540]/6 px-[16px] py-[14px]">
+          <CompanyLogo job={job} size={48} radius={13} />
+          <span className="min-w-0">
+            <span className="block text-[19px] font-semibold leading-tight">{job.title}</span>
+            <span className="block text-[13.5px]" style={{ color: MUTED }}>{job.company} · {job.city}</span>
+          </span>
+        </div>
+        <div className="px-[16px] py-[14px]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: MUTED }}>Ändrat 15 okt</p>
+          <div className="mt-[8px] space-y-[8px]">
+            <div className="flex items-center justify-between rounded-[12px] bg-[#fdeef0] px-[12px] py-[10px] text-[14.5px]">
+              <span className="font-medium text-[#b23447] line-through">SAP-erfarenhet krävs</span>
+              <span className="text-[12px] font-semibold text-[#b23447]">Borttaget</span>
+            </div>
+            <div className="flex items-center justify-between rounded-[12px] bg-[#dcf6ea] px-[12px] py-[10px] text-[14.5px]">
+              <span className="font-medium text-[#0f8a5b]">Introduktion i SAP ingår</span>
+              <span className="text-[12px] font-semibold text-[#0f8a5b]">Nytt</span>
+            </div>
+          </div>
+          <div className="mt-[16px] flex items-end justify-between">
+            <span>
+              <span className="block text-[12px]" style={{ color: MUTED }}>Din match</span>
+              <span className="text-[30px] font-semibold leading-none tracking-tight">
+                <span className="text-[20px] line-through opacity-35">91 %</span> 98 %
+              </span>
+            </span>
+            <span className="text-[12.5px]" style={{ color: MUTED }}>Du swajpade vänster 12 okt</span>
+          </div>
+        </div>
+      </div>
+      <div className="mx-[16px] mt-[14px] flex items-center gap-[10px] rounded-[16px] bg-white px-[14px] py-[12px] text-[13.5px] shadow-[0_1px_3px_rgba(11,37,64,0.08)]">
+        <span className="grid h-[28px] w-[28px] shrink-0 place-items-center rounded-full bg-[#eef6fd] text-[14px]" style={{ color: ACCENT_DEEP }}>⧉</span>
+        <span style={{ color: MUTED }}>
+          <strong className="font-semibold" style={{ color: INK }}>Visad 2 gånger.</strong> Samma tjänst, ny version av annonsen.
+        </span>
+      </div>
+      <div className="absolute inset-x-[18px] bottom-[104px]">
+        <div className="grid h-[54px] place-items-center rounded-[16px] text-[17px] font-semibold text-white" style={{ background: `linear-gradient(135deg,${ACCENT},${ACCENT_DEEP})` }}>
+          Swajpa höger igen
+        </div>
+      </div>
+      <TabBar active={0} />
+    </Screen>
+  );
+}
+
+export function MapScreen() {
+  const modes: [string, string, string, boolean][] = [
+    ["🚲", "Cykel", "14 min", true],
+    ["🚆", "Tåg + gång", "21 min", false],
+    ["🚌", "Buss 5", "26 min", false],
+    ["🚶", "Gång", "48 min", false],
+  ];
+  return (
+    <Screen bg="#e4f1fb">
+      <svg className="absolute inset-0" width="390" height="844" viewBox="0 0 390 844" fill="none">
+        <rect width="390" height="844" fill="#e9f3fb" />
+        <path d="M-10 610C80 560 120 640 210 600s150-70 200-40v300H-10z" fill="#cfe6f8" />
+        <path d="M250 120h120v110H250zM30 150h110v80H30zM40 300h90v110H40zM260 330h100v90H260z" fill="#dcebd9" opacity=".7" />
+        <g stroke="#ffffff" strokeWidth="14" strokeLinecap="round">
+          <path d="M-10 260h410M-10 470h410M190 -10v620M70 -10l40 620M320 -10l-30 620" />
+        </g>
+        <g stroke="#f3f7fa" strokeWidth="6">
+          <path d="M-10 360h410M-10 160h410M130 -10v620M250 -10v620" />
+        </g>
+        <circle cx="120" cy="430" r="150" fill={ACCENT} opacity=".08" stroke={ACCENT} strokeWidth="2" strokeDasharray="6 7" />
+        <path d="M118 432c20-40 40-80 74-110s56-70 72-110" stroke={ACCENT_DEEP} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M118 432c-8-50 6-110 0-170" stroke="#22c99a" strokeWidth="5" strokeLinecap="round" strokeDasharray="2 10" />
+      </svg>
+      <div className="relative">
+        <StatusBar />
+        <div className="mx-[16px] mt-[4px] flex items-center gap-[10px] rounded-[16px] bg-white px-[14px] py-[12px] shadow-[0_8px_20px_-10px_rgba(11,37,64,0.35)]">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          <span className="flex-1 text-[15px]" style={{ color: MUTED }}>Sök i området</span>
+          <span className="rounded-full bg-[#eef6fd] px-[10px] py-[4px] text-[12px] font-semibold" style={{ color: ACCENT_DEEP }}>Max 30 min</span>
+        </div>
+      </div>
+      {/* pins */}
+      <span className="absolute left-[104px] top-[416px] grid h-[30px] w-[30px] place-items-center rounded-full border-[3px] border-white shadow-md" style={{ background: INK }}>
+        <span className="h-[8px] w-[8px] rounded-full bg-white" />
+      </span>
+      <span className="absolute left-[92px] top-[452px] rounded-full bg-white px-[8px] py-[2px] text-[11px] font-semibold shadow">Du</span>
+      <span className="absolute left-[244px] top-[178px] flex items-center gap-[6px] rounded-full bg-white py-[4px] pl-[4px] pr-[10px] text-[12.5px] font-semibold shadow-[0_8px_18px_-8px_rgba(11,37,64,0.5)]">
+        <CompanyLogo job={JOBS[4]} size={26} radius={13} />
+        90 %
+      </span>
+      <span className="absolute left-[96px] top-[232px] flex items-center gap-[6px] rounded-full bg-white py-[4px] pl-[4px] pr-[10px] text-[12.5px] font-semibold shadow-[0_8px_18px_-8px_rgba(11,37,64,0.5)]">
+        <CompanyLogo job={JOBS[0]} size={26} radius={13} />
+        88 %
+      </span>
+      <div className="absolute inset-x-0 bottom-0 rounded-t-[28px] bg-white px-[18px] pb-[40px] pt-[10px] shadow-[0_-12px_30px_-16px_rgba(11,37,64,0.35)]">
+        <span className="mx-auto block h-[5px] w-[40px] rounded-full bg-[#0b2540]/15" />
+        <div className="mt-[12px] flex items-center gap-[10px]">
+          <CompanyLogo job={JOBS[4]} size={40} radius={11} />
+          <span>
+            <span className="block text-[16px] font-semibold leading-tight">{JOBS[4].title}</span>
+            <span className="block text-[13px]" style={{ color: MUTED }}>{JOBS[4].company} · {JOBS[4].area}</span>
+          </span>
+        </div>
+        <p className="mt-[14px] text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: MUTED }}>Pendling från dig</p>
+        <div className="mt-[8px] grid grid-cols-2 gap-[8px]">
+          {modes.map(([icon, label, time, best]) => (
+            <div key={label} className={`flex items-center gap-[8px] rounded-[14px] px-[12px] py-[10px] ${best ? "text-white" : "bg-[#f3f9fe]"}`} style={best ? { background: ACCENT_DEEP } : undefined}>
+              <span className="text-[18px]">{icon}</span>
+              <span className="leading-tight">
+                <span className="block text-[15px] font-semibold">{time}</span>
+                <span className={`block text-[12px] ${best ? "text-white/80" : ""}`} style={best ? undefined : { color: MUTED }}>{label}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+export function ChecklistScreen() {
+  const job = JOBS[3];
+  const items: [string, string, boolean][] = [
+    ["Ljud", "Mikrofon och hörlurar fungerar", true],
+    ["Ljus", "Ansiktet syns tydligt", true],
+    ["Bakgrund", "Lugn och städad", true],
+    ["Uppkoppling", "Testar…", false],
+  ];
+  return (
+    <Screen bg={`linear-gradient(170deg,#7fd0fb 0%,${ACCENT} 40%,${ACCENT_DEEP} 100%)`}>
+      <StatusBar light />
+      <div className="px-[22px] pt-[22px] text-white">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-white/80">Om 15 minuter</p>
+        <h3 className="mt-[6px] text-[34px] font-semibold leading-[1.05] tracking-tight">Dags att göra dig redo</h3>
+        <div className="mt-[16px] flex items-center gap-[10px] rounded-[16px] bg-white/16 p-[12px] backdrop-blur">
+          <Avatar src={job.recruiter.img} size={42} ring={2} />
+          <span className="leading-tight">
+            <span className="block text-[15px] font-semibold">Videointervju med {job.recruiter.name.split(" ")[0]}</span>
+            <span className="block text-[13px] text-white/80">{job.company} · Tis 21 okt 10:00</span>
+          </span>
+        </div>
+      </div>
+      <div className="mx-[16px] mt-[18px] rounded-[22px] bg-white p-[8px]">
+        {items.map(([t, s, ok]) => (
+          <div key={t} className="flex items-center gap-[12px] rounded-[16px] px-[10px] py-[12px]">
+            <span
+              className="grid h-[30px] w-[30px] shrink-0 place-items-center rounded-full text-[14px] font-bold"
+              style={ok ? { background: "#16b77a", color: "#fff" } : { border: `2.5px solid ${ACCENT}`, borderRightColor: "transparent" }}
+            >
+              {ok ? "✓" : ""}
+            </span>
+            <span className="flex-1 leading-tight">
+              <span className="block text-[16px] font-semibold">Kontrollera {t.toLowerCase()}</span>
+              <span className="block text-[13px]" style={{ color: MUTED }}>{s}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="mx-[16px] mt-[12px] flex items-center gap-[10px] rounded-[16px] bg-white/16 px-[14px] py-[11px] text-[13.5px] font-medium text-white backdrop-blur">
+        <span className="text-[16px]">📅</span>
+        Synkad med din kalender
+      </div>
+      <p className="mt-[22px] text-center text-[26px] font-bold text-white">Lycka till! 🍀</p>
+      <div className="absolute inset-x-[24px] bottom-[34px]">
+        <div className="grid h-[54px] place-items-center rounded-[16px] bg-white text-[17px] font-semibold" style={{ color: ACCENT_DEEP }}>
+          Starta intervjun
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+export function FeedbackScreen() {
+  const reasons: [string, boolean][] = [
+    ["Fel bransch", false],
+    ["För lång pendling", true],
+    ["För låg lön", false],
+    ["Krävde erfarenhet", true],
+    ["Fel arbetstider", false],
+  ];
+  return (
+    <Screen bg={SWIPE_BG}>
+      <StatusBar />
+      <AppHeader />
+      <div className="relative mx-[16px] h-[300px] opacity-50">
+        <JobCard job={JOBS[2]} />
+      </div>
+      <div className="absolute inset-0 bg-[#0b2540]/35" />
+      <div className="absolute inset-x-0 bottom-0 rounded-t-[30px] bg-white px-[20px] pb-[40px] pt-[10px]">
+        <span className="mx-auto block h-[5px] w-[40px] rounded-full bg-[#0b2540]/15" />
+        <span className="mt-[16px] inline-block rounded-full bg-[#eef6fd] px-[10px] py-[5px] text-[12px] font-bold" style={{ color: ACCENT_DEEP }}>
+          50 swajpar 🎉
+        </span>
+        <h3 className="mt-[10px] text-[25px] font-semibold leading-[1.15] tracking-tight">Kändes de senaste jobben relevanta för dig?</h3>
+        <div className="mt-[16px] grid grid-cols-3 gap-[8px]">
+          {["Ja!", "Delvis", "Nej"].map((a, i) => (
+            <span
+              key={a}
+              className="grid h-[48px] place-items-center rounded-[14px] text-[15px] font-semibold"
+              style={i === 1 ? { background: ACCENT_DEEP, color: "#fff" } : { background: "#f3f9fe", color: INK }}
+            >
+              {a}
+            </span>
+          ))}
+        </div>
+        <p className="mt-[18px] text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: MUTED }}>Vad stämde inte?</p>
+        <div className="mt-[8px] flex flex-wrap gap-[8px]">
+          {reasons.map(([r, on]) => (
+            <span
+              key={r}
+              className="rounded-full px-[12px] py-[7px] text-[13.5px] font-medium"
+              style={on ? { background: "#e1f3fd", color: ACCENT_DEEP, boxShadow: `inset 0 0 0 1.5px ${ACCENT}` } : { background: "#f1f3f5", color: "#51667a" }}
+            >
+              {on ? "✓ " : ""}{r}
+            </span>
+          ))}
+        </div>
+        <div className="mt-[16px] rounded-[14px] bg-[#f3f9fe] px-[14px] py-[12px] text-[14px]" style={{ color: MUTED }}>
+          Berätta gärna med egna ord…
+        </div>
+        <div className="mt-[16px] grid h-[54px] place-items-center rounded-[16px] text-[17px] font-semibold text-white" style={{ background: `linear-gradient(135deg,${ACCENT},${ACCENT_DEEP})` }}>
+          Förbättra mina matchningar
+        </div>
+      </div>
+    </Screen>
+  );
+}
