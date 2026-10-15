@@ -50,7 +50,8 @@ const SHOTS = [
   { title: "Du styr matchningen", sub: "Säg vad som passar — och varför.", screen: <FeedbackScreen />, bg: "#2aa8f2", dark: true },
 ];
 
-const BADGE = ["#5bc0f8", "#1e8fdc", "#0b2540"];
+// 1–6 mörknar steg för steg, från ljusblå till marinblå.
+const BADGE = ["#5bc0f8", "#3db0f3", "#1f9be6", "#1282cc", "#0f63a0", "#0b4373"];
 const FEATURES = [
   {
     title: "Detaljerade annonser",
@@ -249,7 +250,7 @@ export default function JobbPage() {
           <div className="mt-12 grid gap-4 md:grid-cols-3">
             {FEATURES.map((f, i) => (
               <div key={f.title} className="rounded-3xl border border-[#0b2540]/6 bg-white p-7">
-                <span className="grid h-10 w-10 place-items-center rounded-xl text-sm font-semibold text-white" style={{ background: BADGE[i % 3] }}>
+                <span className="grid h-10 w-10 place-items-center rounded-xl text-sm font-semibold text-white" style={{ background: BADGE[i] }}>
                   {i + 1}
                 </span>
                 <h3 className="mt-5 text-xl font-semibold tracking-tight">{f.title}</h3>
